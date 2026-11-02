@@ -1,0 +1,1151 @@
+{
+  "schema_version": "screening-eval.v1",
+  "origin": "saved native PUB artifact; no new upload or broad analysis",
+  "rubric_version": "qualification-v1",
+  "planned_reviewer": "No domain reviewer assigned; Codex provisional development review is separate from independent quality validation. Workspace user is not assigned tender annotation.",
+  "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+  "parsed_sources_version": "9c50c157-897c-4eed-aea9-06370e744b4d",
+  "parser_version": "native-office-v3",
+  "questions": [
+    {
+      "name": "kind",
+      "instructions": "Classify the obligation type; a delivery promise is distinct from a present entry gate.",
+      "choices": [
+        "eligibility",
+        "scored_criterion",
+        "bid_artifact",
+        "delivery_commitment",
+        "informational",
+        "unknown"
+      ]
+    },
+    {
+      "name": "due_stage",
+      "instructions": "Identify when the obligation must be fulfilled; use unknown when the excerpt does not establish timing.",
+      "choices": [
+        "submission",
+        "award",
+        "mobilisation",
+        "delivery",
+        "unknown"
+      ]
+    },
+    {
+      "name": "material_now",
+      "instructions": "Does the text establish a material risk or gate affecting the preparation decision now?",
+      "choices": [
+        "yes",
+        "no",
+        "unknown"
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "id": "PUB-01",
+      "split": "development",
+      "clause_family": "source-sha256:0d5b9d8d90bb5656a997f040a6998365c85eaa13752a80eaaaf1161871203867",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "4_FOT_GnS_20260101_.docx",
+      "location": {
+        "paragraph": 74,
+        "location_label": "Footnotes footnotes.xml Paragraph 74",
+        "character_start": 0
+      },
+      "source_sha256": "0d5b9d8d90bb5656a997f040a6998365c85eaa13752a80eaaaf1161871203867",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "afef1f25-1e23-4fb1-b921-ab2fe8d24d51",
+        "anchor_id": "afef1f25-1e23-4fb1-b921-ab2fe8d24d51-paragraph-74",
+        "quote": "If the Tender Offer is submitted by a consortium, each member of the consortium shall be named. The Lead Member of the consortium shall submit the Tender Offer on behalf of the consortium members. Documentary proof must be provided that the Lead Member is authorised by all members of the consortium to submit, sign the Tender Offer, receive instructions, give any information, accept any contract and act for and on behalf of all the members of the consortium. Each member of the consortium shall be listed. For example, the Name(s) of Tenderer(s) field should read \u201c[Name of Lead Member], acting in its own name and in the name and for and on behalf of [Name(s) of other Consortium Member(s)]\u201d."
+      }
+    },
+    {
+      "id": "PUB-02",
+      "split": "development",
+      "clause_family": "source-sha256:26369ce60e9abefa74c693e1b894c460cad1271777c97a964b747597f9b7d8f9",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "10_Part B1 Fixed Schedule of Rates_V4.xlsx",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Sheet \"IFM FSOR\", rows 1-40",
+        "character_start": 0
+      },
+      "source_sha256": "26369ce60e9abefa74c693e1b894c460cad1271777c97a964b747597f9b7d8f9",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "3a390519-4889-4661-a06e-0222d03ac6c8",
+        "anchor_id": "3a390519-4889-4661-a06e-0222d03ac6c8-paragraph-1",
+        "quote": "O) cum Facilities Supervisor/Manager (FSM) services on an hourly basis for oversight of safety, compliance, and facilities management activities in accordance with contract requirements. The WSHO/FSM shall carry out their duties for a minimum of four (4) hours per day for each installation. | E2=SERVICES | F2=1 | G2=HR | H2=39.6\nA3=2 | C3=WSHO (Hourly Rate) | D3=Provision of Workplace Safety and Health Officer (WSHO) services on an hourly basis for safety supervision, compliance monitoring, and implementation of workplace safety measures in accordance with regulatory and contract requirements. The WSHO shall carry out their duties for a minimum of four (4) hours per day for each installation. | E3=SERVICES | F3=1 | G3=HR | H3=24.75\nA4=3 | C4=Technical Services Personnel | D4=Provision of technical services personnel possessing a Diploma in Engineering from a polytechnic in Singapore or equivalent.  | E4=SERVICES | F4=1 | G4=DAY | H4=280\nA5=4 | C5=Fire-Resistant Workwear (Jacket & Trous"
+      }
+    },
+    {
+      "id": "PUB-03",
+      "split": "development",
+      "clause_family": "source-sha256:3b2ca24cd76fae06d5658487d7f3e304c27d62b524f097fef376b1316cf5e7ba",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "8_Part A_Bill of Quantities_V4 (6 years).xlsx",
+      "location": {
+        "paragraph": 42,
+        "location_label": "Sheet \"Bill 9_Store & Inventory\", rows 1-16",
+        "character_start": 0
+      },
+      "source_sha256": "3b2ca24cd76fae06d5658487d7f3e304c27d62b524f097fef376b1316cf5e7ba",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "246cfca7-a672-4e4a-8dd4-985a5123afc8",
+        "anchor_id": "246cfca7-a672-4e4a-8dd4-985a5123afc8-paragraph-42",
+        "quote": " the driver) and a minimum 10-footer length lorry equipped with canopy and canvas covers, and driver, for the transportation of goods/inventory within or between various PUB installations. The driver shall work together with the workman in carrying out store and inventory operation works, effectively providing two (2) working personnel. \n\nFull Day Activation: 8:30am to 5pm | C11=Man-day | D11=576 [format 3] | E11=0 [format 44] | F11== [cached value: 0] [format 44]\nA12=1.4 | B12=Supply of 1 workman (separate from the driver) and a minimum 10-footer length lorry equipped with canopy and canvas covers, and driver, for the transportation of goods/inventory within or between various PUB installations. The driver shall work together with the workman in carrying out store and inventory operation works, effectively providing two (2) working personnel. \n\nHalf Day Activation: 8:30am to 12:30pm (AM) or 1pm to 5pm (PM) | C12=Man-day | D12=360 [format 3] | E12=0 [format 44] | F12== [cached value: 0"
+      }
+    },
+    {
+      "id": "PUB-04",
+      "split": "development",
+      "clause_family": "source-sha256:b60e36405b33f2a4322c0042e9753575e183c97110db4c4a4608af9f2b52fc94",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "9_Part C_Bill of Quantities_V3.xlsx",
+      "location": {
+        "paragraph": 7,
+        "location_label": "Sheet \"Bill 2_KWRP\", rows 1-24",
+        "character_start": 0
+      },
+      "source_sha256": "b60e36405b33f2a4322c0042e9753575e183c97110db4c4a4608af9f2b52fc94",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c0317941-eb2d-44e5-9305-606e71fd48cc",
+        "anchor_id": "c0317941-eb2d-44e5-9305-606e71fd48cc-paragraph-7",
+        "quote": "=Unit | D5=Quantity | E5=Rate | F5=Amount (S$)\nA7=1 | B7=Kranji Water Reclamation Plant - Roof Repair Works\nA9=1.1000000000000001 | B9=Preliminaries & General Requirements\n\nIncluding site inspection, submissions (RA/MS/SWP), shop drawings, mobilisation, access equipment, safety systems (including lifeline), protection of existing facilities, and temporary weatherproofing measures | C9=LOT | D9=1 | E9=0 [format 44] | F9==D9*E9 [cached value: 0] [format 44]\nA10=1.2 | B10=Removal of Existing Roof System \n\nIncluding removal of existing waterproofing membrane, coatings, metal roof sheets, insulation, and disposal of debris | C10=LOT | D10=1 | E10=0 [format 44] | F10==D10*E10 [cached value: 0] [format 44]\nA11=1.3 | B11=Concrete Roof Repair & Waterproofing Works \n\nIncluding surface preparation, crack and defect repairs (PU injection, repair mortar), supply and installation of waterproofing system with all detailing, reinforcement, testing (ponding), reinstatement, and warranty | C11=LOT | D11"
+      }
+    },
+    {
+      "id": "PUB-05",
+      "split": "development",
+      "clause_family": "source-sha256:bee44aec7058a29f405dc1f8835af79cc59cfe70d480b2a1335c57537438c56f",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "6_Changi WRP.xlsx",
+      "location": {
+        "paragraph": 110,
+        "location_label": "Sheet \"Toilet\", rows 1-35",
+        "character_start": 0
+      },
+      "source_sha256": "bee44aec7058a29f405dc1f8835af79cc59cfe70d480b2a1335c57537438c56f",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c403944b-f2c2-4a92-9fbf-2225c917f4ce",
+        "anchor_id": "c403944b-f2c2-4a92-9fbf-2225c917f4ce-paragraph-110",
+        "quote": " D7=1 | G7== [cached value: 1] | M7=Handicap | N7==SUM(F4:F35) [cached value: 9]\nC8=Level 1 Lobby | D8=1 | E8=1 | G8== [cached value: 2]\nC9=Level 1 (Liquid) | D9=1 | E9=1 | G9== [cached value: 2]\nC10=Mustering Room | D10=1 | G10== [cached value: 1]\nB11=2 | C11=Solid \nC12=Level 6 | D12=2 | F12=1 | G12==SUM(D12:F12) [cached value: 3]\nC13=Level 5 | D13=1 | F13=1 | G13== [cached value: 2]\nC14=Level 4 | D14=1 | F14=1 | G14== [cached value: 2]\nC15=Level 3 | D15=1 | F15=1 | G15== [cached value: 2]\nC16=Level 2 | D16=2 | F16=2 | G16== [cached value: 4]\nC17=Level 1M | F17=1 | G17== [cached value: 1]\nC18=Level 1 | D18=1 | F18=1 | G18== [cached value: 2]\nB19=3 | C19=LM1\nC20=Head Work | D20=1 | E20=1 | G20==SUM(D20:F20) [cached value: 2]\nC21=SST | D21=1 | E21=1 | G21==SUM(D21:F21) [cached value: 2]\nB22=4 | C22=LM2\nC23=Head Work | D23=1 | E23=1 | G23==SUM(D23:F23) [cached value: 2]\nC24=SST | D24=1 | E24=1 | G24==SUM(D24:F24) [cached value: 2]\nB25=5 | C25=LM3\nC26=Head Work | D26=2 | G26==SUM(D26:F26)"
+      }
+    },
+    {
+      "id": "PUB-06",
+      "split": "development",
+      "clause_family": "source-sha256:017c0ce2e0222f8e8d843c1f8ecb673a53cc4e745f4cbb18c580448e12cb0052",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "14_Annex B2 - Quality Proposal - Q3 In-House Capabilities.docx",
+      "location": {
+        "paragraph": 3,
+        "location_label": "Paragraph 3",
+        "character_start": 0
+      },
+      "source_sha256": "017c0ce2e0222f8e8d843c1f8ecb673a53cc4e745f4cbb18c580448e12cb0052",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "5370af92-f720-4870-95be-3a55617f27ff",
+        "anchor_id": "5370af92-f720-4870-95be-3a55617f27ff-paragraph-3",
+        "quote": "For Joint Ventures, each JV partner shall submit its respective In-House Capabilities under this section. The evaluation of Q3 will be based on the combined assessment of all JV partners, with scores computed in proportion to each partner\u2019s equity share in the JV."
+      }
+    },
+    {
+      "id": "PUB-07",
+      "split": "development",
+      "clause_family": "source-sha256:01f5ea5df0a00749ae59054fb4a1281d27ab6f497230c06d7608e569f0363615",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 3 Performance Measurement.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "01f5ea5df0a00749ae59054fb4a1281d27ab6f497230c06d7608e569f0363615",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "5125ff2f-55a8-4c38-849c-4836a436e2d7",
+        "anchor_id": "5125ff2f-55a8-4c38-849c-4836a436e2d7-page-3",
+        "quote": "Section 3  \nPerformance Measurement \n \n \nPage 3 of 15 \n3.1  FMC MANAGEMENT SERVICE LEVELS \n \nThe FMC shall familiarise himself with all duties and responsibilities as detailed in this \nContract and meet the following key objectives: \n \na) Operate a seamless facilities management regime that drives for continuous improvement; \n \nb) Provide a safe and clean working environment for all occupants and parties employed  to \nwork in and within the properties; \n \nc) Provide a customer focused service delivered on time and to meet the Service Standards \ndescribed within this Contract. \n \nd) Provide added value to the Board. \n \n3.2  KEY PERFORMANCE INDICATORS \n \n3.2.1  A number of Key Performance Indicators (KPIs) have been specified for the Services to be \ndelivered under the Contract.  \n \n3.2.2  The KPIs and their associated weightages / scores may be changed during the term of the \nContract by agreement between the FMC and the Board when it is deemed applicable. \n \n3.2.3  The performance of t"
+      }
+    },
+    {
+      "id": "PUB-08",
+      "split": "development",
+      "clause_family": "source-sha256:02d09f48890c4674c259bf00d82ff9cd99e02a5f87e267f0b0c2014a7a40859c",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "1 GnS_Cover Letter_20260501_V2.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "02d09f48890c4674c259bf00d82ff9cd99e02a5f87e267f0b0c2014a7a40859c",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d",
+        "anchor_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d-page-1",
+        "quote": "\n \n \n1 The Public Utilities Board hereby invites tenderers to participate in the abovementioned \ntender. This is a FTA covered tender. \n \n \n2 The list of tender documents is enclosed and the Tenderer shall conform to the requirements \ngiven in the tender documents. \n \n \n3 This is an Open tender  and is one-off non -recurring contract  for supply of Goods & \nServices. The estimated commencement date for this contract is October 2027 or such \nother date as the Board may decide and the supply of Goods & Services is to be completed \nwithin seventy-two (72) months. \n \n \n4 Tenderers registered with Building & Construction Authority (BCA)  in the FM01 \n(Facilities Management) registration head of financial grade M1 are invited to tender for \nthis project. \n \n \n5 Tenderers who are not registered with BCA in the registration head and financial grade \nspecified in paragraph 4 may still download the Invitation to Tender.  However, they are \nadvised to apply for registration with the relevant Gove"
+      }
+    },
+    {
+      "id": "PUB-09",
+      "split": "development",
+      "clause_family": "source-sha256:059d70efb3805292b1701531f04dc0d982f2b05ae671c19282fb8ff59a6dc1cf",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "21_C4 Repainting of Various Tidal Gates.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "059d70efb3805292b1701531f04dc0d982f2b05ae671c19282fb8ff59a6dc1cf",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "5caea0a3-9bc8-4b85-80bc-18c3cbe651db",
+        "anchor_id": "5caea0a3-9bc8-4b85-80bc-18c3cbe651db-page-3",
+        "quote": "Page 3 of 8 \n1.1 GENERAL \n \n1.1.1 This specification is to be read in conjunction with the attached Conditions of Contract, and \nSchedule of Prices. Any apparent contradiction between these documents shall be referred to \nthe Board whose decision shall be final and binding to both parties. \n \n1.2 SCOPE OF WORKS \n \n1.2.1 This tender calls for the supply of all necessary labour, plant, machinery, tools, transport, \nmaterials, paints, scaffoldings, working platforms conforming to all regulations, equipment, site \nsupervision etc. as required to carry out plastering, painting and waterproofing works to existing \nexternal or internal surfaces of various tidal gates installations in Singapore. \n \n1.2.2 The buildings, installations and structures to be painted are listed in Appendix I. \n \n1.3 BRIEF DESCRIPTION OF WORKS AND EXTENT OF CONTRACT \n \n1.3.1 The Contractor shall note that some of the selected structures are located on the water body and \nhence Works are expected to be more challengin"
+      }
+    },
+    {
+      "id": "PUB-10",
+      "split": "development",
+      "clause_family": "source-sha256:138e003650c16faa939d5e66eb44f941f7411cca3a6a972a427aa767b7435c2b",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 4 Building and Ground.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "138e003650c16faa939d5e66eb44f941f7411cca3a6a972a427aa767b7435c2b",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "2421b2e6-b1ed-4d27-86f4-c054827c2565",
+        "anchor_id": "2421b2e6-b1ed-4d27-86f4-c054827c2565-page-3",
+        "quote": "Section 4 \nBuilding and Ground Works \n \n \nPage 3 of 12 \n4.1 GENERAL REQUIREMENT OF ROUTINE MAINTENANCE WORKS \n \n4.1.1 The FMC shall bear all risks and responsibilities in carrying out the Works and shall be \nresponsible during the progress of the Works for any damage or disturbance to existing or \nadjoining tenants, or annoyance or nuisance to general public or residents an d users of the \ndevelopment arising out of the execution of the Works. \n \n4.1.2 The FMC shall carry out all works in compliance with  the relevant requirements of the \nStandards and Codes and its latest revision or otherwise.  \n \n4.1.3 The FMC may be required to carry out urgent works outside of office hours (including \nweekends and public holidays) and the FMC shall comply accordingly.  \n \n4.1.4 The FMC shall execute the approved rectification works within the timeframe stipulated by the \nBoard. The rectification must address the root cause of the issue and not merely treat \nsurface\u2011level symptoms. No claim for rew"
+      }
+    },
+    {
+      "id": "PUB-11",
+      "split": "development",
+      "clause_family": "source-sha256:17e204102577a8eaa5e00b7b58aa4f668c9733b40b3a14f9340a678e0112477a",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "20_C3 Reroofing at LSTG.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "17e204102577a8eaa5e00b7b58aa4f668c9733b40b3a14f9340a678e0112477a",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "e3e7f798-3f9b-4ff5-9364-7d026cbb9938",
+        "anchor_id": "e3e7f798-3f9b-4ff5-9364-7d026cbb9938-page-3",
+        "quote": "1.1 This specification is to be read  in conjunction with the Conditions of Contract, Technical \nSpecifications, Bills of Quantities and Drawings.  Any apparent contradiction between these \ndocuments shall be referred to the Board whose decision shall be final and binding to both \nparties.  \n \n1.1.2 The Scope of Works included in this Contract comprises, but is not necessarily limited to the \nsupply of personnel, labour , plant, materials, equipment, tools, services, all utilities and other \nnecessary works to complete the design, procurement, supply, construction, installation, testing \nof all the associated works as described in the Specifications and Drawings as may be reasonably \ninferred from the Contract Documents to the satisfaction of the Superintending Officer (S.O.).  \n \n \n1.2 DESCRIPTION OF WORKS \n \n1.2.1 The Work to be carried out as part of this Contract involves the design, supply, delivery and \ninstallation of high -performance roofing system at Lower Seletar Tidal Gate "
+      }
+    },
+    {
+      "id": "PUB-12",
+      "split": "development",
+      "clause_family": "source-sha256:18deac8e413e3004256ad8eea2c1d125aa8c5c69c2498bcf2d6b312d48584247",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 15 Annual Inspection_Maintenance and Repair of Lifting Equipment.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "18deac8e413e3004256ad8eea2c1d125aa8c5c69c2498bcf2d6b312d48584247",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "0c9cc7c9-9796-48f2-b823-0c3c86977898",
+        "anchor_id": "0c9cc7c9-9796-48f2-b823-0c3c86977898-page-3",
+        "quote": "Section 15 \nProvision of Annual Inspection, Service Maintenance and Repair of Lifting Equipment at Woodleigh Complex  \nPage 3 of 8 \n15.1 GENERAL \n \n15.1 The FMC shall provide all workmen, competent persons, materials, equipment, tools, \ntransport, necessary for the inspection and routine servicing and maintenance of the lifting \nequipment at Woodleigh Complex. \n \n15.2 Upon receipt of the Board's request to carry out scheduled annual inspection, servicing or \nrepair works, the FMC shall confirm the proposed date, time, duration of works, and names \nand qualifications of personnel to be deployed within three (3) working day s. Should the \nFMC fail to confirm within the stipulated timeline, the Board reserves the right to schedule \nthe works at its own discretion. \n \n15.3 The confirmed works date shall be no earlier than ten (10) working days from the date of \nconfirmation, to allow sufficient time for the work plan to be submitted. No works shall \ncommence without the Board's approval. \n"
+      }
+    },
+    {
+      "id": "PUB-13",
+      "split": "development",
+      "clause_family": "source-sha256:199d66bc10a2a0d16ca8250737b101ffd18c9ac490de6d21d3546c0cd1519c05",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 5 Cleaning and Waste Management.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "199d66bc10a2a0d16ca8250737b101ffd18c9ac490de6d21d3546c0cd1519c05",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "0bf37a0d-f47f-4456-96e9-03dba61921c4",
+        "anchor_id": "0bf37a0d-f47f-4456-96e9-03dba61921c4-page-2",
+        "quote": "......................................................... 11 \n5.13 WASTE MANAGEMENT (INCLUDING RECYCLING) ..................................................... 11 \n5.14 CHECKING OF CLEANING WORKS AND SUBMISSION OF MONTHLY REPORTS ... 14 \n5.15 SPRING CLEANING TO PROPERTY ................................................................................... 14 \n5.16 OFFICE CLEANING MANAGEMENT .................................................................................. 14 \n5.17 POLLUTION TO RESERVOIR (WHERE APPLICABLE) .................................................... 16 \n5.18 CLEANING OF TOILETS ....................................................................................................... 16 \n5.19 BOARD\u2019S RIGHT TO CEASE DAILY CLEANING WORKS AT ANY TIME ................... 17 \n5.20 ADDITIONAL REQUIREMENTS DUE TO PANDEMIC / EMERGENCY (WHERE \nAPPLICABLE) ..........................................................................................................................."
+      }
+    },
+    {
+      "id": "PUB-14",
+      "split": "development",
+      "clause_family": "source-sha256:272283eb9f3843b76e8daf435ffc60e4f8b70a8b5c8bf09a0f35a96e30203082",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "5-1 Tender GnS COC_20260430_V3.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "272283eb9f3843b76e8daf435ffc60e4f8b70a8b5c8bf09a0f35a96e30203082",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "56586934-bc6a-42dc-895d-3b18702a748f",
+        "anchor_id": "56586934-bc6a-42dc-895d-3b18702a748f-page-2",
+        "quote": "RITY .............................................................................................................. 38 \nB30. RECOVERY OF ADMINISTRATIVE FEE AND MANAGEMENT FEE ............... 39 \nB31. REGISTRATION AS PROGRESSIVE WAGE MODEL (PWM) FIRM UNDER \nBCA\u2019S CONTRACTORS REGISTRATION SYSTEM (CRS) ................................. 39 \nB32. INTENTIONALLY LEFT BLANK ............................................................................ 40 \nB33. COMPLIANCE WITH WORKPLACE SAFETY AND HEALTH (\u201cWSH\u201d) \nREQUIREMENTS ....................................................................................................... 40 \n \n \n\n[Same page, positioned text layout for table alignment]\nCOMPENDIUM B\n\nB1.       SECURITY DEPOSIT FOR PERFORMANCE ......................................................... 25\nB2.       INTENTIONALLY LEFT BLANK ............................................................................ 26\nB3.       COMMENCEMENT AND DURATION OF CONTRACT ............................."
+      }
+    },
+    {
+      "id": "PUB-15",
+      "split": "development",
+      "clause_family": "source-sha256:2727257a7929def2a2c9b58ef3dd7af9bc4d1fc8fbda40ab40605cafc4be69b0",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "6-1_Preamble to Price Schedule FSOR_20260715.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "2727257a7929def2a2c9b58ef3dd7af9bc4d1fc8fbda40ab40605cafc4be69b0",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "44de9146-8c18-4a76-91b9-65f6a81d9975",
+        "anchor_id": "44de9146-8c18-4a76-91b9-65f6a81d9975-page-1",
+        "quote": "DULE  \n \n1. Attention is directed to the Instructions for Tenders, Form of Tender, Conditions of Contract, \nSpecifications, Drawings (if any) and all other documents attached to this Contract, which \nshall be read in conjunction with the Percentage (%) Adjustment to Fixed Schedule of Rates \nand the Fixed Schedule of Rates (FSOR).  \n \n2. The following shall also be read in conjunction with the respective items in the FSOR and \nTenderers are required to make allowance in their pricing for complying with the following: \n \nGENERAL \n \n3. Tenderers shall be held to have understood fully all matters concerning the works/services \nto be carried out and/or goods/materials to be supplied under this Contract.  Any query must \nbe settled with the Board prior to the submission of the tender.  No con sideration will be \ngiven to any query raised by the successful Tenderer (hereinafter called \u201cthe Contractor\u201d) \nindicating the lack of comprehension of the works/services to be done or goods/materials t"
+      }
+    },
+    {
+      "id": "PUB-16",
+      "split": "development",
+      "clause_family": "source-sha256:2f5abdca4aca97cef65b346b6da9162446fe7e0abbaa0407196d8632be454ff9",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 10 Workplace Safety and Health Management.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "2f5abdca4aca97cef65b346b6da9162446fe7e0abbaa0407196d8632be454ff9",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "7773fb58-9a93-4eb7-8673-b81ba5d35d9b",
+        "anchor_id": "7773fb58-9a93-4eb7-8673-b81ba5d35d9b-page-3",
+        "quote": "Section 10 \nWorkplace Safety & Health Management \n \n3 of 28 \n  \n10.1 GENERAL \n \nThe FMC\u2019s Workplace Safety and Health Officer (s) (WSHO) shall provide the core \ncompetency to develop and implement a comprehensive Health & Safety Plan to govern and \nstandardize the safety aspects of all contractors carrying out work on behalf of the Board within \nthe premises. \n \nThe FMC\u2019s WSHO shall also develop a Health & Safety Guideline for all contractors carrying \nout work on behalf of occupant/tenants or third parties within the premises and installation.  \n \n10.2 OBJECTIVES \n \nThe key objectives of the Safety  & Health Management shall include but not limited to the  \nfollowing: \n \na) To meet the requirements and objectives of the Workplace Health & Safety Act and its  \nsubsidiary legislations; \n \nb) Identify and eliminate unsafe work practices and the prevention of accidents; \n \nc) To develop and implement a Safety & Health Plan that would function as an in-house guide \nto ensure a single unifo"
+      }
+    },
+    {
+      "id": "PUB-17",
+      "split": "development",
+      "clause_family": "source-sha256:305212acfbf131c5d09baa66770636249d47db27782f8e5136eb68451cc264a9",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 8_General Estate Management.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "305212acfbf131c5d09baa66770636249d47db27782f8e5136eb68451cc264a9",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "39a39cf8-82b0-462a-bf0c-5aacf7b8a7fd",
+        "anchor_id": "39a39cf8-82b0-462a-bf0c-5aacf7b8a7fd-page-3",
+        "quote": "tion 8 \nGeneral Estate Management \nPage 3 of 27 \n8.1 MANPOWER DEPLOYMENT FOR THIS CONTRACT \n \n8.1.1 The table below sets out the minimum manpower deployment requirements for this Contract. \nTenderers shall comply with the minimum manpower requirements specified. The successful \nFMC shall submit its proposed organisational structure, reporting lines and sta ff deployment \nplan for the Board's review and approval during the mobilisation period and prior to the \ncommencement of services. The FMC may deploy additional manpower as necessary to meet \nthe Contract requirements, at no additional cost to the Board. \n \nS/No. Item Project \nDirector \nAdministrative \nOfficer WSHO \nSenior \nFacilities \nManagers \nFacilities \nManagers \nFacilities \nExecutives \nTechnical \nOfficers \n1  Environment \nBuilding \n  \n1 \n1 \n- 2 1 \n2  WaterHub   1 2 2 \n3  \nWoodleigh Complex \n& Woodleigh Park \nEstate \n \n1 2 1 \n4 Woodleigh \nWaterworks \n \n1 1 2 \n \n5  WSN Unmanned \nInstallations \n \n1 \n1 3 - \n6 WRN Unmanned \nInstallat"
+      }
+    },
+    {
+      "id": "PUB-18",
+      "split": "development",
+      "clause_family": "source-sha256:3b577624c52bea928bbbab93cffd08f1e1fd4d0d3ec6935d00ba431e9b35f4ac",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 12 Auto Dispensing Machine Services for Office Supplies.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "3b577624c52bea928bbbab93cffd08f1e1fd4d0d3ec6935d00ba431e9b35f4ac",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "e4cab5c5-fce0-4008-95ae-0c2c2a525271",
+        "anchor_id": "e4cab5c5-fce0-4008-95ae-0c2c2a525271-page-3",
+        "quote": "Section 12 \nProvision of Auto-Dispensing Machine Services \nPage 3 of 8 \n12.1 INTRODUCTION \n \n12.1.1 The set-up period for the machines and card integration shall be up to nine (9) weeks. Any \ndeviation to the timeline must receive prior written approval from the Board. \n \n12.1.2 The Board shall pay the FMC a monthly service fee per machine, which will commence only \nwhen the machines are operational  at the designated location(s). The start date for each \nmachine\u2019s service fee will be subject to the Board\u2019s approval. \n \n12.2 SCOPE OF WORK \n \n12.2.1 The FMC shall be responsible for the full provision of auto -dispensing machine services for \noffice supplies at locations designated by the Board. This includes the supply, installation, \noperation, maintenance, and management of two (2) auto -dispensing machines, with the \nprovision for up to three (3) additional machines during the Contract Period if requested by the \nBoard. The location of the machines shall be determined by the Board. \n"
+      }
+    },
+    {
+      "id": "PUB-19",
+      "split": "development",
+      "clause_family": "source-sha256:44f4a8d8fe4f7cfc7a6d615c7501f9d0085a1c8907681d4b0c1c827d7baed314",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 1 Preliminaries.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "44f4a8d8fe4f7cfc7a6d615c7501f9d0085a1c8907681d4b0c1c827d7baed314",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "950d26bf-4398-4368-8dd0-28360f14bee2",
+        "anchor_id": "950d26bf-4398-4368-8dd0-28360f14bee2-page-2",
+        "quote": " STATUTORY BODIES ................................ ...................... 17 \n1.31 GREENGOV.SG / SUSTAINABILITY REQUIREMENTS ................................ ............ 17 \n1.32 STATUTORY LICENCES, REGISTRATIONS AND AUTHORITY REQUIREMENTS .18 \n1.33 SECURITY INCIDENT RESPONSE MANAGEMENT ................................ ................. 19 \n \n \n \n \n \n \n\n[Same page, positioned text layout for table alignment]\nSection 1\nPreliminaries\n\nClause\n1.1          INTRODUCTION ................................             ......................................................................... 3\n1.2          OPERATIONAL RESILLENCE ................................                       .................................................... 4\n1.3          MAINTENANCE SCHEDULES ................................                        .................................................... 4\n1.4          THE BOARD\u2019S REPRESENTATIVES ................................                           ................"
+      }
+    },
+    {
+      "id": "PUB-20",
+      "split": "development",
+      "clause_family": "source-sha256:4c646959a041ea1e7213abd9e52ee4b44da4358b16e51dc39ac5a813342cef97",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "7_FSOR-Percentage Adj_20240701_V2.docx",
+      "location": {
+        "paragraph": 39,
+        "location_label": "Paragraph 39",
+        "character_start": 0
+      },
+      "source_sha256": "4c646959a041ea1e7213abd9e52ee4b44da4358b16e51dc39ac5a813342cef97",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "96165dd8-c435-4edb-bce1-a83ba25eba81",
+        "anchor_id": "96165dd8-c435-4edb-bce1-a83ba25eba81-paragraph-39",
+        "quote": "[No handwritten signature or company stamp is required for documents submitted through GeBIZ. The Board shall be entitled to rely on the use or entry of the prescribed Authentication Device (as defined in the Terms and Conditions For Use Of The Government Electronic Business) by the Tenderer or its representative(s) as the authorised signature of the Tenderer, as conclusive evidence of the authenticity of the submitted document and the authority of the originator of the submitted document.]"
+      }
+    },
+    {
+      "id": "PUB-21",
+      "split": "development",
+      "clause_family": "source-sha256:67fe1b3064a4f2ed43cb0c4f4020042343074386fe8c70760b7b0f23f2076f9a",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "23_C6 Minor AA Works WRN.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "67fe1b3064a4f2ed43cb0c4f4020042343074386fe8c70760b7b0f23f2076f9a",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "16777249-62f2-4173-80ee-4c6954ae8849",
+        "anchor_id": "16777249-62f2-4173-80ee-4c6954ae8849-page-3",
+        "quote": "KS \n \nThis specification is to be read in conjunction with the Conditions of Contract, Technical \nSpecifications, Bills of Quantities and Drawings. Any apparent contradiction between these \ndocuments shall be referred to the Board whose decision shall be final and  binding to both \nparties. \n \nThe Scope of Works included in this Contract comprises, but is not necessarily limited to the \nsupply of personnel, labour, plant, materials, equipment, tools, services, all utilities and other \nnecessary works to complete the design, procurement, supply, construction, installation, testing \nand commissioning of all associated works as described in the Specifications and Drawings. \n \n1.2 DESCRIPTION OF WORKS \n \nThe Work to be carried out as part of this Contract involves the design, supply, delivery and \ninstallation of waterproofing systems, roof repair works, roller shutter replacement and anti-slip \npainting for dry well basements at designated PUB installations. The objectives of these works "
+      }
+    },
+    {
+      "id": "PUB-22",
+      "split": "development",
+      "clause_family": "source-sha256:6e50717e59cc3d7a5638cce20a200189833bc0fb9ee1decd8dd72a26b9718c62",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "13_Annex B1 - Quality Proposal - Q2a Track Records_V3.doc",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Extracted text lines 1-20",
+        "character_start": 0
+      },
+      "source_sha256": "6e50717e59cc3d7a5638cce20a200189833bc0fb9ee1decd8dd72a26b9718c62",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9444f776-0eb3-48fc-955f-91ac14a5da76",
+        "anchor_id": "9444f776-0eb3-48fc-955f-91ac14a5da76-paragraph-1",
+        "quote": "\n\nTRACK RECORDS OF INTEGRATED FACILITIES MANAGEMENT SERVICES ONLY (Q2a)\n\nThe Tenderer shall furnish hereunder the particulars of all relevant contracts within the past (5) years. The contracts listed below should only be for Integrated Facilities Management services only. Completed and current projects will be assessed collectively, and no distinction will be made between completed and current projects for evaluation purposes. For Joint Ventures, each JV partner shall submit its respective track records under this section. The evaluation of Q2 will be based on the combined submissions of all JV partners, with scores computed in proportion to each partner\u2019s equity share in the JV.\n\n1\tCompleted Projects\n\n|S/N    |Project Title                                                        |Client (Include address of buildings) |Contract Value                        |Contract Duration                     |(Client\u2019s Contact Person)             |\n|       |                                           "
+      }
+    },
+    {
+      "id": "PUB-23",
+      "split": "development",
+      "clause_family": "source-sha256:78e98811310cd84604f07681e675c06e31686db30fa6619d1091839b4391a440",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 6 Pest Control.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "78e98811310cd84604f07681e675c06e31686db30fa6619d1091839b4391a440",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "7be1a3b6-149f-402b-82d1-ff3e2c73d28a",
+        "anchor_id": "7be1a3b6-149f-402b-82d1-ff3e2c73d28a-page-3",
+        "quote": "ol Service Levels required are shown in the Service Level Agreement in Clause \n6.5. The Service Levels are divided into separate categories of pests which are based on the use \nof the areas.  The FMC shall refer to the Appendix A \u2013 Consolidated Building List  and \nEquipment list for the area of responsibilities for Pest Control Services under this contract. \n \n6.1.2  The key objectives of the Pest Control Service are to: \n \na) provide a technical and fully operational Pest Control Service. The Service will be \ncomprehensive covering all land and property within areas stipulated; \nb) ensure that effective and economic pest control measures are implemented and that they \nare in accordance with NEA\u2019s guidelines, and \nc) ensure a safe working environment and timely removal of pests once encountered. \n \n6.1.3 The consolidated building list, equipment list and any related schedules are provided as a guide \nfor tendering and planning purposes. The FMC shall verify the actual site conditions a"
+      }
+    },
+    {
+      "id": "PUB-24",
+      "split": "development",
+      "clause_family": "source-sha256:8c527d5d1377c4afa20be61eae889ffea21e7398b717e01c840724bf5ab73728",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "5-3 Form of Security Deposit Guarantee (No auto extension)_20250404_.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "8c527d5d1377c4afa20be61eae889ffea21e7398b717e01c840724bf5ab73728",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "0eda0c34-9f65-41cb-8634-5781f11b28a0",
+        "anchor_id": "0eda0c34-9f65-41cb-8634-5781f11b28a0-page-1",
+        "quote": "   \n \n PG-1 4 April 2025 \n \n FORM OF SECURITY DEPOSIT GUARANTEE \n(APPLICABLE WHERE NO AUTO EXTENSION PERIOD IS INDICATED) \nPart 1 (For eGuarantee) \n \nThe Security Deposit Guarantee shall be a guarantee issued under the eGuarantee@Gov \nprogramme with the template reference code GOV_UT (or such other template reference code \nas the Board may from time to time notify the Contractor in writing) and any other data fields \n(e.g. case reference number) as the Board may specify from time to time. For more information \non the template and regardin g applications for such a guarantee from participating financial \ninstitutions, please visit www.eguarantee.gov.sg. \nPart 2 (For hardcopy Security Deposit Guarantee) Applicable for foreign/overseas \ncontractors with no Singapore registered entities \nTo: Public Utilities Board \n Director, Procurement & Contracts Department \n40 Scotts Road \n#08-01 Environment Building \nSingapore 228231 \n \nGUARANTEE REFERENCE NO1 : _______________________ \n(\u201cIndependent "
+      }
+    },
+    {
+      "id": "PUB-25",
+      "split": "held_out",
+      "clause_family": "source-sha256:905faee198174428327847b1e9e4d07aa2502e7bd3630bd48032ca174152ae9c",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 11 Mechanical and Electrical Maintenance_V2.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "905faee198174428327847b1e9e4d07aa2502e7bd3630bd48032ca174152ae9c",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "fd0a3e3b-fb8c-4eb6-89b7-208b40afbd2b",
+        "anchor_id": "fd0a3e3b-fb8c-4eb6-89b7-208b40afbd2b-page-3",
+        "quote": " \nSection 11 \nMechanical & Electrical Services Maintenance \n \nPage 3 of 88 \n11.1 GENERAL SCOPE \n \n11.1.1 The Facilities Management Company ( FMC) / Contractor  shall carry out Mechanical and \nElectrical (M&E) services maintenance works as specified in this section but not limited to the \nfollowings.  \n  \na) Electrical Licensing \nb) Electrical Installations \nc) Chillers, Air Conditioning and Mechanical Ventilation System (ACMV)  \nd) Water Treatment \ne) Water/Sump Pumps and Water Tanks \nf) Fire Protection System , Fire Alarm Monitoring System , Breathing Apparatus  and \nDecentralised Alarm Monitoring System (DECAMS) \ng) Public Address (PA) system  \nh) Audio Visual (AV) System \ni) Building Management System (BMS) \nj) Lift System \nk) Lightning Warning System including Lightning & Earthing System \nl) Private Automatic Branch Exchange (PABX) system \nm) Walkie Talkie System \nn) Automated External Defibrillator (AED) \no) Smart Electrical Meters and Water Meters \np) Roller Shutters \nq) Water Ta"
+      }
+    },
+    {
+      "id": "PUB-26",
+      "split": "held_out",
+      "clause_family": "source-sha256:9e6d277644441d3cecdb7aa367d5d328e7153f93dbe6cf75089760848ad13565",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "22_C5 Installation of Access System.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "9e6d277644441d3cecdb7aa367d5d328e7153f93dbe6cf75089760848ad13565",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "54fe4378-6ec4-436e-9feb-fc2bda140d1c",
+        "anchor_id": "54fe4378-6ec4-436e-9feb-fc2bda140d1c-page-3",
+        "quote": "sion of permanent fall protection systems, access infrastructure, and roof leak repair works at PUB Tidal Gates \nPage 3 of 7 \n1 SPECIFICATIONS \n1.1 OBJECTIVES AND SCOPE OF WORKS \n1.1.1 The Contractor shall provide all  labour, materials, tools, equipment, machinery, transport, and \nprofessional expertise necessary to successfully execute the supply, delivery, installation, testing, \nand certification of permanent and temporary fall protection systems, custom structural access \nladders, and specialized roof repair/waterproofing works at Serangoon Tidal Gates and Pandan \nTidal Gates. \n1.1.2 Serangoon Tidal Gates Installation Scope \na) Permanent Anchor Points: Supply, delivery, and certified installation of approximately one \nhundred and ten (110) numbers of permanent forged alloy steel D -Bolt structural anchor \ndevices, engineered for multi-user fall restraint and fall arrest functionality across the curved \nmetal roof segments. \nb) Permanent Horizontal Lifeline: Supply , delivery  and "
+      }
+    },
+    {
+      "id": "PUB-27",
+      "split": "held_out",
+      "clause_family": "source-sha256:a30c5c83a454d5bda57eb7e79c2daf8d83bf1204c82d9e7588d7f3cb9293068b",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 9 Computerised Maintenance Management System.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "a30c5c83a454d5bda57eb7e79c2daf8d83bf1204c82d9e7588d7f3cb9293068b",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "93082292-459f-4864-bd0d-0b31f46f2dd6",
+        "anchor_id": "93082292-459f-4864-bd0d-0b31f46f2dd6-page-3",
+        "quote": "Section 9 \nComputerised Maintenance Management System \n \nPage 3 of 7 \n9.1 GENERAL REQUIREMENTS \n \nThe FMC shall utilise the Computerised Maintenance Management System (CMMS) \ndesignated and provided by the Board (the \u201cSystem\u201d) for the execution, management and \nreporting of all maintenance activities under this Contract. The Board reserves the absolute right \nto determine, appoint, replace, or change the System and its service provider at any time. \n \nThe FMC shall not implement, deploy, or use any separate or parallel CMMS for works under \nthis Contract without the prior written approval of the Board. \n \nThe System is a Board-designated system procured for the purposes of this Contract. The FMC \nshall be granted access to and use of the System in accordance with the onboarding and payment \nmechanism stipulated under Clause 9.4. Except for amounts expressly instructed and approved \nby the Board under a Work Order, the FMC shall not impose, claim or be entitled to any \nadditional charge"
+      }
+    },
+    {
+      "id": "PUB-28",
+      "split": "held_out",
+      "clause_family": "source-sha256:b774e8e4c5ac8255fd74e7d5b4da96d636eb92edbff48b74bd15a952915302e1",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 7 Landscape Maintenance.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "b774e8e4c5ac8255fd74e7d5b4da96d636eb92edbff48b74bd15a952915302e1",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "4465b035-2818-49ef-9496-eb51fd8ddc22",
+        "anchor_id": "4465b035-2818-49ef-9496-eb51fd8ddc22-page-3",
+        "quote": "er man, chemicals and materials, to meet the Service Level Agreement (SLA) of \nPerformance Standards / Criteria. Where frequencies of maintenance are mentioned, these are \nto be taken as a guide, FMC shall propose for the Board\u2019s approval. \n \nAll landscape maintenance activities outlined in this section are included under the routine \nmaintenance cost, with no additional charges to the Board. Only ad hoc works that fall outside \nthe scope of routine landscape maintenance and are specifically requested through the Fixed \nSchedule of Rates (FSOR) shall be chargeable separately. \n \nThe FMC is required to achieve a high level of aesthet ic throughout the installations and \npremises. The key objectives are: \n \na) Provide a cost efficient, quality driven Landscaping maintenance service; \n \nb) Provide a standard of Service that helps to provide a positive image of the installations and \npremises and a level of tranquillity which provides a unique environment for staff & \nvisitors, 365 days a "
+      }
+    },
+    {
+      "id": "PUB-29",
+      "split": "held_out",
+      "clause_family": "source-sha256:ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "Evaluation Criteria  EC-1 1 Sep 2026 \n \n \nEVALUATION CRITERIA FOR PROVISION OF INTEGRATED FACILITIES \nMANAGEMENT SERVICES FOR CSD, TED, WRN, WRP, WSN AND WSP SITES AND \nINSTALLATIONS \n \n(1) Tenderers must first satisfy the following CRITICAL evaluation criteria before their tender \nproposals will be considered: \n \n(a) Registration with Building & Construction Authority (BCA)  in FM01 (Facilities \nManagement) registration head of financial grade M1 \n \n(b) Debarment status (not debarred from participating in Government tenders  and/or not \nrestricted by PUB from participating in its tenders) \n \n(c) Tenderers meeting any of the following criteria will be disqualified from the tender: \n1) Entry into MOM\u2019s Business Under Surveillance programme (BUS) \ni.  Has entered BUS within the 3 months prior to the Tender Closing Date; or \nii.  Has entered BUS after the Tender Closing Date, but before the Tender Award \nDate; or \n2) Accumulation of 15 or more Demerit Points under MOM\u2019s Demerit Point Syst"
+      }
+    },
+    {
+      "id": "PUB-30",
+      "split": "held_out",
+      "clause_family": "source-sha256:bac85489c576000989e400bd95a0ec39caa9be53b1cdd0a0302f9a330c3eb49d",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "24_C7 Waterproofing and Air Con.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "bac85489c576000989e400bd95a0ec39caa9be53b1cdd0a0302f9a330c3eb49d",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "162a7714-946b-4e1c-9c68-ce47cd6f163f",
+        "anchor_id": "162a7714-946b-4e1c-9c68-ce47cd6f163f-page-3",
+        "quote": "Part C7 \nWaterproofing Works and Air Con Replacement Works at Bedok and Pulau Tekong Waterworks \nPage 3 of 5 \n1.1 SCOPE OF WORKS \n \n1.1.1 The works shall include the removal of existing waterproofing system and the supply, \ninstallation, testing, and protection of a new waterproofing membrane, complete with all \nnecessary accessories, finishes, and reinstatement works. \n \n1.1.2 The estimated area for the waterproofing is stated under Annex A. \n \n1.2 PRE-WORKS & SITE PREPARATION \n \n\u2022 Conduct site inspection to assess existing conditions and identify defects. \n\u2022 Submit risk assessment, method statement and safe working procedure for approval. \n\u2022 Protect surrounding areas, finishes, services, and drainage points from damage. \n\u2022 Barricade work area and provide warning signage. \n\u2022 Verify weather conditions are suitable for waterproofing works. \n \n1.3 REMOVAL OF EXISTING WATERPROOFING \n \n\u2022 Carefully remove existing membrane, screed, tiles, insulation, or protection layer (as \napplicable). \n\u2022"
+      }
+    },
+    {
+      "id": "PUB-31",
+      "split": "held_out",
+      "clause_family": "source-sha256:bfd24ffafc2ebf59105f5dc356005797ed118c6cc6e3145e8d07a709743ac4f7",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 13 Woodleigh Park Estate Maintenance.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "bfd24ffafc2ebf59105f5dc356005797ed118c6cc6e3145e8d07a709743ac4f7",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "f3665747-7477-4495-be8e-e3e136917e0f",
+        "anchor_id": "f3665747-7477-4495-be8e-e3e136917e0f-page-3",
+        "quote": "Section 13 \nWoodleigh Park Estate Maintenance \nPage 3 of 6 \n13.1 INTRODUCTION \n \n13.1.1 The FMC shall provide landscape maintenance and pest control services for designated areas \nwithin the Woodleigh Park Estate. The scope of work includes regular upkeep of both forested \nand turf areas, as well as systematic pest management activities. \n \n13.1.2 The Board shall pay the FMC a monthly service fee as per the Bills of Quantities.  \n \n13.2 SITE DESCRIPTION & SCOPE OF WORKS \n \n13.2.1 The estate comprises two main types of areas (refer to Appendix 13-1): \n \n\u2022 Forested Areas: Identified as regions shaded in dark blue on the site map. These zones are \ndensely vegetated and require specialised maintenance. \n\u2022 Turf Areas with Trees: Shaded in orange, these sections feature grass turf interspersed with \ntrees, necessitating both turf management and tree care. \n \n13.2.2 General Scope of Works \n \na) Daily cleaning service shall be provided for Woodleigh Park access roads and its \nsurrounding grass"
+      }
+    },
+    {
+      "id": "PUB-32",
+      "split": "held_out",
+      "clause_family": "source-sha256:c2f9220f949abf4b09750dbe8428586c0e2c7c470c121aa2143ca20b7c4ca084",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "12_Specimen_LOA_010424_V2.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "c2f9220f949abf4b09750dbe8428586c0e2c7c470c121aa2143ca20b7c4ca084",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9dafad0f-8fb6-4406-8178-eafa88823730",
+        "anchor_id": "9dafad0f-8fb6-4406-8178-eafa88823730-page-2",
+        "quote": "o deposit with the Board, Public \nLiability and Contractors\u2019 All Risks (if required) Insurance Policies and to produce for inspection the receipts for premiums paid. \n \n4. No work under this Contract shall be commenced unless and until you have complied with all the provisions of  \nparagraph 3 of this letter. \n \n \n \n \n \n \n\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026 \n<Designation of Authorised Signatory> \n<Department>        \n \n \nThe undersigned hereby acknowledges receipt of the above letter, copy of which has been retained and confirms that no \nterms, conditions or stipulations additional to those contained in the tender documents have been imposed by the issue of this letter. \n \n \n \n   \n \n \n \n \n\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026.. \nNAME & SIGNATURE OF \nCONTRACTOR \n \n  \n \n \n\n[Same page, positioned text layout for table alignment]\n   Sir,\n\n              You are hereby informed that your tender for the above-mentioned supply of Goods & Services is accepted, subject to the\n   Conditions of Contract, Specification, Bills of Quan"
+      }
+    },
+    {
+      "id": "PUB-33",
+      "split": "held_out",
+      "clause_family": "source-sha256:ca284e3195b3d0c8b308fe5bccd785fa569bf4804e4259d0cb4bb0197a5ff8b2",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "19_C2(B) Repair Spiral Staircase.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "ca284e3195b3d0c8b308fe5bccd785fa569bf4804e4259d0cb4bb0197a5ff8b2",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "e65068d0-ba8a-4d90-8e07-01eb931816ac",
+        "anchor_id": "e65068d0-ba8a-4d90-8e07-01eb931816ac-page-3",
+        "quote": "Part C2(B) \nRepair of Spiral Staircase at Kranji Water Reclamation Plant \nPage 3 of 5 \n1.1 SCOPE OF WORKS \n \nThe Contractor shall carry out repair and reinstatement works to the existing spiral staircase, \nincluding but not limited to the following: \n \na) Repair and/or replacement of corroded steel members, including steel beams, steel columns, \nand plate connections. \nb) Rectification of cracks and defective connections, including landing connections to \nreinforced concrete (RC) slab and welded steel connections. \nc) Replacement of damaged or dislodged balustrade and handrail components. \nd) Application of anti-corrosion protection and protective coatings to all new and affected steel \nsurfaces. \nAll works shall be carried out to restore the structural integrity, safety, and durability of the \nstaircase. \n \n1.2 PRE-WORKS AND INSPECTION \n \na) The Contractor shall conduct a detailed site inspection prior to commencement of works to \nassess the extent of corrosion, defects, and structura"
+      }
+    },
+    {
+      "id": "PUB-34",
+      "split": "held_out",
+      "clause_family": "source-sha256:d028d48f797cc9cb66171a202922980b8a6642d73192ba83dd8c9140a5236360",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "12_Annexures_A to F_GnS_20260501_V3.docx",
+      "location": {
+        "paragraph": 15,
+        "location_label": "Paragraph 15",
+        "character_start": 0
+      },
+      "source_sha256": "d028d48f797cc9cb66171a202922980b8a6642d73192ba83dd8c9140a5236360",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "25d137e2-1674-430a-bd07-a7d7aef7ebf5",
+        "anchor_id": "25d137e2-1674-430a-bd07-a7d7aef7ebf5-paragraph-15",
+        "quote": "taxable person under the Goods and Services Tax (GST) Act.  The GST registration number of the company is                                                                 ."
+      }
+    },
+    {
+      "id": "PUB-35",
+      "split": "held_out",
+      "clause_family": "source-sha256:d749296c550e0f801e4178a7056bd7c168cfe23b7f4ffe4a27416eb7c8c02ca8",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "2_Instructions for Tenders_20261001.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "d749296c550e0f801e4178a7056bd7c168cfe23b7f4ffe4a27416eb7c8c02ca8",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9f4e4615-989c-4af2-958c-45e7bdbd7efc",
+        "anchor_id": "9f4e4615-989c-4af2-958c-45e7bdbd7efc-page-1",
+        "quote": "Instructions for Tenders IT-1 1 Oct 2026 \n \nINSTRUCTIONS FOR TENDERS  \n1. DEFINITIONS \n1.1 All terms in this Invitation to Tender shall have the meanings ascribed to them in the \nConditions of Contract, unless otherwise defined or the context otherwise requires. \n1.2 The principles of construction set out in Clause 1.2 of the Conditions of Contract shall \napply to each document in this Invitation to Tender. \n2. ELIGIBILITY \n2.1 All persons or entities who are debarred from participating in public sector tenders by \nthe Ministry of Finance or disqualified under the Ministry of Manpower (MOM) Safety \nDisqualification Framework# are not eligible to participate in this Invitation to Tender. \nWhere a Tenderer is debarred or disqualified after the submission of its Tender Offer, \nthe Tenderer shall not be considered for the award of this Invitation to Tender. If a \nTender Offer is submitted without explicitly mentioning that the Tenderer is currently \ndebarred or disqualified, the Board shal"
+      }
+    },
+    {
+      "id": "PUB-36",
+      "split": "held_out",
+      "clause_family": "source-sha256:e699a39599fb73eca57b2ea14251367965cf81f09ab99a10768005075f3bddff",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "0 Cover Page and Master Content_20260501.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "e699a39599fb73eca57b2ea14251367965cf81f09ab99a10768005075f3bddff",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "8ad57919-7403-4fdd-b094-008f2e6717ce",
+        "anchor_id": "8ad57919-7403-4fdd-b094-008f2e6717ce-page-2",
+        "quote": " \n MC - 1 1 May 2026 \n \n \nMASTER CONTENT \nStandard Documents Page \n1 Cover Letter CL-1 to CL-3 \n2 Instructions for Tenders IT-1 to IT-14 \n3 Evaluation Criteria EC-1 to EC-4 \n4 Form of Tender FOT-1 to FOT-2 \n5.1 Conditions of Contract COC-1 to  \nCOC-40 \n5.2 Appendix G&S-APP-1  \n5.3 Form of Security Deposit Guarantee PG-1 to PG-5 \n6.1 Preamble to Price Schedule (Fixed Schedule of Rates) PFSOR-1 to \nPFSOR-3 \n6.2 Preamble to Bills of Quantities PSBQ-1 to \nPSBQ-4 \n7 Percentage (%) Adjustment to Fixed Schedule of Rates \n(FSOR)  \nFSOR - 1 \n8 Part A Bills of Quantities Bill 1 to Bill 10 \n9 Part C Bills of Quantities Bill 1 to Bill 7 \n10 Part B1 Fixed Schedule of Rates 1302 pages \n11 Part B2 Fixed Schedule of Rates (Not Subjected to % \nAdjustment) \n1 page \n12 Annexure   \n Annex A1 - Declaration of Goods and Services Tax \n(GST) Status \nAnnex A1 \n Annex A2 - Declaration On Progressive Wage (PW) \nMark Eligibility \nAnnex A2 \n Annex C1 - Form for Authorised Personnel  Annex C1 \n Annex C2 - Declarati"
+      }
+    },
+    {
+      "id": "PUB-37",
+      "split": "held_out",
+      "clause_family": "source-sha256:ee4e69af35840e14c821e19c46aeaa0bd2ff7ab611b8a51172e6997386c25f13",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "18_C1 Waterproofing works at CWRP.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "ee4e69af35840e14c821e19c46aeaa0bd2ff7ab611b8a51172e6997386c25f13",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "6804619d-7636-4d39-acb6-64cb6ab2f051",
+        "anchor_id": "6804619d-7636-4d39-acb6-64cb6ab2f051-page-3",
+        "quote": "Part C1 \nWaterproofing Works at Changi Water Reclamation Plant \nPage 3 of 4 \n1.1 SCOPE OF WORKS \n \n1.1.1 The works shall include the removal of existing waterproofing system and the supply, \ninstallation, testing, and protection of a new waterproofing membrane, complete with all \nnecessary accessories, finishes, and reinstatement works. \n \n1.1.2 The estimated area for the waterproofing is 36,500 sqm. \n \n1.2 PRE-WORKS & SITE PREPARATION \n \n\u2022 Conduct site inspection to assess existing conditions and identify defects. \n\u2022 Submit risk assessment, method statement and safe working procedure for approval. \n\u2022 Protect surrounding areas, finishes, services, and drainage points from damage. \n\u2022 Barricade work area and provide warning signage. \n\u2022 Verify weather conditions are suitable for waterproofing works. \n \n1.3 REMOVAL OF EXISTING WATERPROOFING \n \n\u2022 Carefully remove existing membrane, screed, tiles, insulation, or protection layer (as \napplicable). \n\u2022 Remove all loose materials, adhesives, and"
+      }
+    },
+    {
+      "id": "PUB-38",
+      "split": "held_out",
+      "clause_family": "source-sha256:f30db47cfc6e19a7197c6b192ecb114100891a7e76b17a9d92d67503a3dfa038",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "6-2_Preamble to BQ_Simple BQ_20260715.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "f30db47cfc6e19a7197c6b192ecb114100891a7e76b17a9d92d67503a3dfa038",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "ffd112e8-158e-4002-bf68-4fe54211baad",
+        "anchor_id": "ffd112e8-158e-4002-bf68-4fe54211baad-page-1",
+        "quote": "ITIES \n \n1. Attention is directed to the Instructions for Tenders, Form of Tender, Conditions of Contract, \nSpecifications, Drawings (if any) and all other documents attached to this Contract, which \nshall be read in conjunction with the Bills of Quantities.  \n \n2. The following shall also be read in conjunction with the respective items in the Bills of \nQuantities and Tenderers are required to make allowance in their rates/prices for complying \nwith the following: \n \nGENERAL \n \n3. Tenderers shall be held to have understood fully all matters concerning the works/services \nto be carried out and/or goods/materials to be supplied under this Contract.  Any query must \nbe settled with the Board prior to the submission of the tender.  No con sideration will be \ngiven to any query raised by the successful Tenderer (hereinafter called \u201cthe Contractor\u201d) \nindicating the lack of comprehension of the works/services to be done or goods/materials to \nbe supplied after the acceptance of this tender. "
+      }
+    },
+    {
+      "id": "PUB-39",
+      "split": "held_out",
+      "clause_family": "source-sha256:f34ba7894ee702a655fbf19dcb19baa5b7ed02d879fba9e9e8aa89299b8b50e8",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "19_C2(A) Concrete and Metal Roof.pdf",
+      "location": {
+        "page": 3,
+        "location_label": "Page 3",
+        "character_start": 0
+      },
+      "source_sha256": "f34ba7894ee702a655fbf19dcb19baa5b7ed02d879fba9e9e8aa89299b8b50e8",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "5285fad4-27fb-4a85-8574-0752f6ce66d9",
+        "anchor_id": "5285fad4-27fb-4a85-8574-0752f6ce66d9-page-3",
+        "quote": "Part C2(A) \nConcrete and Metal Roof Repair Works at Kranji Water Reclamation Plant \nPage 3 of 6 \n1.1 CONCRETE ROOF REPAIR & WATERPROOFING SCOPE OF WORKS \n \n1.1.1 The works shall include surface preparation, crack repair, and installation of a new \nwaterproofing system to restore the watertightness and durability of the existing concrete roof \nslab, including all necessary accessories, testing, and reinstatement works. \n \n1.1.2 The estimated area for the waterproofing is 4,000 sqm. \n \n1.2 PRE-WORKS & SITE PREPARATION \n \n\u2022 Conduct site inspection to assess existing conditions and identify defects. \n\u2022 Submit risk assessment, method statement and safe working procedure for approval. \n\u2022 Protect surrounding areas, finishes, services, and drainage points from damage. \n\u2022 Barricade work area and provide warning signage. \n\u2022 Verify weather conditions are suitable for waterproofing works. \n \n1.3 SURFACE PREPARATION \n \na) Prior to commencement of works, the Contractor shall thoroughly clean the roo"
+      }
+    },
+    {
+      "id": "PUB-40",
+      "split": "held_out",
+      "clause_family": "source-sha256:f4d3781736d60c4fb7069717ed3feac441c2ecd9d356c1f2b7135db1cd963450",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 4 Building and Ground - APPENDIX.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "f4d3781736d60c4fb7069717ed3feac441c2ecd9d356c1f2b7135db1cd963450",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "7eb79468-d4cf-48c1-8b2e-e305059ca82b",
+        "anchor_id": "7eb79468-d4cf-48c1-8b2e-e305059ca82b-page-2",
+        "quote": "Section 4 \nBuilding and Ground Works - Appendix \n \n \nPage 2 of 23 \nA. SIGNAGES, BANNERS AND DISPLAY PANELS \n \na) The FMC shall obtain Board-approved artwork and confirm all specifications and dimensions \nprior to fabrication. Where artwork files are not provided by the Board, the FMC shall submit \ndraft designs for the Board's approval. \n             \nb) The FMC shall note that all signboards can be UV printed directly onto the Aluminium Plate \nof Grade 1150 with UV ink jet direct full colour print graphic to Pantone colour. Any alternative \noffer of materials shall be subjected to the approval of the  Board. All surface paints shall be \ngloss finish or otherwise as directed by the Board. \n \nc) The UV ink jet direct full colour print shall be weatherproof and free from corrosion, chalking, \nfading, weather damage and manufacturing defects.  Upon request, the FMC shall submit \nsamples of the final artwork in actual-size paper prints for the artwork signboards, for approval \nbefore produ"
+      }
+    },
+    {
+      "id": "PUB-41",
+      "split": "held_out",
+      "clause_family": "source-sha256:f82b513025e7b24af4bb58b263a114fac2079da89fa69828fee7fa5425049049",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 14 Provision of Store and Inventory Operation Services_V2.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "f82b513025e7b24af4bb58b263a114fac2079da89fa69828fee7fa5425049049",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "d0f4143c-9f86-44e9-a825-b0f74d95e6d3",
+        "anchor_id": "d0f4143c-9f86-44e9-a825-b0f74d95e6d3-page-2",
+        "quote": "........................................ 9 \n14.11 SECURITY AND WORK PERMIT ....................................................................................... 10 \n14.12 DOCUMENTATION REQUIRED FOR SUBMISSION FOR WORK DONE ..................... 11 \n14.13 CONTACT PERSONNEL....................................................................................................... 11 \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n[Same page, positioned text layout for table alignment]\nSection 14\nProvision of Store and Inventory Operation Services\n\nClause\n14.1       GENERAL ................................................................................................................................. 3\n14.2       SCOPE OF SERVICES ............................................................................................................. 3\n14.3       PROVISION OF WORKMEN .................................................................................................. 3\n14.4       PROVISION "
+      }
+    },
+    {
+      "id": "PUB-42",
+      "split": "held_out",
+      "clause_family": "source-sha256:fdc201fe6bacf6e7e3cd9423693dbcc6c4e127a74d94647519dc2dadc602c98e",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "5-2 Tender GnS-APP_20240701_.pdf",
+      "location": {
+        "page": 1,
+        "location_label": "Page 1",
+        "character_start": 0
+      },
+      "source_sha256": "fdc201fe6bacf6e7e3cd9423693dbcc6c4e127a74d94647519dc2dadc602c98e",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "7f80ab9d-f16d-4192-a6db-62885cadd1f0",
+        "anchor_id": "7f80ab9d-f16d-4192-a6db-62885cadd1f0-page-1",
+        "quote": "B6 Twelve (12) months \n \n   \n   \nCORRESPONDENCE 16 Public Utilities Board \nCentralised Services Department \n40 Scotts Road \n#16-01 Environment Building \nSingapore 228231 \n(The electronic mail address shall be provided \nupon award).   \n \n   \n    \nSECURITY DEPOSIT B1 2.5% of the Contract Sum \n \n   \n   \n \n \n\n[Same page, positioned text layout for table alignment]\n                                                                     APPENDIX\n\n                                                        Clause\n\n\n CONTRACT PERIOD                                          B3        Seventy-two (72) months\n\n                                                                    (from_______________to________________)\n\n\n WARRANTY/DEFECTS LIABILITY                               B6        Twelve (12) months\n PERIOD\n\n\n CORRESPONDENCE                                            16       Public Utilities Board\n                                                                    Centralised Services Department\n  "
+      }
+    },
+    {
+      "id": "PUB-43",
+      "split": "held_out",
+      "clause_family": "source-sha256:fdef099868674bef0daae51513fc02dd7cbf49c1b5ca9308372f44e6af9e64a2",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "15_Section 2 Board Requirement and Scope of Work.pdf",
+      "location": {
+        "page": 2,
+        "location_label": "Page 2",
+        "character_start": 0
+      },
+      "source_sha256": "fdef099868674bef0daae51513fc02dd7cbf49c1b5ca9308372f44e6af9e64a2",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "77479459-6018-4c11-b003-1f56541d2e4a",
+        "anchor_id": "77479459-6018-4c11-b003-1f56541d2e4a-page-2",
+        "quote": ".................................................. 17 \n2.11 SCOPE OF WORK ................................................................................................................... 17 \n2.12  MOBILISATION ...................................................................................................................... 18 \n2.13  COMMUNICATION AND REPORTING ............................................................................... 18 \n2.14  QUALITY ASSURANCE ........................................................................................................ 19 \n2.15  AD HOC WORK REQUESTS ................................................................................................. 20 \n2.16  AUTHORITY COMPLIANCE ................................................................................................ 22 \n2.17 ADDITIONAL REQUIREMENTS DUE TO PANDEMIC / EMERGENCY ......................... 22 \n2.18 SERVICE LEVELAGREEMENT ........................................."
+      }
+    },
+    {
+      "id": "PUB-44",
+      "split": "held_out",
+      "clause_family": "source-sha256:028c22e640c773aef8aae7f27c0ead37d16d74ab6cbc47f5582f2885759c96cf",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "4a_Unmanned Installation - WRN.xlsx",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Sheet \"Cleaning\", rows 1-40",
+        "character_start": 0
+      },
+      "source_sha256": "028c22e640c773aef8aae7f27c0ead37d16d74ab6cbc47f5582f2885759c96cf",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "7ccf3e28-2ee1-4122-9a80-208b3a8b8a32",
+        "anchor_id": "7ccf3e28-2ee1-4122-9a80-208b3a8b8a32-paragraph-1",
+        "quote": "Number formats (Excel date epoch 1900): 3=#,##0\nA1=Service: | E1=Cleaning (West)\nA2=S/N | B2=Installation | C2=Status | D2=Building | E2=Location | F2=Estimated Area (GFA) | G2=Remarks\nA3=1 | B3=Admiralty West Solid Divertor | C3=Pump Sump | D3=No | E3=Admiralty Rd West (Inside Woodlands Waterfront Park), S'pore 750000 | F3=29 [format 3] | G3=*Monthly maintenance\n*These stations have trees and baphias within or outside the stations. Cleaning includes removal of dried leaves shedded by trees. Stations are also near residential or sensitive areas\nA4=2 | B4=Ayer Merbau Pumping Station | C4=Pumping Station | D4=Yes | E4=Ayer Merbau Rd, Lot 03700N PT MK 34,  Singapore 620000  - [Within Restricted Area] | F4=610 [format 3]\nA5=3 | B5=Ayer Rajah DC | C5=- | D5=No | E5=Intersection of Clementi Road to Clementi Ave 1, Beside Church of the Holy Cross  | F5=10 [format 3]\nA6=4 | B6=Ayer Rajah Pumping Station | C6=Pumping Station | D6=Yes | E6=Estate Office Drive, Off Kent Ridge Cres (Near Universit"
+      }
+    },
+    {
+      "id": "PUB-45",
+      "split": "held_out",
+      "clause_family": "source-sha256:037ad4e50d6b35b59538acbbcc89b239b03300fa7f9bf672e71509593af566dc",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "1_ENV Building.xlsx",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Sheet \"Air Conditioning\", rows 1-34",
+        "character_start": 0
+      },
+      "source_sha256": "037ad4e50d6b35b59538acbbcc89b239b03300fa7f9bf672e71509593af566dc",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "a6158e07-26db-42e2-8654-43a756baa9c7",
+        "anchor_id": "a6158e07-26db-42e2-8654-43a756baa9c7-paragraph-1",
+        "quote": "A1=Service: | D1=Air Conditioning Including Chillers\nA4=S/N | B4=Installation | C4=Location | D4=Unit Description / ID / Equipment | E4=Model No. | F4=Brand | G4=Capacity | H4=Energy Ratings | I4=Year Installed | J4=Area Serve | K4=Type of Units (Wall Mounted/ Cassette / Ducted etc) | L4=Serial No | M4=Fan Coil Unit  / Air Handling Unit / Chiller / Cooling Tower / Remarks\nA5=1 | B5=Environment Building | C5=Level 7 | D5=Fan Coil Unit | E5=FWMJCC5BV1 | F5=NIL | G5=NIL | H5=NIL | I5=NIL | J5=C&W Director | K5=Ducted | L5=K000295 | M5=Fan Coil Unit\nA6=2 | B6=Environment Building | C6=Level 8 | D6=Fan Coil Unit | E6=FWMJCC4BV1 | F6=NIL | G6=NIL | H6=NIL | I6=NIL | J6=Internal Audit | K6=Ducted | L6=K001424 | M6=Fan Coil Unit\nA7=3 | B7=Environment Building | C7=Level 8 | D7=Fan Coil Unit | E7=YDFC08STCB4XF2XA5R | F7=NIL | G7=NIL | H7=NIL | I7=NIL | J7=8 - 2N | K7=Ducted | L7=50532E11303566 | M7=Fan Coil Unit\nA8=4 | B8=Environment Building | C8=Level 9 | D8=Fan Coil Unit | E8=YDFC08STCB4XF2X"
+      }
+    },
+    {
+      "id": "PUB-46",
+      "split": "held_out",
+      "clause_family": "source-sha256:25e3f11d2236f40b711490d36e60f330d14185d3da487d216059f2a656ac2715",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "11_Ulu Pandan WRP.xlsx",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Sheet \"Air Conditioning\", rows 1-42",
+        "character_start": 0
+      },
+      "source_sha256": "25e3f11d2236f40b711490d36e60f330d14185d3da487d216059f2a656ac2715",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "54535a21-13f6-43e6-81f5-f6125f1b5963",
+        "anchor_id": "54535a21-13f6-43e6-81f5-f6125f1b5963-paragraph-1",
+        "quote": "A1=Service: | D1=Air Conditioning Including Chillers\nA4=S/N | B4=Installation | C4=Location | D4=Unit Description / ID / Equipment | E4=Model No. | F4=Brand | G4=Capacity | H4=Energy Ratings | I4=Year Installed | J4=Area Serve | K4=Type of Units (Wall Mounted/ Cassette / Ducted etc) | L4=Serial No | M4=Fan Coil Unit  / Air Handling Unit / Chiller / Cooling Tower / Remarks\nA5=1 | B5=Power Building | C5= Basement 1 | D5=CH3101 | E5=ERTVA 212  | F5=Trane | J5= Level 1, 2 and 3 | K5=N/A | L5=EKI1720 | M5=Chiller \nA6=2 | B6=Power Building | C6= Basement 1 | D6=CH3102 | E6=ERTVA 212  | F6=Trane | J6=Level 1, 2 and 3 | K6=N/A | L6=EKI1721 | M6=Chiller \nA7=3 | B7=Power Building | C7= Basement 1 | D7=Pump 1 | E7=WY132S4/B3 | F7=Wonder | J7=Level 1, 2 and 3 | K7=N/A | M7=Chilled Water Pump\nA8=4 | B8=Power Building | C8= Basement 1 | D8=Pump 2 | E8=WY132S4/B3 | F8=Wonder | J8= Level 1, 2 and 3 | K8=N/A | M8=Chilled Water Pump\nA9=5 | B9=Power Building | C9=Level-1 | D9=FCU-22 | E9=BDCB50B01R00 | F"
+      }
+    },
+    {
+      "id": "PUB-47",
+      "split": "held_out",
+      "clause_family": "source-sha256:3387f42418ab66c29838a136305c6c229c39091e578a446af7ce3f73ac42f5af",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "2c_WaterHub SGWX.xlsx",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Sheet \"Air Conditioning\", rows 1-18",
+        "character_start": 0
+      },
+      "source_sha256": "3387f42418ab66c29838a136305c6c229c39091e578a446af7ce3f73ac42f5af",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "71f6fbff-88ce-40eb-aba8-aa76baa0e460",
+        "anchor_id": "71f6fbff-88ce-40eb-aba8-aa76baa0e460-paragraph-1",
+        "quote": "A1=Service: | D1=Air Conditioning Including Chillers\nA4=S/N | B4=Installation | C4=Location | D4=Unit Description / ID / Equipment | E4=Model No. | F4=Brand | G4=Capacity | H4=Energy Ratings | I4=Year Installed | J4=Area Serve | K4=Type of Units (Wall Mounted/ Cassette / Ducted etc) | L4=Serial No | M4=Fan Coil Unit  / Air Handling Unit / Chiller / Cooling Tower / Remarks\nA5=1 | B5=SGWX | C5=Level-1 | D5=AHU L1-1 | E5=DM2 1315 | F5=Daikin | G5=NIL | H5=NIL | I5=2018 | J5=Level-1 | K5=NA | L5=1712154 | M5=Air Handling Unit\nA6=2 | B6=SGWX | C6=Level-2 | D6=AHU L2-1 | E6=DM2 1819 | F6=Daikin | G6=NIL | H6=NIL | I6=2018 | J6=Level-2 | K6=NA | L6=1712157 | M6=Air Handling Unit\nA7=3 | B7=SGWX | C7=Level-3 | D7=AHU L3-1 | E7=DM2 1319 | F7=Daikin | G7=NIL | H7=NIL | I7=2018 | J7=Level-3 | K7=NA | L7=1802623 | M7=Air Handling Unit\nA8=4 | B8=SGWX | C8=Level-4 | D8=AHU L4-1 | E8=DM2 1021 | F8=Daikin | G8=NIL | H8=NIL | I8=2018 | J8=Level-4 | K8=NA | L8=1712153 | M8=Air Handling Unit\nA9=5 | B9=SGW"
+      }
+    },
+    {
+      "id": "PUB-48",
+      "split": "held_out",
+      "clause_family": "source-sha256:43c758598dc3a1d20fbbb437b0459ac16aae19312a654784ce49821722df6380",
+      "family_reviewed": false,
+      "stratum": null,
+      "labels": null,
+      "reviewer": null,
+      "review_status": "pending",
+      "filename": "12_Variable Salinity Plant.xlsx",
+      "location": {
+        "paragraph": 1,
+        "location_label": "Sheet \"Air Conditioning\", rows 4-15",
+        "character_start": 0
+      },
+      "source_sha256": "43c758598dc3a1d20fbbb437b0459ac16aae19312a654784ce49821722df6380",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "6f70205a-011d-4aca-a520-aac7d8fd61b8",
+        "anchor_id": "6f70205a-011d-4aca-a520-aac7d8fd61b8-paragraph-1",
+        "quote": "Number formats (Excel date epoch 1900): 1=0 | 164=000000 | 165=0\\2 | 166=00000\\1\nA4=SN | B4=AREA SERVED | C4=FCU & CU BRAND | D4=FCU SERIAL NO | E4=CU SERIAL NO | F4=REMARKS\nA5=1 | B5=SWITCH ROOM  | C5=YORK | D5=4.42101736201E+16 [format 1] | E5=3.21802736201E+16 [format 165]\nA6=2 | B6=SWITCH ROOM  | C6=YORK | D6=1 [format 164] | E6=3.21802736201E+16 [format 166]\nA7=3 | B7=SWITCH ROOM  | C7=LG | D7=502HAUJ5B814 | E7=502HAER51780\nA8=4 | B8=SWITCH ROOM  | C8=LG | D8=502HATH59745 | E8=502HAJT51764\nA9=5 | B9=SERVER ROOM | C9=LG | D9=807HAXC56650\nA10=6 | B10=CCTV ROOM | C10=LG | D10=807HATH56689\nA11=7 | B11=CCTV ROOM | C11=LG | D11=807HALW56688\nA12=8 | B12=OFFICE ROOM | C12=LG | D12=807HAZX56685\nA13=9 | B13=LAB  | C13=PANASONIC | D13=2487212855 | E13=6842210413 | F13=Owner to replace the whole \nunit \u2013 Replacement pending\nA14=10 | B14=STORE ROOM | C14=YORK | D14=4.344011732102E+17 [format 1]\nA15=11 | B15=MAINTENANCE ROOM | C15=LG | D15=807HA9856690 | F15=Owner to replace the whole \nunit \u2013 Re"
+      }
+    }
+  ],
+  "label_status": "awaiting_human_labels",
+  "held_out_policy": "Do not tune questions on held-out labels; reviewer must confirm clause-family separation and 8 examples per stratum in each split."
+}

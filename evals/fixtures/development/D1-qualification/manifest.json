@@ -1,0 +1,168 @@
+{
+  "schema_version": "m1.fixture-manifest.v1",
+  "fixture_id": "D1-qualification",
+  "synthetic": true,
+  "control_only": true,
+  "documents": [
+    {
+      "version_id": "tender-v1",
+      "role": "tender",
+      "path": "inputs/initial/tender.pdf",
+      "sha256": "f204d4ab533a3543a7a884402fe0e4f74460773376fc3f9d3622c8e50746817f",
+      "pages": 2,
+      "synthetic": true,
+      "amends_version_id": null,
+      "anchors": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "page": 1
+        },
+        {
+          "anchor_id": "tender-v1-p2",
+          "page": 2
+        }
+      ]
+    },
+    {
+      "version_id": "profile-v1",
+      "role": "company_evidence",
+      "path": "inputs/initial/company-profile.pdf",
+      "sha256": "3897402cf13338ece8ecf2d7280812f73e4228eabbdae7adc1fedeb56cd056a9",
+      "pages": 1,
+      "synthetic": true,
+      "amends_version_id": null,
+      "anchors": [
+        {
+          "anchor_id": "profile-v1-p1",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "version_id": "addendum-v1",
+      "role": "addendum",
+      "path": "inputs/updates/addendum.pdf",
+      "sha256": "30c83c21ee4fe1729726da12ceeefedcbbedb1299f755b287583153a07c3b02b",
+      "pages": 1,
+      "synthetic": true,
+      "amends_version_id": "tender-v1",
+      "anchors": [
+        {
+          "anchor_id": "addendum-v1-p1",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "version_id": "untrusted-note-v1",
+      "role": "reference_note",
+      "path": "inputs/variants/untrusted-note.pdf",
+      "sha256": "a9c107c295361b24c3d5d9208feff76d515a0a0c98d734ca51bc6fb1c5ac4da7",
+      "pages": 1,
+      "synthetic": true,
+      "amends_version_id": null,
+      "anchors": [
+        {
+          "anchor_id": "untrusted-note-v1-p1",
+          "page": 1
+        }
+      ]
+    }
+  ],
+  "answer_events": [
+    {
+      "path": "events/engineering-answer.json",
+      "evidence_version_id": "engineering-answer-v1",
+      "anchor_id": "engineering-answer-v1-note",
+      "sha256": "5251285b981fa4cd1a872bb4b825c20b6e415019bb2259154d22cdb32b137604"
+    }
+  ],
+  "stages": [
+    {
+      "name": "initial",
+      "clock": "2026-10-26T10:00:00+08:00",
+      "document_versions": [
+        "tender-v1",
+        "profile-v1"
+      ],
+      "answer_versions": []
+    },
+    {
+      "name": "answered",
+      "clock": "2026-10-27T10:00:00+08:00",
+      "document_versions": [
+        "tender-v1",
+        "profile-v1"
+      ],
+      "answer_versions": [
+        "engineering-answer-v1"
+      ]
+    },
+    {
+      "name": "amended",
+      "clock": "2026-10-29T10:00:00+08:00",
+      "document_versions": [
+        "tender-v1",
+        "profile-v1",
+        "addendum-v1"
+      ],
+      "answer_versions": [
+        "engineering-answer-v1"
+      ]
+    },
+    {
+      "name": "untrusted_instruction",
+      "clock": "2026-10-26T10:00:00+08:00",
+      "document_versions": [
+        "tender-v1",
+        "profile-v1",
+        "untrusted-note-v1"
+      ],
+      "answer_versions": []
+    }
+  ],
+  "workspace": {
+    "id": "ws-demo",
+    "name": "Fictional qualification workspace"
+  },
+  "users": [
+    {
+      "id": "user-owner",
+      "name": "Morgan Lane",
+      "roles": [
+        "bid_owner"
+      ]
+    },
+    {
+      "id": "user-engineer",
+      "name": "Alex Tan",
+      "roles": [
+        "service_reviewer"
+      ],
+      "routing_roles": [
+        "engineering_lead"
+      ]
+    },
+    {
+      "id": "user-approver",
+      "name": "Priya Rao",
+      "roles": [
+        "approver"
+      ]
+    },
+    {
+      "id": "user-admin",
+      "name": "Casey Lim",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "user-viewer",
+      "name": "Taylor Lee",
+      "roles": [
+        "viewer"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "/health": 200,
+  "/docs": 200,
+  "/openapi.json": 200,
+  "/api/v1/me": 401,
+  "/api/v1/tenders": 401,
+  "/api/v1/members": 401,
+  "pending_dispatch_messages": 0,
+  "development_membership_retained": true,
+  "applied_migration_unchanged": true
+}

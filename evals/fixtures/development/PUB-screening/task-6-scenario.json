@@ -1,0 +1,449 @@
+{
+  "schema_version": "pub-task-6-scenario.v1",
+  "evidence_level": "source-grounded agent development oracle",
+  "independent_quality_validation": false,
+  "reviewed_on": "2026-11-01",
+  "not_blind_held_out": true,
+  "scope": {
+    "workspace_id": "02c0ae85-e4d9-48b0-a759-f205765d5b83",
+    "actor_id": "4dc6ca39-3fef-422e-8cb0-dcd42714da6b",
+    "tender_id": "c324b50d-c6bf-4ba7-8411-3ffbd20891e8",
+    "input_revision": 2,
+    "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+    "parsed_sources_version": "9c50c157-897c-4eed-aea9-06370e744b4d",
+    "company_version_id": "43accd2b-5ac0-4396-8d4f-8d55c4c7acba"
+  },
+  "source_manifest": "evals/fixtures/development/PUB-screening/source-manifest.json",
+  "oracle_limit": "18 selected known-source checks, not an exhaustive tender oracle; 11 critical items share only four native pages. Spans and timing are provisional agent interpretations, not independent ground truth.",
+  "diagnostic_queries": [
+    "\"critical evaluation\"",
+    "\"less than 50%\"",
+    "\"positive net worth\""
+  ],
+  "diagnostic_policy": "Oracle-informed development diagnostic only; do not treat it as a blind result or default product improvement.",
+  "expectations": [
+    {
+      "id": "FM01-M1",
+      "statement": "FM01 / M1 is an explicit critical evaluation condition.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Confirm against current dated evidence for the exact bidding entity; accepted Company prose alone is not verified compliance. Retain the pending-registration cover-letter qualification; do not resolve its timing by assumption.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "(a) Registration with Building & Construction Authority (BCA)  in FM01 (Facilities \nManagement) registration head of financial grade M1"
+      }
+    },
+    {
+      "id": "DEBARMENT",
+      "statement": "Government/PUB debarment or restrictions are a critical condition.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Confirm against current dated evidence for the exact bidding entity; accepted Company prose alone is not verified compliance.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "(b) Debarment status (not debarred from participating in Government tenders  and/or not \nrestricted by PUB from participating in its tenders)"
+      }
+    },
+    {
+      "id": "BUS-WINDOWS",
+      "statement": "BUS windows include three months before closing and closing-to-award.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "award",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Confirm against current dated evidence for the exact bidding entity; accepted Company prose alone is not verified compliance. Preserve both windows, not a single current-status check.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "1) Entry into MOM’s Business Under Surveillance programme (BUS) \ni.  Has entered BUS within the 3 months prior to the Tender Closing Date; or \nii.  Has entered BUS after the Tender Closing Date, but before the Tender Award \nDate; or"
+      }
+    },
+    {
+      "id": "MOM-DEMERITS",
+      "statement": "15 or more MOM demerit points at closing or through award disqualifies.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "award",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Confirm against current dated evidence for the exact bidding entity; accepted Company prose alone is not verified compliance.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "2) Accumulation of 15 or more Demerit Points under MOM’s Demerit Point System \ni.   Has accumulated 15 or more Demerit Points at the Tender Closing Date; or \nii.  Has accumulated 15 or more Demerit Points, between the Tender Closing Date \nand Tender Award Date; or"
+      }
+    },
+    {
+      "id": "LTA-SUSPENSION",
+      "statement": "LTA suspension of at least six months at closing or through award disqualifies.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "award",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Confirm against current dated evidence for the exact bidding entity; accepted Company prose alone is not verified compliance.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "3) Committed offence(s) and recorded in the LTA Suspension System with suspension \nperiod of 6 months and above: \ni.  at the Tender Closing Date; or \nii.  between the Tender Closing Date and Tender Award Date."
+      }
+    },
+    {
+      "id": "IT-COC-COMPLIANCE",
+      "statement": "Instructions and Conditions compliance is a critical criterion.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Expose the cross-reference; do not infer full compliance from this overview or use it as a substitute for investigating operative conditions.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "(d) Compliance with the Instructions for Tenders and Conditions of Contract."
+      }
+    },
+    {
+      "id": "BQ-ADJUSTMENT",
+      "statement": "Completed BQ and percentage adjustment are explicit critical submission artifacts.",
+      "proposed_labels": {
+        "kind": "bid_artifact",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Request current completed artifacts; do not treat blank supplied tender templates as a completed bidder submission.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "(e) Submission of Bills of Quantities and Percentage Adjustment to Fixed Schedule of Rates \nduly completed."
+      }
+    },
+    {
+      "id": "SPECIFICATIONS",
+      "statement": "Specification compliance and the alternative-offer provision are required.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Keep specification/alternative-offer scope unresolved until the applicable clauses and proposed offer are checked.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-1",
+        "quote": "(2) Compliance with Specifications.  In the case of alternative offer, the tenderer must comply with \nthe provisions on “Alternative Offer” as specified in the Instructions for Tenders."
+      }
+    },
+    {
+      "id": "QUALITY-THRESHOLD",
+      "statement": "Less than 50% of total quality score excludes a tender.",
+      "proposed_labels": {
+        "kind": "scored_criterion",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "A scored criterion can also be a qualifying threshold. Do not invent a score or label it harmless because it is scored.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-3",
+        "quote": "(i) Any tenderer scoring less than 50% of the total Q score shall not be considered."
+      }
+    },
+    {
+      "id": "POSITIVE-NET-WORTH",
+      "statement": "Positive net worth is required for award.",
+      "proposed_labels": {
+        "kind": "eligibility",
+        "due_stage": "award",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Confirm against current dated evidence for the exact bidding entity; accepted Company prose alone is not verified compliance. Do not invent financial figures.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-4",
+        "quote": "Tenderer shall at least have positive net worth \nto be eligible for award."
+      }
+    },
+    {
+      "id": "CLOSING-NOTICE",
+      "statement": "Submission is by 16:00 Singapore time on the closing date in GeBIZ; no calendar date is supplied here.",
+      "proposed_labels": {
+        "kind": "bid_artifact",
+        "due_stage": "submission",
+        "material_now": "yes"
+      },
+      "critical_now": true,
+      "expected_safe_handling": "Calendar closing date remains unknown until this exact PUB notice/current amendments are obtained. Never borrow the separate PA notice deadline.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "02d09f48890c4674c259bf00d82ff9cd99e02a5f87e267f0b0c2014a7a40859c",
+      "filename": "1 GnS_Cover Letter_20260501_V2.pdf",
+      "document_status": "partial",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d",
+        "anchor_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d-page-2",
+        "quote": "8 Tender proposals shall be submitted in accordance with the following mode(s) of \nsubmission not later than 1600 hours Singapore time on the tender closing date stated in \nGeBIZ. Any tender delivered after the stipulated time from whatever cause arising, will not \nbe considered."
+      }
+    },
+    {
+      "id": "PENDING-REGISTRATION",
+      "statement": "The cover letter permits download and asks for a registration receipt when pending.",
+      "proposed_labels": {
+        "kind": "bid_artifact",
+        "due_stage": "submission",
+        "material_now": "unknown"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "Retain alongside EC-1 as a timing/applicability question; permission to download is not proof of qualification.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "02d09f48890c4674c259bf00d82ff9cd99e02a5f87e267f0b0c2014a7a40859c",
+      "filename": "1 GnS_Cover Letter_20260501_V2.pdf",
+      "document_status": "partial",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d",
+        "anchor_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d-page-1",
+        "quote": "5 Tenderers who are not registered with BCA in the registration head and financial grade \nspecified in paragraph 4 may still download the Invitation to Tender.  However, they are \nadvised to apply for registration with the relevant Government Registration Authority \n(GRA) at the earliest possible opportunity and enclose with their tenders a copy of the \nreceipt for registration fee paid if their registration with the relevant GRA is still pending."
+      }
+    },
+    {
+      "id": "OPTIONAL-BRIEFING",
+      "statement": "Briefing attendance is explicitly optional; the stated briefing date is past on 1 November 2026.",
+      "proposed_labels": {
+        "kind": "informational",
+        "due_stage": "submission",
+        "material_now": "unknown"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "Do not disqualify for non-attendance. Dates in the saved pack do not prove notice currency.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "02d09f48890c4674c259bf00d82ff9cd99e02a5f87e267f0b0c2014a7a40859c",
+      "filename": "1 GnS_Cover Letter_20260501_V2.pdf",
+      "document_status": "partial",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d",
+        "anchor_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d-page-1",
+        "quote": "7 A Tender Briefing will be held on 19 October 2026 (Monday) at 10.00 am at WaterHub. \nAttendance at the Tender Briefing is not mandatory."
+      }
+    },
+    {
+      "id": "SECURITY-TIMING",
+      "statement": "Security deposit is due within 28 days after the Letter of Acceptance.",
+      "proposed_labels": {
+        "kind": "delivery_commitment",
+        "due_stage": "award",
+        "material_now": "yes"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "Assess finance/bond capacity now, but do not turn a post-acceptance deposit into a completed-submission requirement.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "272283eb9f3843b76e8daf435ffc60e4f8b70a8b5c8bf09a0f35a96e30203082",
+      "filename": "5-1 Tender GnS COC_20260430_V3.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "56586934-bc6a-42dc-895d-3b18702a748f",
+        "anchor_id": "56586934-bc6a-42dc-895d-3b18702a748f-page-27",
+        "quote": "B1.1 The Contractor must, within twenty-eight (28)  days after the date of the Letter of \nAcceptance, deliver to the Board a security deposit as set out in the Appendix (the \n“Security Deposit”) as security for the due and faithful performance of the Contract \nand the compliance with all provisions of the Contract by the Contractor."
+      }
+    },
+    {
+      "id": "SECURITY-PERCENT",
+      "statement": "Specified high-risk financial cases may require 5% rather than standard 2.5% security.",
+      "proposed_labels": {
+        "kind": "delivery_commitment",
+        "due_stage": "award",
+        "material_now": "yes"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "Keep the assessed risk category and applicable contract appendix explicit; do not assume the percentage for CBM.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-4",
+        "quote": "Should the “High Risk” tenderer assessed to be suitable for award, a \nhigher security deposit (5%) instead of standard 2.5% will then be imposed on them upon award."
+      }
+    },
+    {
+      "id": "IFM-TRACK-RECORD",
+      "statement": "Track-record scoring covers completed/ongoing IFM projects in five years, each at least S$20 million.",
+      "proposed_labels": {
+        "kind": "scored_criterion",
+        "due_stage": "submission",
+        "material_now": "unknown"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "Obtain attributable comparable project evidence. Public award announcements alone do not prove completed delivery or current capacity.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "ba9e1ba325c265cf401da1553215696c29b96ae7acd9c13624482a8d4eb8be4c",
+      "filename": "3_Evaluation Criteria for CSM_Goods n Services_20260901_V4.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb",
+        "anchor_id": "c68b9534-d3ff-45c6-aae0-7c716c68c8fb-page-2",
+        "quote": "Track records shall cover \ncompleted and/or ongoing \nIntegrated Facilities Management \n(IFM) projects undertaken within \nthe past five (5) years. Completed \nand ongoing projects will be \nassessed collectively, and no \ndistinction will be made between \ncompleted and ongoing status. \n \nProjects listed shall each have an \nindividual contract sum  at S$20 \nmillion or more."
+      }
+    },
+    {
+      "id": "STAFF-MOBILISATION",
+      "statement": "Minimum deployment applies; the successful FMC submits its plan during mobilisation before services.",
+      "proposed_labels": {
+        "kind": "delivery_commitment",
+        "due_stage": "mobilisation",
+        "material_now": "yes"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "Assess resource feasibility and retain table context; do not require that all personnel are already deployed at submission.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "305212acfbf131c5d09baa66770636249d47db27782f8e5136eb68451cc264a9",
+      "filename": "15_Section 8_General Estate Management.pdf",
+      "document_status": "complete",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "39a39cf8-82b0-462a-bf0c-5aacf7b8a7fd",
+        "anchor_id": "39a39cf8-82b0-462a-bf0c-5aacf7b8a7fd-page-3",
+        "quote": "8.1.1 The table below sets out the minimum manpower deployment requirements for this Contract. \nTenderers shall comply with the minimum manpower requirements specified. The successful \nFMC shall submit its proposed organisational structure, reporting lines and sta ff deployment \nplan for the Board's review and approval during the mobilisation period and prior to the \ncommencement of services. The FMC may deploy additional manpower as necessary to meet \nthe Contract requirements, at no additional cost to the Board."
+      }
+    },
+    {
+      "id": "CONTRACT-TERM",
+      "statement": "Estimated commencement October 2027, subject to PUB, for 72 months.",
+      "proposed_labels": {
+        "kind": "informational",
+        "due_stage": "delivery",
+        "material_now": "unknown"
+      },
+      "critical_now": false,
+      "expected_safe_handling": "State as the saved contract terms; this is not a verified current notice/amendment observation.",
+      "reviewer": "Codex (agent, provisional)",
+      "independent_expert_validated": false,
+      "source_sha256": "02d09f48890c4674c259bf00d82ff9cd99e02a5f87e267f0b0c2014a7a40859c",
+      "filename": "1 GnS_Cover Letter_20260501_V2.pdf",
+      "document_status": "partial",
+      "source": {
+        "source_index_version": "6e8b1757-ccea-4c46-a51b-554e962a11e0",
+        "document_version_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d",
+        "anchor_id": "9549230c-eae2-4a53-b105-ce9184ea5e3d-page-1",
+        "quote": "3 This is an Open tender  and is one-off non -recurring contract  for supply of Goods & \nServices. The estimated commencement date for this contract is October 2027 or such \nother date as the Board may decide and the supply of Goods & Services is to be completed \nwithin seventy-two (72) months."
+      }
+    }
+  ],
+  "separate_notice": {
+    "artifact": "output/implementation/bid-qualification-2026-11-01/task-6-notice-check.json",
+    "reference": "PAS000ETT26000081",
+    "buyer": "People's Association",
+    "coverage": "notice_only",
+    "relationship_to_pub": "different opportunity; must not be linked to or fill PUB facts",
+    "expected_outcome": "preliminary triage, attachments unconfirmed",
+    "quality_scope": "Read-only public notice/metadata/access check, separate from PUB screening; no attachments or full qualification."
+  },
+  "human_comparison": {
+    "status": "not_measured",
+    "reviewer": null,
+    "manual_minutes": null,
+    "assisted_minutes": null,
+    "time_saving": null,
+    "deliverable": "A source-supported preparation-decision brief covering critical gates, dates, Company evidence, material future obligations, access gaps and named proposed next actions; no final offer approval.",
+    "timed_work": [
+      "find and verify sources",
+      "read and prepare brief",
+      "check Company evidence",
+      "review and correct claims/citations",
+      "confirm scoped questions and handoffs",
+      "record preparation recommendation/decision"
+    ],
+    "setup_recorded_separately": true,
+    "failed_and_incomplete_cases_included": true
+  }
+}

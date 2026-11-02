@@ -1,0 +1,13 @@
+{
+  "python": "3.12.14",
+  "packages": {
+    "docling": "2.142.1",
+    "docling-core": "2.104.0",
+    "docling-parse": "7.23.0",
+    "openai": "3.37.0",
+    "fastapi": "0.162.0",
+    "pydantic": "2.14.1",
+    "pgqueuer": "1.6.0",
+    "asyncpg": "0.32.0"
+  }
+}

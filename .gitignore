@@ -1,0 +1,23 @@
+# Local environment files may contain secrets.
+.env
+.env.*
+!.env.example
+
+# Local dependency environments and generated build output.
+.venv/
+__pycache__/
+.pytest_cache/
+.browsers/
+node_modules/
+dist/
+.superpowers/
+supabase/.temp/
+
+# Raw model output and extracted runtime inputs stay local.
+evals/runs/local/
+output/
+docs/
+
+# Local quarantine for obsolete files and pre-cleanup copies.
+remove/
+PUB's Tender/

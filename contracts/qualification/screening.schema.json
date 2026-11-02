@@ -1,0 +1,299 @@
+{
+  "$defs": {
+    "Finding": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Answer Ids",
+          "type": "array"
+        },
+        "company_citations": {
+          "items": {
+            "$ref": "#/$defs/Support"
+          },
+          "maxItems": 3,
+          "title": "Company Citations",
+          "type": "array"
+        },
+        "critical": {
+          "title": "Critical",
+          "type": "boolean"
+        },
+        "critical_basis": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "If critical is true, a nonblank verbatim substring of one of this finding's tender_citations quotes showing the mandatory or exclusion consequence; include the parent criterion in tender_citations if needed. Put explanations in statement. Use null when critical is false.",
+          "title": "Critical Basis"
+        },
+        "due_stage": {
+          "enum": [
+            "submission",
+            "award",
+            "mobilisation",
+            "delivery",
+            "unknown"
+          ],
+          "title": "Due Stage",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z0-9_-]{1,64}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "eligibility",
+            "scored_criterion",
+            "bid_artifact",
+            "delivery_commitment",
+            "informational"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "material_now": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Material Now"
+        },
+        "owner_function": {
+          "enum": [
+            "compliance",
+            "operations",
+            "finance",
+            "bid_team"
+          ],
+          "title": "Owner Function",
+          "type": "string"
+        },
+        "request_question": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Request Question",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 1500,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "supported",
+            "unconfirmed",
+            "evidenced_failure"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tender_citations": {
+          "items": {
+            "$ref": "#/$defs/Support"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Tender Citations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "statement",
+        "kind",
+        "due_stage",
+        "material_now",
+        "critical",
+        "critical_basis",
+        "status",
+        "tender_citations",
+        "company_citations",
+        "answer_ids",
+        "owner_function",
+        "request_question"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Support": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Anchor Id",
+          "type": "string"
+        },
+        "quote": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "anchor_id",
+        "quote"
+      ],
+      "title": "Support",
+      "type": "object"
+    }
+  },
+  "$id": "urn:tender-intelligence:m1:screening:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approval_blockers": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Approval Blockers",
+      "type": "array"
+    },
+    "attention": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Attention"
+    },
+    "classifications": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Classifications",
+      "type": "array"
+    },
+    "closing_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Closing At"
+    },
+    "company_evidence": {
+      "additionalProperties": true,
+      "title": "Company Evidence",
+      "type": "object"
+    },
+    "coverage": {
+      "additionalProperties": true,
+      "title": "Coverage",
+      "type": "object"
+    },
+    "facts": {
+      "additionalProperties": true,
+      "title": "Facts",
+      "type": "object"
+    },
+    "findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Findings",
+      "type": "array"
+    },
+    "pins": {
+      "additionalProperties": true,
+      "title": "Pins",
+      "type": "object"
+    },
+    "recommendation": {
+      "enum": [
+        "promising",
+        "outside_policy",
+        "needs_information"
+      ],
+      "title": "Recommendation",
+      "type": "string"
+    },
+    "request_drafts": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Request Drafts",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "screening.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "usage": {
+      "additionalProperties": true,
+      "title": "Usage",
+      "type": "object"
+    },
+    "wider_review_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Wider Review Reason"
+    },
+    "work_packages": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Work Packages",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "pins",
+    "title",
+    "closing_at",
+    "findings",
+    "facts",
+    "company_evidence",
+    "coverage",
+    "recommendation",
+    "approval_blockers",
+    "request_drafts",
+    "work_packages",
+    "wider_review_reason",
+    "usage",
+    "attention",
+    "classifications"
+  ],
+  "title": "ScreeningArtifact",
+  "type": "object"
+}

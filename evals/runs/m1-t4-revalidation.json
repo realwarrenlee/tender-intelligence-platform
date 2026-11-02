@@ -1,0 +1,42 @@
+{
+  "method": "Offline post-review validation of saved real candidates using their actual parsed anchors and attributed scoped answer metadata; previous snapshot restored from saved initial payload; no new provider calls.",
+  "stages": [
+    {
+      "stage": "initial",
+      "accepted": true,
+      "recommendation": "hold",
+      "blocker_codes": [
+        "QUALIFICATION_UNCONFIRMED"
+      ],
+      "reconciliation": [],
+      "staffing": [
+        {
+          "text": "Provide two FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+          "status": "unconfirmed"
+        }
+      ]
+    },
+    {
+      "stage": "answered",
+      "accepted": true,
+      "recommendation": "hold",
+      "blocker_codes": [
+        "QUALIFICATION_UNCONFIRMED",
+        "RECONCILIATION_REQUIRED"
+      ],
+      "reconciliation": [
+        {
+          "kind": "added",
+          "requirement_id": "ae01e2af6ee497af1122f762b944152678a6947b60aed248c54c5ec0a37a94ad",
+          "resolved": false
+        }
+      ],
+      "staffing": [
+        {
+          "text": "Provide two FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+          "status": "met"
+        }
+      ]
+    }
+  ]
+}

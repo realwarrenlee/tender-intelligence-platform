@@ -1,0 +1,34 @@
+{
+  "arrowParens": "always",
+  "semi": false,
+  "tabWidth": 2,
+  "printWidth": 80,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "es5",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindFunctions": ["cn", "clsx"],
+  "tailwindStylesheet": "./src/circle/globals.css",
+  "importOrder": [
+    "^node:",
+    "^react$",
+    "^react/(.*)$",
+    "^globals$",
+    "^@radix-ui/(.*)$",
+    "^@tanstack/react-query$",
+    "<THIRD_PARTY_MODULES>",
+    "^@/lib/(.*)$",
+    "^@/context/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/components/layout/(.*)$",
+    "^@/components/ui/(.*)$",
+    "^@/components/(.*)$",
+    "^@/features/(.*)$",
+    "^[./]"
+  ]
+}

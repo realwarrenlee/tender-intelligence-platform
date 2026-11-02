@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tender-intelligence:m1:analysis",
+  "title": "M1 analysis candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "key_facts", "requirements", "recommendation", "review_requests", "warnings"],
+  "properties": {
+    "summary": {"type": "string", "minLength": 1, "maxLength": 1200},
+    "key_facts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["title", "buyer", "closing_at", "service_start_on", "term_months"],
+      "properties": {
+        "title": {"$ref": "#/$defs/text_fact"},
+        "buyer": {"$ref": "#/$defs/text_fact"},
+        "closing_at": {"$ref": "#/$defs/text_fact"},
+        "service_start_on": {"$ref": "#/$defs/text_fact"},
+        "term_months": {"$ref": "#/$defs/integer_fact"}
+      }
+    },
+    "requirements": {"type": "array", "maxItems": 1000, "items": {"$ref": "#/$defs/requirement"}},
+    "recommendation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decision", "reasons", "condition_refs"],
+      "properties": {
+        "decision": {"enum": ["pursue", "hold", "decline"]},
+        "reasons": {"type": "array", "minItems": 1, "maxItems": 8, "items": {"type": "string", "minLength": 1, "maxLength": 1000}},
+        "condition_refs": {"type": "array", "maxItems": 1000, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 80}}
+      }
+    },
+    "review_requests": {"type": "array", "maxItems": 1000, "items": {"$ref": "#/$defs/review_request"}},
+    "warnings": {
+      "type": "array", "maxItems": 1000,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["code", "message", "citations"],
+        "properties": {
+          "code": {"enum": ["missing_fact", "conflicting_dates", "incomplete_source", "unsupported_input", "untrusted_instruction"]},
+          "message": {"type": "string", "minLength": 1, "maxLength": 1500},
+          "citations": {"$ref": "#/$defs/citations"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "citation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["anchor_id", "quote"],
+      "properties": {
+        "anchor_id": {"type": "string", "minLength": 1, "maxLength": 160},
+        "quote": {"type": "string", "minLength": 1, "maxLength": 1000}
+      }
+    },
+    "citations": {"type": "array", "maxItems": 12, "items": {"$ref": "#/$defs/citation"}},
+    "text_fact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["value", "citations"],
+      "properties": {
+        "value": {"type": ["string", "null"], "maxLength": 1500},
+        "citations": {"$ref": "#/$defs/citations"}
+      }
+    },
+    "integer_fact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["value", "citations"],
+      "properties": {
+        "value": {"type": ["integer", "null"], "minimum": 1, "maximum": 1200},
+        "citations": {"$ref": "#/$defs/citations"}
+      }
+    },
+    "requirement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["local_ref", "text", "kind", "mandatory", "tender_citations", "status", "company_citations", "explanation", "missing_information"],
+      "properties": {
+        "local_ref": {"type": "string", "minLength": 1, "maxLength": 80},
+        "text": {"type": "string", "minLength": 1, "maxLength": 3000},
+        "kind": {"enum": ["eligibility", "delivery", "submission", "evaluation"]},
+        "mandatory": {"type": "boolean"},
+        "tender_citations": {"type": "array", "minItems": 1, "maxItems": 12, "items": {"$ref": "#/$defs/citation"}},
+        "status": {"enum": ["met", "unmet", "unconfirmed", "not_assessed"]},
+        "company_citations": {"$ref": "#/$defs/citations"},
+        "explanation": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "missing_information": {"type": ["string", "null"], "maxLength": 2000}
+      }
+    },
+    "review_request": {
+      "type": "object", "additionalProperties": false,
+      "required": ["draft_ref", "requirement_refs", "suggested_role", "question", "rationale"],
+      "properties": {
+        "draft_ref": {"type": "string", "minLength": 1, "maxLength": 80},
+        "requirement_refs": {"type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 80}},
+        "suggested_role": {"type": "string", "minLength": 1, "maxLength": 80},
+        "question": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 1000}
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "runtime": "WSL Python 3.12",
+  "checks": {
+    "/health": 200,
+    "/docs": 200,
+    "/openapi.json": 200,
+    "/api/v1/tenders/00000000-0000-0000-0000-000000000000/qualification-brief?assessment_version_id=00000000-0000-0000-0000-000000000000": 401,
+    "assistant_without_session": 401,
+    "decision_without_session": 401
+  },
+  "t5_openapi_routes_present": true,
+  "decision_success_status": true,
+  "actual_human_sign_in": false
+}

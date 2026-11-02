@@ -1,0 +1,21 @@
+# Format application source and maintained tooling.
+/*
+!/src/
+!/scripts/
+!package.json
+!tsconfig.json
+!next.config.ts
+!vitest.config.ts
+!knip.config.ts
+!components.json
+!pnpm-workspace.yaml
+!.prettierrc
+!README.md
+!eslint.config.js
+!postcss.config.mjs
+!.vscode/
+
+# Preserve retained upstream Circle source formatting.
+/src/circle/components/ui/
+/src/circle/hooks/
+/src/circle/globals.css

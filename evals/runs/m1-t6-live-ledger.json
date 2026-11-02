@@ -1,0 +1,142 @@
+{
+  "workspaces": [
+    "a9035c1c-03ae-4e19-a1c9-c6b42136c01e",
+    "fdea5226-ddf1-4c6f-9137-8eb00514537d"
+  ],
+  "jobs": [
+    {
+      "id": "9858f89e-60b0-43b6-90ca-da334a9f1798",
+      "tender_id": "abc772ee-24db-4184-b595-274175683151",
+      "status": "completed",
+      "error_code": null,
+      "input_revision": 2,
+      "completed_stages": "[\"source_manifest\", \"parsing\", \"analysis\", \"validation\"]",
+      "provider_calls": [
+        {
+          "sequence": 1,
+          "state": "completed",
+          "purpose": "initial",
+          "usage": {
+            "input_tokens": 2500,
+            "total_tokens": 6687,
+            "output_tokens": 4187,
+            "input_tokens_details": {
+              "cached_tokens": 0,
+              "cache_write_tokens": 2497
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 194
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "state": "completed",
+          "purpose": "repair",
+          "usage": {
+            "input_tokens": 2507,
+            "total_tokens": 6822,
+            "output_tokens": 4315,
+            "input_tokens_details": {
+              "cached_tokens": 1025,
+              "cache_write_tokens": 1479
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 379
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "72d2ebe7-e031-4159-9ae2-10be19d39dcb",
+      "tender_id": "abc772ee-24db-4184-b595-274175683151",
+      "status": "completed",
+      "error_code": null,
+      "input_revision": 3,
+      "completed_stages": "[\"source_manifest\", \"parsing\", \"analysis\", \"validation\"]",
+      "provider_calls": [
+        {
+          "sequence": 1,
+          "state": "completed",
+          "purpose": "initial",
+          "usage": {
+            "input_tokens": 6560,
+            "total_tokens": 10765,
+            "output_tokens": 4205,
+            "input_tokens_details": {
+              "cached_tokens": 1025,
+              "cache_write_tokens": 5532
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 130
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ae21a77e-9bd3-47ae-bf67-4b6482267293",
+      "tender_id": "abc772ee-24db-4184-b595-274175683151",
+      "status": "needs_input",
+      "error_code": "RECONCILIATION_REQUIRED",
+      "input_revision": 4,
+      "completed_stages": "[\"source_manifest\", \"parsing\", \"analysis\", \"validation\"]",
+      "provider_calls": [
+        {
+          "sequence": 1,
+          "state": "completed",
+          "purpose": "initial",
+          "usage": {
+            "input_tokens": 6936,
+            "total_tokens": 11651,
+            "output_tokens": 4715,
+            "input_tokens_details": {
+              "cached_tokens": 1025,
+              "cache_write_tokens": 5908
+            },
+            "output_tokens_details": {
+              "reasoning_tokens": 69
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "68b4ea70-5f87-4ba3-b82b-0b6315099ece",
+      "tender_id": "dcd0d3ca-d679-4025-b21e-d3a58251475a",
+      "status": "needs_input",
+      "error_code": "SOURCE_INCOMPLETE",
+      "input_revision": 2,
+      "completed_stages": "[\"source_manifest\"]",
+      "provider_calls": []
+    }
+  ],
+  "documents": [
+    {
+      "filename": "tender.pdf",
+      "sha256": "f204d4ab533a3543a7a884402fe0e4f74460773376fc3f9d3622c8e50746817f",
+      "role": "tender",
+      "byte_size": 3918
+    },
+    {
+      "filename": "addendum.pdf",
+      "sha256": "30c83c21ee4fe1729726da12ceeefedcbbedb1299f755b287583153a07c3b02b",
+      "role": "addendum",
+      "byte_size": 2334
+    },
+    {
+      "filename": "t6-blank.pdf",
+      "sha256": "b37a58fb510237b6b60b1e610deecd3eb013ff71836b831faf66958f83affbe3",
+      "role": "tender",
+      "byte_size": 431
+    }
+  ],
+  "company_evidence": [
+    {
+      "filename": "company-profile.pdf",
+      "sha256": "3897402cf13338ece8ecf2d7280812f73e4228eabbdae7adc1fedeb56cd056a9",
+      "byte_size": 2836
+    }
+  ]
+}

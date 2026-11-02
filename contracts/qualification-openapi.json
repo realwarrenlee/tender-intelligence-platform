@@ -1,0 +1,5482 @@
+{
+  "components": {
+    "schemas": {
+      "ActorView": {
+        "additionalProperties": false,
+        "properties": {
+          "qualification_workflow_enabled": {
+            "default": false,
+            "title": "Qualification Workflow Enabled",
+            "type": "boolean"
+          },
+          "roles": {
+            "items": {
+              "enum": [
+                "bid_owner",
+                "service_reviewer",
+                "approver",
+                "admin",
+                "viewer"
+              ],
+              "type": "string"
+            },
+            "title": "Roles",
+            "type": "array",
+            "uniqueItems": true
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "user_id": {
+            "format": "uuid",
+            "title": "User Id",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "workspace_id",
+          "roles",
+          "schema_version"
+        ],
+        "title": "ActorView",
+        "type": "object"
+      },
+      "AnalysisCandidate": {
+        "additionalProperties": false,
+        "properties": {
+          "key_facts": {
+            "$ref": "#/components/schemas/KeyFacts"
+          },
+          "recommendation": {
+            "$ref": "#/components/schemas/Recommendation"
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/Requirement"
+            },
+            "maxItems": 1000,
+            "title": "Requirements",
+            "type": "array"
+          },
+          "review_requests": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewDraft"
+            },
+            "maxItems": 1000,
+            "title": "Review Requests",
+            "type": "array"
+          },
+          "summary": {
+            "maxLength": 1200,
+            "minLength": 1,
+            "title": "Summary",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/AnalysisWarning"
+            },
+            "maxItems": 1000,
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "summary",
+          "key_facts",
+          "requirements",
+          "recommendation",
+          "review_requests",
+          "warnings"
+        ],
+        "title": "AnalysisCandidate",
+        "type": "object"
+      },
+      "AnalysisWarning": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "title": "Citations",
+            "type": "array"
+          },
+          "code": {
+            "enum": [
+              "missing_fact",
+              "conflicting_dates",
+              "incomplete_source",
+              "unsupported_input",
+              "untrusted_instruction"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "maxLength": 1500,
+            "minLength": 1,
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "citations"
+        ],
+        "title": "AnalysisWarning",
+        "type": "object"
+      },
+      "AnswerReviewTask": {
+        "additionalProperties": false,
+        "properties": {
+          "basis": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basis"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_task_revision": {
+            "minimum": 1.0,
+            "title": "Expected Task Revision",
+            "type": "integer"
+          },
+          "response_kind": {
+            "enum": [
+              "confirmed",
+              "denied",
+              "unable_to_confirm"
+            ],
+            "title": "Response Kind",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_task_revision",
+          "response_kind",
+          "text",
+          "client_request_id"
+        ],
+        "title": "AnswerReviewTask",
+        "type": "object"
+      },
+      "AskAssessment": {
+        "additionalProperties": false,
+        "properties": {
+          "assessment_version_id": {
+            "format": "uuid",
+            "title": "Assessment Version Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "assessment_version_id",
+          "text",
+          "client_request_id"
+        ],
+        "title": "AskAssessment",
+        "type": "object"
+      },
+      "AssessmentEdits": {
+        "additionalProperties": false,
+        "properties": {
+          "key_facts": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FactCorrections"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reconciliations": {
+            "items": {
+              "$ref": "#/components/schemas/ReconcileChange"
+            },
+            "maxItems": 300,
+            "title": "Reconciliations",
+            "type": "array"
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/FindingCorrection"
+            },
+            "maxItems": 300,
+            "title": "Requirements",
+            "type": "array"
+          }
+        },
+        "title": "AssessmentEdits",
+        "type": "object"
+      },
+      "AssessmentHistory": {
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "input_revision",
+          "created_at",
+          "created_by",
+          "is_current"
+        ],
+        "title": "AssessmentHistory",
+        "type": "object"
+      },
+      "AssessmentView": {
+        "properties": {
+          "blockers": {
+            "items": {
+              "$ref": "#/components/schemas/Blocker"
+            },
+            "title": "Blockers",
+            "type": "array"
+          },
+          "candidate": {
+            "$ref": "#/components/schemas/AnalysisCandidate"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "human_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Human Reason"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "manual_corrections": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manual Corrections"
+          },
+          "reconciliation": {
+            "items": {
+              "$ref": "#/components/schemas/Reconciliation"
+            },
+            "title": "Reconciliation",
+            "type": "array"
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/RequirementRecord"
+            },
+            "title": "Requirements",
+            "type": "array"
+          },
+          "run": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "default": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "input_revision",
+          "created_by",
+          "is_current",
+          "candidate",
+          "requirements",
+          "blockers",
+          "reconciliation",
+          "manual_corrections",
+          "run",
+          "human_reason"
+        ],
+        "title": "AssessmentView",
+        "type": "object"
+      },
+      "AssistantView": {
+        "properties": {
+          "answer": {
+            "title": "Answer",
+            "type": "string"
+          },
+          "assessment_version_id": {
+            "title": "Assessment Version Id",
+            "type": "string"
+          },
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "out_of_scope": {
+            "title": "Out Of Scope",
+            "type": "boolean"
+          },
+          "review_request_drafts": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewDraft"
+            },
+            "title": "Review Request Drafts",
+            "type": "array"
+          },
+          "run": {
+            "additionalProperties": true,
+            "title": "Run",
+            "type": "object"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "answer",
+          "citations",
+          "review_request_drafts",
+          "out_of_scope",
+          "run",
+          "run_id",
+          "assessment_version_id",
+          "is_current"
+        ],
+        "title": "AssistantView",
+        "type": "object"
+      },
+      "Blocker": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "requirement_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement Id"
+          }
+        },
+        "required": [
+          "code",
+          "requirement_id"
+        ],
+        "title": "Blocker",
+        "type": "object"
+      },
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Anchor Id",
+            "type": "string"
+          },
+          "quote": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "anchor_id",
+          "quote"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "CompanyProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "content": {
+            "maxLength": 80000,
+            "minLength": 1,
+            "title": "Content",
+            "type": "string"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/CompanySource"
+            },
+            "maxItems": 30,
+            "title": "Sources",
+            "type": "array"
+          }
+        },
+        "required": [
+          "content",
+          "sources"
+        ],
+        "title": "CompanyProfile",
+        "type": "object"
+      },
+      "CompanySource": {
+        "additionalProperties": false,
+        "properties": {
+          "checked_on": {
+            "format": "date",
+            "title": "Checked On",
+            "type": "string"
+          },
+          "publisher": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Publisher",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "url": {
+            "format": "uri",
+            "maxLength": 2083,
+            "minLength": 1,
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "url",
+          "publisher",
+          "checked_on"
+        ],
+        "title": "CompanySource",
+        "type": "object"
+      },
+      "CompanyVersion": {
+        "properties": {
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "effective_on": {
+            "title": "Effective On",
+            "type": "string"
+          },
+          "evidence_revision": {
+            "title": "Evidence Revision",
+            "type": "integer"
+          },
+          "expires_on": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires On"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "profile": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompanyProfile"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "reference_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Text"
+          }
+        },
+        "required": [
+          "id",
+          "evidence_revision",
+          "created_by",
+          "effective_on",
+          "expires_on",
+          "reason",
+          "filename",
+          "created_at"
+        ],
+        "title": "CompanyVersion",
+        "type": "object"
+      },
+      "CompanyView": {
+        "properties": {
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompanyVersion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evidence_revision": {
+            "title": "Evidence Revision",
+            "type": "integer"
+          },
+          "history": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/CompanyVersion"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "evidence_revision",
+          "current"
+        ],
+        "title": "CompanyView",
+        "type": "object"
+      },
+      "CorrectAssessment": {
+        "additionalProperties": false,
+        "properties": {
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "edits": {
+            "$ref": "#/components/schemas/AssessmentEdits"
+          },
+          "expected_assessment_version_id": {
+            "format": "uuid",
+            "title": "Expected Assessment Version Id",
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_assessment_version_id",
+          "client_request_id",
+          "reason",
+          "edits"
+        ],
+        "title": "CorrectAssessment",
+        "type": "object"
+      },
+      "CreateReviewTask": {
+        "additionalProperties": false,
+        "properties": {
+          "assignee_id": {
+            "format": "uuid",
+            "title": "Assignee Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "draft_ref": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Draft Ref",
+            "type": "string"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due At"
+          },
+          "expected_assessment_version_id": {
+            "format": "uuid",
+            "title": "Expected Assessment Version Id",
+            "type": "string"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          }
+        },
+        "required": [
+          "expected_assessment_version_id",
+          "draft_ref",
+          "assignee_id",
+          "client_request_id"
+        ],
+        "title": "CreateReviewTask",
+        "type": "object"
+      },
+      "CreateTender": {
+        "additionalProperties": false,
+        "properties": {
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "source_label": {
+            "default": "manual_upload",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Source Label",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "client_request_id"
+        ],
+        "title": "CreateTender",
+        "type": "object"
+      },
+      "DecisionView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "assessment_version_id": {
+            "title": "Assessment Version Id",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "currency_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency Reason"
+          },
+          "decision": {
+            "enum": [
+              "pursue",
+              "hold",
+              "decline"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "manifest": {
+            "additionalProperties": true,
+            "title": "Manifest",
+            "type": "object"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "review_complete": {
+            "title": "Review Complete",
+            "type": "boolean"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "tender_id": {
+            "title": "Tender Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "tender_id",
+          "assessment_version_id",
+          "actor_id",
+          "input_revision",
+          "decision",
+          "reason",
+          "review_complete",
+          "created_at",
+          "manifest",
+          "is_current",
+          "currency_reason"
+        ],
+        "title": "DecisionView",
+        "type": "object"
+      },
+      "DocumentView": {
+        "properties": {
+          "amends_version_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amends Version Id"
+          },
+          "byte_size": {
+            "title": "Byte Size",
+            "type": "integer"
+          },
+          "content_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Content Type"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "page_count": {
+            "title": "Page Count",
+            "type": "integer"
+          },
+          "role": {
+            "enum": [
+              "tender",
+              "addendum",
+              "reference_note",
+              "company_evidence"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "filename",
+          "sha256",
+          "role",
+          "content_type",
+          "byte_size",
+          "page_count",
+          "amends_version_id",
+          "created_at"
+        ],
+        "title": "DocumentView",
+        "type": "object"
+      },
+      "FactCorrections": {
+        "additionalProperties": false,
+        "properties": {
+          "buyer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextFact"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "closing_at": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextFact"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "service_start_on": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextFact"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "term_months": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IntegerFact"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TextFact"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "FactCorrections",
+        "type": "object"
+      },
+      "Finding": {
+        "additionalProperties": false,
+        "properties": {
+          "answer_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 3,
+            "title": "Answer Ids",
+            "type": "array"
+          },
+          "company_citations": {
+            "items": {
+              "$ref": "#/components/schemas/Support"
+            },
+            "maxItems": 3,
+            "title": "Company Citations",
+            "type": "array"
+          },
+          "critical": {
+            "title": "Critical",
+            "type": "boolean"
+          },
+          "critical_basis": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If critical is true, a nonblank verbatim substring of one of this finding's tender_citations quotes showing the mandatory or exclusion consequence; include the parent criterion in tender_citations if needed. Put explanations in statement. Use null when critical is false.",
+            "title": "Critical Basis"
+          },
+          "due_stage": {
+            "enum": [
+              "submission",
+              "award",
+              "mobilisation",
+              "delivery",
+              "unknown"
+            ],
+            "title": "Due Stage",
+            "type": "string"
+          },
+          "id": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "eligibility",
+              "scored_criterion",
+              "bid_artifact",
+              "delivery_commitment",
+              "informational"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "material_now": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Material Now"
+          },
+          "owner_function": {
+            "enum": [
+              "compliance",
+              "operations",
+              "finance",
+              "bid_team"
+            ],
+            "title": "Owner Function",
+            "type": "string"
+          },
+          "request_question": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Request Question",
+            "type": "string"
+          },
+          "statement": {
+            "maxLength": 1500,
+            "minLength": 1,
+            "title": "Statement",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "supported",
+              "unconfirmed",
+              "evidenced_failure"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tender_citations": {
+            "items": {
+              "$ref": "#/components/schemas/Support"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Tender Citations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "kind",
+          "due_stage",
+          "material_now",
+          "critical",
+          "critical_basis",
+          "status",
+          "tender_citations",
+          "company_citations",
+          "answer_ids",
+          "owner_function",
+          "request_question"
+        ],
+        "title": "Finding",
+        "type": "object"
+      },
+      "FindingCorrection": {
+        "additionalProperties": false,
+        "properties": {
+          "company_citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "title": "Company Citations",
+            "type": "array"
+          },
+          "explanation": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Explanation",
+            "type": "string"
+          },
+          "missing_information": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Information"
+          },
+          "requirement_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Requirement Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "met",
+              "unmet",
+              "unconfirmed",
+              "not_assessed"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "requirement_id",
+          "status",
+          "company_citations",
+          "explanation",
+          "missing_information"
+        ],
+        "title": "FindingCorrection",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HistoryView": {
+        "properties": {
+          "assessments": {
+            "items": {
+              "$ref": "#/components/schemas/AssessmentHistory"
+            },
+            "title": "Assessments",
+            "type": "array"
+          },
+          "decisions": {
+            "items": {
+              "$ref": "#/components/schemas/DecisionView"
+            },
+            "title": "Decisions",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "assessments",
+          "decisions"
+        ],
+        "title": "HistoryView",
+        "type": "object"
+      },
+      "ImportOpportunity": {
+        "additionalProperties": false,
+        "properties": {
+          "buyer": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "closing_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closing At"
+          },
+          "notice_id": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,99}$",
+            "title": "Notice Id",
+            "type": "string"
+          },
+          "notice_text": {
+            "maxLength": 30000,
+            "minLength": 1,
+            "title": "Notice Text",
+            "type": "string"
+          },
+          "reference": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Reference",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "notice_id",
+          "title",
+          "reference",
+          "notice_text",
+          "client_request_id"
+        ],
+        "title": "ImportOpportunity",
+        "type": "object"
+      },
+      "InboxAction": {
+        "properties": {
+          "can_act": {
+            "title": "Can Act",
+            "type": "boolean"
+          },
+          "due_at": {
+            "title": "Due At",
+            "type": "string"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "screening_input",
+              "preparation_approval",
+              "information_request"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "screening_version_id": {
+            "title": "Screening Version Id",
+            "type": "string"
+          },
+          "tab": {
+            "const": "human",
+            "title": "Tab",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          },
+          "task_revision": {
+            "title": "Task Revision",
+            "type": "integer"
+          },
+          "tender_id": {
+            "title": "Tender Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "tender_id",
+          "tab",
+          "kind",
+          "screening_version_id",
+          "question",
+          "due_at",
+          "task_revision",
+          "is_current",
+          "can_act"
+        ],
+        "title": "InboxAction",
+        "type": "object"
+      },
+      "InboxActionsView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InboxAction"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "schema_version": {
+            "const": "qualification.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "items",
+          "next_cursor"
+        ],
+        "title": "InboxActionsView",
+        "type": "object"
+      },
+      "InboxItem": {
+        "additionalProperties": false,
+        "properties": {
+          "assessment_status": {
+            "enum": [
+              "current",
+              "non_current",
+              "not_ready"
+            ],
+            "title": "Assessment Status",
+            "type": "string"
+          },
+          "buyer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer"
+          },
+          "closing_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closing At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "next_action": {
+            "title": "Next Action",
+            "type": "string"
+          },
+          "owner_user_id": {
+            "format": "uuid",
+            "title": "Owner User Id",
+            "type": "string"
+          },
+          "recommendation": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pursue",
+                  "hold",
+                  "decline"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "default": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_label": {
+            "title": "Source Label",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "title",
+          "source_label",
+          "owner_user_id",
+          "input_revision",
+          "created_at",
+          "buyer",
+          "closing_at",
+          "recommendation",
+          "assessment_status",
+          "decision",
+          "next_action"
+        ],
+        "title": "InboxItem",
+        "type": "object"
+      },
+      "InboxView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InboxItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "items"
+        ],
+        "title": "InboxView",
+        "type": "object"
+      },
+      "IntegerFact": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "title": "Citations",
+            "type": "array"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "maximum": 1200.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "value",
+          "citations"
+        ],
+        "title": "IntegerFact",
+        "type": "object"
+      },
+      "JobView": {
+        "properties": {
+          "attempt": {
+            "title": "Attempt",
+            "type": "integer"
+          },
+          "completed_stages": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Completed Stages",
+            "type": "array"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "output_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Version Id"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "needs_input",
+              "failed",
+              "completed",
+              "cancelled",
+              "non_current"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tender_id": {
+            "title": "Tender Id",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "tender_id",
+          "input_revision",
+          "status",
+          "attempt",
+          "completed_stages",
+          "warnings",
+          "error_code",
+          "output_version_id"
+        ],
+        "title": "JobView",
+        "type": "object"
+      },
+      "KeyFacts": {
+        "additionalProperties": false,
+        "properties": {
+          "buyer": {
+            "$ref": "#/components/schemas/TextFact"
+          },
+          "closing_at": {
+            "$ref": "#/components/schemas/TextFact"
+          },
+          "service_start_on": {
+            "$ref": "#/components/schemas/TextFact"
+          },
+          "term_months": {
+            "$ref": "#/components/schemas/IntegerFact"
+          },
+          "title": {
+            "$ref": "#/components/schemas/TextFact"
+          }
+        },
+        "required": [
+          "title",
+          "buyer",
+          "closing_at",
+          "service_start_on",
+          "term_months"
+        ],
+        "title": "KeyFacts",
+        "type": "object"
+      },
+      "MemberView": {
+        "properties": {
+          "display_name": {
+            "title": "Display Name",
+            "type": "string"
+          },
+          "roles": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Roles",
+            "type": "array"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id",
+          "display_name",
+          "roles"
+        ],
+        "title": "MemberView",
+        "type": "object"
+      },
+      "MembersView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MemberView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "items"
+        ],
+        "title": "MembersView",
+        "type": "object"
+      },
+      "NoticeSnapshot": {
+        "additionalProperties": false,
+        "properties": {
+          "access_gaps": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Access Gaps",
+            "type": "array"
+          },
+          "buyer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "closing_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closing At"
+          },
+          "content_sha256": {
+            "title": "Content Sha256",
+            "type": "string"
+          },
+          "coverage": {
+            "const": "notice_only",
+            "default": "notice_only",
+            "title": "Coverage",
+            "type": "string"
+          },
+          "evidence_text": {
+            "maxLength": 50000,
+            "minLength": 1,
+            "title": "Evidence Text",
+            "type": "string"
+          },
+          "excerpts": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Excerpts",
+            "type": "object"
+          },
+          "origin": {
+            "enum": [
+              "public_notice",
+              "controlled_import"
+            ],
+            "title": "Origin",
+            "type": "string"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "raw_sha256": {
+            "title": "Raw Sha256",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "retrieved_at": {
+            "format": "date-time",
+            "title": "Retrieved At",
+            "type": "string"
+          },
+          "source_identity": {
+            "title": "Source Identity",
+            "type": "string"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_identity",
+          "origin",
+          "source_url",
+          "retrieved_at",
+          "title",
+          "buyer",
+          "reference",
+          "category",
+          "closing_at",
+          "published_at",
+          "evidence_text",
+          "excerpts",
+          "access_gaps",
+          "raw_sha256",
+          "content_sha256"
+        ],
+        "title": "NoticeSnapshot",
+        "type": "object"
+      },
+      "OpportunitiesView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OpportunityView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "schema_version": {
+            "const": "m1.opportunity.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "items",
+          "next_cursor"
+        ],
+        "title": "OpportunitiesView",
+        "type": "object"
+      },
+      "OpportunityView": {
+        "properties": {
+          "budget_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Budget Id"
+          },
+          "budget_status": {
+            "enum": [
+              "not_approved",
+              "available",
+              "blocked"
+            ],
+            "title": "Budget Status",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "intake_owner_user_id": {
+            "title": "Intake Owner User Id",
+            "type": "string"
+          },
+          "last_checked_at": {
+            "format": "date-time",
+            "title": "Last Checked At",
+            "type": "string"
+          },
+          "match": {
+            "additionalProperties": true,
+            "title": "Match",
+            "type": "object"
+          },
+          "notice": {
+            "$ref": "#/components/schemas/NoticeSnapshot"
+          },
+          "notice_version": {
+            "title": "Notice Version",
+            "type": "integer"
+          },
+          "notice_version_id": {
+            "title": "Notice Version Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "schema_version": {
+            "const": "m1.opportunity.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_identity": {
+            "title": "Source Identity",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "suggested",
+              "deferred",
+              "dismissed",
+              "activated"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "tender_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tender Id"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "revision",
+          "source_identity",
+          "intake_owner_user_id",
+          "state",
+          "notice_version_id",
+          "notice_version",
+          "notice",
+          "match",
+          "tender_id",
+          "budget_id",
+          "budget_status",
+          "created_at",
+          "last_checked_at"
+        ],
+        "title": "OpportunityView",
+        "type": "object"
+      },
+      "PreparationBudget-Input": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Amount"
+          },
+          "currency": {
+            "enum": [
+              "SGD",
+              "USD"
+            ],
+            "title": "Currency",
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "title": "PreparationBudget",
+        "type": "object"
+      },
+      "PreparationBudget-Output": {
+        "additionalProperties": false,
+        "properties": {
+          "amount": {
+            "title": "Amount",
+            "type": "string"
+          },
+          "currency": {
+            "enum": [
+              "SGD",
+              "USD"
+            ],
+            "title": "Currency",
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "title": "PreparationBudget",
+        "type": "object"
+      },
+      "PreparationCondition": {
+        "additionalProperties": false,
+        "properties": {
+          "condition": {
+            "maxLength": 1500,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Condition",
+            "type": "string"
+          },
+          "finding_id": {
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Finding Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "finding_id",
+          "condition"
+        ],
+        "title": "PreparationCondition",
+        "type": "object"
+      },
+      "PreparationDecisionView": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "approval_task_id": {
+            "title": "Approval Task Id",
+            "type": "string"
+          },
+          "conditions": {
+            "items": {
+              "$ref": "#/components/schemas/PreparationCondition"
+            },
+            "title": "Conditions",
+            "type": "array"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "currency_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency Reason"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "outcome": {
+            "enum": [
+              "approve_preparation",
+              "request_information",
+              "decline"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          },
+          "preparation_budget": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreparationBudget-Output"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preparation_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Scope"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "screening_version_id": {
+            "title": "Screening Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "screening_version_id",
+          "approval_task_id",
+          "actor_id",
+          "outcome",
+          "reason",
+          "preparation_scope",
+          "preparation_budget",
+          "conditions",
+          "created_at",
+          "is_current",
+          "currency_reason"
+        ],
+        "title": "PreparationDecisionView",
+        "type": "object"
+      },
+      "Recommendation": {
+        "additionalProperties": false,
+        "properties": {
+          "condition_refs": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 1000,
+            "title": "Condition Refs",
+            "type": "array"
+          },
+          "decision": {
+            "enum": [
+              "pursue",
+              "hold",
+              "decline"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Reasons",
+            "type": "array"
+          }
+        },
+        "required": [
+          "decision",
+          "reasons",
+          "condition_refs"
+        ],
+        "title": "Recommendation",
+        "type": "object"
+      },
+      "ReconcileChange": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Citations",
+            "type": "array"
+          },
+          "previous_requirement_id": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Previous Requirement Id",
+            "type": "string"
+          },
+          "replacement_requirement_ids": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Replacement Requirement Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "previous_requirement_id",
+          "replacement_requirement_ids",
+          "citations"
+        ],
+        "title": "ReconcileChange",
+        "type": "object"
+      },
+      "Reconciliation": {
+        "properties": {
+          "fact_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact Id"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "previous_requirement": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Requirement"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "replacement_requirement_ids": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Replacement Requirement Ids",
+            "type": "array"
+          },
+          "requirement_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement Id"
+          },
+          "resolved": {
+            "title": "Resolved",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "kind",
+          "resolved"
+        ],
+        "title": "Reconciliation",
+        "type": "object"
+      },
+      "RecordDecision": {
+        "additionalProperties": false,
+        "properties": {
+          "assessment_version_id": {
+            "format": "uuid",
+            "title": "Assessment Version Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "pursue",
+              "hold",
+              "decline"
+            ],
+            "title": "Decision",
+            "type": "string"
+          },
+          "expected_input_revision": {
+            "title": "Expected Input Revision",
+            "type": "integer"
+          },
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "review_complete": {
+            "title": "Review Complete",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "expected_input_revision",
+          "client_request_id",
+          "assessment_version_id",
+          "decision",
+          "reason",
+          "review_complete"
+        ],
+        "title": "RecordDecision",
+        "type": "object"
+      },
+      "RecordPreparationDecision": {
+        "additionalProperties": false,
+        "properties": {
+          "approval_task_id": {
+            "format": "uuid",
+            "title": "Approval Task Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "conditions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PreparationCondition"
+                },
+                "maxItems": 24,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conditions"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due At"
+          },
+          "expected_evidence_revision": {
+            "minimum": 0.0,
+            "title": "Expected Evidence Revision",
+            "type": "integer"
+          },
+          "expected_input_revision": {
+            "minimum": 1.0,
+            "title": "Expected Input Revision",
+            "type": "integer"
+          },
+          "information_request": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Information Request"
+          },
+          "next_assignee_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Assignee Id"
+          },
+          "outcome": {
+            "enum": [
+              "approve_preparation",
+              "request_information",
+              "decline"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          },
+          "preparation_budget": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreparationBudget-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "preparation_scope": {
+            "anyOf": [
+              {
+                "maxLength": 3000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Scope"
+          },
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "screening_version_id": {
+            "format": "uuid",
+            "title": "Screening Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_input_revision",
+          "expected_evidence_revision",
+          "screening_version_id",
+          "approval_task_id",
+          "outcome",
+          "reason",
+          "client_request_id"
+        ],
+        "title": "RecordPreparationDecision",
+        "type": "object"
+      },
+      "RequestAnalysis": {
+        "additionalProperties": false,
+        "properties": {
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_input_revision": {
+            "title": "Expected Input Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_input_revision",
+          "client_request_id"
+        ],
+        "title": "RequestAnalysis",
+        "type": "object"
+      },
+      "RequestScreening": {
+        "additionalProperties": false,
+        "properties": {
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_input_revision": {
+            "title": "Expected Input Revision",
+            "type": "integer"
+          },
+          "investigation_queries": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 3,
+            "title": "Investigation Queries",
+            "type": "array"
+          }
+        },
+        "required": [
+          "expected_input_revision",
+          "client_request_id"
+        ],
+        "title": "RequestScreening",
+        "type": "object"
+      },
+      "Requirement": {
+        "additionalProperties": false,
+        "properties": {
+          "company_citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "title": "Company Citations",
+            "type": "array"
+          },
+          "explanation": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Explanation",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "eligibility",
+              "delivery",
+              "submission",
+              "evaluation"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "local_ref": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Local Ref",
+            "type": "string"
+          },
+          "mandatory": {
+            "title": "Mandatory",
+            "type": "boolean"
+          },
+          "missing_information": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Information"
+          },
+          "status": {
+            "enum": [
+              "met",
+              "unmet",
+              "unconfirmed",
+              "not_assessed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tender_citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Tender Citations",
+            "type": "array"
+          },
+          "text": {
+            "maxLength": 3000,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "local_ref",
+          "text",
+          "kind",
+          "mandatory",
+          "tender_citations",
+          "status",
+          "company_citations",
+          "explanation",
+          "missing_information"
+        ],
+        "title": "Requirement",
+        "type": "object"
+      },
+      "RequirementRecord": {
+        "properties": {
+          "carried_forward": {
+            "title": "Carried Forward",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "requirement": {
+            "$ref": "#/components/schemas/Requirement"
+          }
+        },
+        "required": [
+          "id",
+          "requirement",
+          "carried_forward"
+        ],
+        "title": "RequirementRecord",
+        "type": "object"
+      },
+      "ReviewCaseView": {
+        "properties": {
+          "attention": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attention"
+          },
+          "closing_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closing At"
+          },
+          "evidence_revision": {
+            "title": "Evidence Revision",
+            "type": "integer"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "job_status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "queued",
+                  "running",
+                  "needs_input",
+                  "failed",
+                  "completed",
+                  "cancelled",
+                  "non_current"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Status"
+          },
+          "next_actor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Actor Id"
+          },
+          "open_approvals": {
+            "title": "Open Approvals",
+            "type": "integer"
+          },
+          "open_inputs": {
+            "title": "Open Inputs",
+            "type": "integer"
+          },
+          "owner_user_id": {
+            "title": "Owner User Id",
+            "type": "string"
+          },
+          "permitted_actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Permitted Actions",
+            "type": "array"
+          },
+          "preparation_decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreparationDecisionView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recommendation": {
+            "anyOf": [
+              {
+                "enum": [
+                  "promising",
+                  "outside_policy",
+                  "needs_information"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation"
+          },
+          "schema_version": {
+            "const": "qualification.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "screening": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScreeningView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "screening_is_current": {
+            "title": "Screening Is Current",
+            "type": "boolean"
+          },
+          "screening_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screening Version Id"
+          },
+          "state": {
+            "enum": [
+              "In progress",
+              "Waiting for input",
+              "Ready for decision",
+              "Completed",
+              "Needs reassessment"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "tender_id": {
+            "title": "Tender Id",
+            "type": "string"
+          },
+          "tender_stage": {
+            "enum": [
+              "assessing",
+              "preparing_bid",
+              "closed"
+            ],
+            "title": "Tender Stage",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "tender_id",
+          "title",
+          "owner_user_id",
+          "input_revision",
+          "evidence_revision",
+          "screening_version_id",
+          "screening_is_current",
+          "state",
+          "tender_stage",
+          "next_actor_id",
+          "open_inputs",
+          "open_approvals",
+          "recommendation",
+          "attention",
+          "closing_at",
+          "job_status",
+          "permitted_actions",
+          "preparation_decision",
+          "screening"
+        ],
+        "title": "ReviewCaseView",
+        "type": "object"
+      },
+      "ReviewCasesView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewCaseView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          },
+          "schema_version": {
+            "const": "qualification.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "items",
+          "next_cursor"
+        ],
+        "title": "ReviewCasesView",
+        "type": "object"
+      },
+      "ReviewDraft": {
+        "additionalProperties": false,
+        "properties": {
+          "draft_ref": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Draft Ref",
+            "type": "string"
+          },
+          "question": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          },
+          "rationale": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Rationale",
+            "type": "string"
+          },
+          "requirement_refs": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Requirement Refs",
+            "type": "array"
+          },
+          "suggested_role": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Suggested Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "draft_ref",
+          "requirement_refs",
+          "suggested_role",
+          "question",
+          "rationale"
+        ],
+        "title": "ReviewDraft",
+        "type": "object"
+      },
+      "ReviewTaskView": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaskAnswer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_version_id": {
+            "title": "Assessment Version Id",
+            "type": "string"
+          },
+          "assignee_id": {
+            "title": "Assignee Id",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "created_by": {
+            "title": "Created By",
+            "type": "string"
+          },
+          "draft_ref": {
+            "title": "Draft Ref",
+            "type": "string"
+          },
+          "due_at": {
+            "title": "Due At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "manifest": {
+            "additionalProperties": true,
+            "title": "Manifest",
+            "type": "object"
+          },
+          "purpose": {
+            "title": "Purpose",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "requirement_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Requirement Ids",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "answered",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tender_id": {
+            "title": "Tender Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "id",
+          "tender_id",
+          "assessment_version_id",
+          "assignee_id",
+          "created_by",
+          "draft_ref",
+          "requirement_ids",
+          "purpose",
+          "question",
+          "status",
+          "revision",
+          "due_at",
+          "created_at",
+          "manifest",
+          "is_current"
+        ],
+        "title": "ReviewTaskView",
+        "type": "object"
+      },
+      "SaveCompanyProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "accept": {
+            "const": true,
+            "title": "Accept",
+            "type": "boolean"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "effective_on": {
+            "format": "date",
+            "title": "Effective On",
+            "type": "string"
+          },
+          "expected_evidence_revision": {
+            "minimum": 0.0,
+            "title": "Expected Evidence Revision",
+            "type": "integer"
+          },
+          "expires_on": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires On"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/CompanyProfile"
+          },
+          "reason": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_evidence_revision",
+          "client_request_id",
+          "accept",
+          "effective_on",
+          "reason",
+          "profile"
+        ],
+        "title": "SaveCompanyProfile",
+        "type": "object"
+      },
+      "ScreeningArtifact": {
+        "additionalProperties": false,
+        "properties": {
+          "approval_blockers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Approval Blockers",
+            "type": "array"
+          },
+          "attention": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attention"
+          },
+          "classifications": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Classifications",
+            "type": "array"
+          },
+          "closing_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closing At"
+          },
+          "company_evidence": {
+            "additionalProperties": true,
+            "title": "Company Evidence",
+            "type": "object"
+          },
+          "coverage": {
+            "additionalProperties": true,
+            "title": "Coverage",
+            "type": "object"
+          },
+          "facts": {
+            "additionalProperties": true,
+            "title": "Facts",
+            "type": "object"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/Finding"
+            },
+            "title": "Findings",
+            "type": "array"
+          },
+          "pins": {
+            "additionalProperties": true,
+            "title": "Pins",
+            "type": "object"
+          },
+          "recommendation": {
+            "enum": [
+              "promising",
+              "outside_policy",
+              "needs_information"
+            ],
+            "title": "Recommendation",
+            "type": "string"
+          },
+          "request_drafts": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Request Drafts",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "screening.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "usage": {
+            "additionalProperties": true,
+            "title": "Usage",
+            "type": "object"
+          },
+          "wider_review_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wider Review Reason"
+          },
+          "work_packages": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Work Packages",
+            "type": "array"
+          }
+        },
+        "required": [
+          "schema_version",
+          "pins",
+          "title",
+          "closing_at",
+          "findings",
+          "facts",
+          "company_evidence",
+          "coverage",
+          "recommendation",
+          "approval_blockers",
+          "request_drafts",
+          "work_packages",
+          "wider_review_reason",
+          "usage",
+          "attention",
+          "classifications"
+        ],
+        "title": "ScreeningArtifact",
+        "type": "object"
+      },
+      "ScreeningView": {
+        "properties": {
+          "artifact": {
+            "$ref": "#/components/schemas/ScreeningArtifact"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "input_revision",
+          "is_current",
+          "artifact"
+        ],
+        "title": "ScreeningView",
+        "type": "object"
+      },
+      "SourceAnchor": {
+        "properties": {
+          "actor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Id"
+          },
+          "anchor_id": {
+            "title": "Anchor Id",
+            "type": "string"
+          },
+          "answer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer Id"
+          },
+          "assessment_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Version Id"
+          },
+          "basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basis"
+          },
+          "document_version_id": {
+            "title": "Document Version Id",
+            "type": "string"
+          },
+          "location_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location Label"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "paragraph": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paragraph"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          },
+          "requirement_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirement Ids"
+          },
+          "response_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response Kind"
+          },
+          "source_manifest": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Manifest"
+          },
+          "source_role": {
+            "title": "Source Role",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "anchor_id",
+          "document_version_id",
+          "source_role",
+          "text"
+        ],
+        "title": "SourceAnchor",
+        "type": "object"
+      },
+      "SourceCoverage": {
+        "properties": {
+          "complete": {
+            "title": "Complete",
+            "type": "boolean"
+          },
+          "documents": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Documents",
+            "type": "array"
+          },
+          "issues": {
+            "title": "Issues",
+            "type": "integer"
+          },
+          "parsed_files": {
+            "title": "Parsed Files",
+            "type": "integer"
+          },
+          "pending_files": {
+            "title": "Pending Files",
+            "type": "integer"
+          },
+          "total_files": {
+            "title": "Total Files",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "complete",
+          "documents",
+          "total_files",
+          "parsed_files",
+          "pending_files",
+          "issues"
+        ],
+        "title": "SourceCoverage",
+        "type": "object"
+      },
+      "SourcesView": {
+        "properties": {
+          "anchors": {
+            "items": {
+              "$ref": "#/components/schemas/SourceAnchor"
+            },
+            "title": "Anchors",
+            "type": "array"
+          },
+          "assessment_version_id": {
+            "title": "Assessment Version Id",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "assessment_version_id",
+          "anchors"
+        ],
+        "title": "SourcesView",
+        "type": "object"
+      },
+      "Support": {
+        "additionalProperties": false,
+        "properties": {
+          "anchor_id": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Anchor Id",
+            "type": "string"
+          },
+          "quote": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Quote",
+            "type": "string"
+          }
+        },
+        "required": [
+          "anchor_id",
+          "quote"
+        ],
+        "title": "Support",
+        "type": "object"
+      },
+      "TaskAnswer": {
+        "properties": {
+          "actor_id": {
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "basis": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basis"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "evidence_version_id": {
+            "title": "Evidence Version Id",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "reassessment_job_id": {
+            "title": "Reassessment Job Id",
+            "type": "string"
+          },
+          "reassessment_status": {
+            "enum": [
+              "queued",
+              "running",
+              "needs_input",
+              "failed",
+              "completed",
+              "cancelled",
+              "non_current"
+            ],
+            "title": "Reassessment Status",
+            "type": "string"
+          },
+          "response_kind": {
+            "enum": [
+              "confirmed",
+              "denied",
+              "unable_to_confirm"
+            ],
+            "title": "Response Kind",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "evidence_version_id",
+          "actor_id",
+          "created_at",
+          "response_kind",
+          "text",
+          "basis",
+          "reassessment_job_id",
+          "reassessment_status"
+        ],
+        "title": "TaskAnswer",
+        "type": "object"
+      },
+      "TenderDetail": {
+        "additionalProperties": false,
+        "properties": {
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssessmentView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_status": {
+            "enum": [
+              "current",
+              "non_current",
+              "not_ready"
+            ],
+            "title": "Assessment Status",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionView"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentView"
+            },
+            "title": "Documents",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "input_revision": {
+            "title": "Input Revision",
+            "type": "integer"
+          },
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/JobView"
+            },
+            "title": "Jobs",
+            "type": "array"
+          },
+          "opportunity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TenderOpportunity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "owner_user_id": {
+            "format": "uuid",
+            "title": "Owner User Id",
+            "type": "string"
+          },
+          "review_tasks": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewTaskView"
+            },
+            "title": "Review Tasks",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "m1.v1",
+            "default": "m1.v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_coverage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceCoverage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_label": {
+            "title": "Source Label",
+            "type": "string"
+          },
+          "source_set_version_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Set Version Id"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "workflow": {
+            "default": "legacy",
+            "enum": [
+              "legacy",
+              "screening"
+            ],
+            "title": "Workflow",
+            "type": "string"
+          },
+          "workspace_id": {
+            "format": "uuid",
+            "title": "Workspace Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "workspace_id",
+          "title",
+          "source_label",
+          "owner_user_id",
+          "input_revision",
+          "created_at",
+          "documents",
+          "source_set_version_id",
+          "assessment",
+          "assessment_status",
+          "review_tasks",
+          "decision",
+          "jobs"
+        ],
+        "title": "TenderDetail",
+        "type": "object"
+      },
+      "TenderOpportunity": {
+        "properties": {
+          "notice": {
+            "additionalProperties": true,
+            "title": "Notice",
+            "type": "object"
+          },
+          "notice_version": {
+            "title": "Notice Version",
+            "type": "integer"
+          },
+          "notice_version_id": {
+            "title": "Notice Version Id",
+            "type": "string"
+          },
+          "suggestion_id": {
+            "title": "Suggestion Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "suggestion_id",
+          "notice_version_id",
+          "notice_version",
+          "notice"
+        ],
+        "title": "TenderOpportunity",
+        "type": "object"
+      },
+      "TextFact": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "maxItems": 12,
+            "title": "Citations",
+            "type": "array"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "maxLength": 1500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "value",
+          "citations"
+        ],
+        "title": "TextFact",
+        "type": "object"
+      },
+      "TriageSuggestion": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "start_assessment",
+              "defer",
+              "dismiss"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "action",
+          "client_request_id"
+        ],
+        "title": "TriageSuggestion",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "title": "Tender Intelligence API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/assessments/{assessment_id}/sources": {
+      "get": {
+        "operationId": "assessment_sources_api_v1_assessments__assessment_id__sources_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assessment_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourcesView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Assessment Sources"
+      }
+    },
+    "/api/v1/assessments/{version_id}": {
+      "get": {
+        "operationId": "get_assessment_api_v1_assessments__version_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Version Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Assessment"
+      }
+    },
+    "/api/v1/company-evidence": {
+      "get": {
+        "operationId": "company_evidence_api_v1_company_evidence_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Company Evidence"
+      },
+      "post": {
+        "operationId": "accept_company_evidence_api_v1_company_evidence_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "JSON: expected_evidence_revision, client_request_id, accept: true, effective_on, expires_on?, reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Accept Company Evidence"
+      }
+    },
+    "/api/v1/company-evidence/profile": {
+      "post": {
+        "operationId": "save_company_profile_api_v1_company_evidence_profile_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveCompanyProfile"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Save Company Profile"
+      }
+    },
+    "/api/v1/company-evidence/versions/{version_id}": {
+      "get": {
+        "operationId": "company_version_api_v1_company_evidence_versions__version_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Version Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyVersion"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Company Version"
+      }
+    },
+    "/api/v1/inbox-actions": {
+      "get": {
+        "operationId": "human_actions_api_v1_inbox_actions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "After"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxActionsView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Human Actions"
+      }
+    },
+    "/api/v1/jobs/{job_id}": {
+      "get": {
+        "operationId": "get_job_api_v1_jobs__job_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Job"
+      }
+    },
+    "/api/v1/jobs/{job_id}/cancel": {
+      "post": {
+        "operationId": "cancel_job_api_v1_jobs__job_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAnalysis"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancel Job"
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "operationId": "me_api_v1_me_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActorView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Me"
+      }
+    },
+    "/api/v1/members": {
+      "get": {
+        "operationId": "workspace_members_api_v1_members_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembersView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Workspace Members"
+      }
+    },
+    "/api/v1/opportunity-suggestions": {
+      "get": {
+        "operationId": "opportunity_suggestions_api_v1_opportunity_suggestions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "state",
+            "required": false,
+            "schema": {
+              "default": "suggested",
+              "enum": [
+                "suggested",
+                "deferred",
+                "dismissed",
+                "activated"
+              ],
+              "title": "State",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "After"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunitiesView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Opportunity Suggestions"
+      }
+    },
+    "/api/v1/opportunity-suggestions/import": {
+      "post": {
+        "operationId": "import_opportunity_api_v1_opportunity_suggestions_import_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportOpportunity"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Import Opportunity"
+      }
+    },
+    "/api/v1/opportunity-suggestions/{suggestion_id}/triage": {
+      "post": {
+        "operationId": "triage_opportunity_api_v1_opportunity_suggestions__suggestion_id__triage_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "suggestion_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Suggestion Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TriageSuggestion"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Triage Opportunity"
+      }
+    },
+    "/api/v1/review-cases": {
+      "get": {
+        "operationId": "review_cases_api_v1_review_cases_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "After"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewCasesView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Review Cases"
+      }
+    },
+    "/api/v1/review-cases/{tender_id}": {
+      "get": {
+        "operationId": "review_case_api_v1_review_cases__tender_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewCaseView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Review Case"
+      }
+    },
+    "/api/v1/review-tasks/{task_id}/answers": {
+      "post": {
+        "operationId": "answer_review_task_api_v1_review_tasks__task_id__answers_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerReviewTask"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Answer Review Task"
+      }
+    },
+    "/api/v1/sources/{version_id}": {
+      "get": {
+        "operationId": "get_source_api_v1_sources__version_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Version Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Source"
+      }
+    },
+    "/api/v1/tenders": {
+      "get": {
+        "operationId": "list_tenders_api_v1_tenders_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboxView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Tenders"
+      },
+      "post": {
+        "operationId": "create_tender_api_v1_tenders_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTender"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Tender"
+      }
+    },
+    "/api/v1/tenders/{tender_id}": {
+      "delete": {
+        "operationId": "delete_tender_api_v1_tenders__tender_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAnalysis"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Delete Tender"
+      },
+      "get": {
+        "operationId": "get_tender_api_v1_tenders__tender_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenderDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Tender"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/analyses": {
+      "post": {
+        "operationId": "request_analysis_api_v1_tenders__tender_id__analyses_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestAnalysis"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Request Analysis"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/assessment": {
+      "patch": {
+        "operationId": "correct_assessment_api_v1_tenders__tender_id__assessment_patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectAssessment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Correct Assessment"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/assistant-messages": {
+      "post": {
+        "operationId": "assistant_message_api_v1_tenders__tender_id__assistant_messages_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AskAssessment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Assistant Message"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/decisions": {
+      "post": {
+        "operationId": "record_decision_api_v1_tenders__tender_id__decisions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Record Decision"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/documents": {
+      "post": {
+        "operationId": "upload_documents_api_v1_tenders__tender_id__documents_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "files": {
+                    "items": {
+                      "format": "binary",
+                      "type": "string"
+                    },
+                    "maxItems": 100,
+                    "type": "array"
+                  },
+                  "metadata": {
+                    "description": "JSON: expected_input_revision, client_request_id, files [{role, amends_version_id?}]",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "files"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Upload Documents"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/history": {
+      "get": {
+        "operationId": "tender_history_api_v1_tenders__tender_id__history_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoryView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Tender History"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/preparation-decisions": {
+      "post": {
+        "operationId": "record_preparation_api_v1_tenders__tender_id__preparation_decisions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordPreparationDecision"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationDecisionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Record Preparation"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/qualification-brief": {
+      "get": {
+        "operationId": "qualification_brief_api_v1_tenders__tender_id__qualification_brief_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "assessment_version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Assessment Version Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Qualification Brief"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/review-tasks": {
+      "post": {
+        "operationId": "create_review_task_api_v1_tenders__tender_id__review_tasks_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewTask"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewTaskView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Review Task"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/screenings": {
+      "post": {
+        "operationId": "request_screening_api_v1_tenders__tender_id__screenings_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestScreening"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Request Screening"
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health"
+      }
+    }
+  }
+}

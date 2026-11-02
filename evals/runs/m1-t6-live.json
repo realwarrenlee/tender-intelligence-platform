@@ -1,0 +1,198 @@
+{
+  "fixture": "D1-qualification",
+  "date": "2026-10-24",
+  "execution": "Real password-form Auth, visible UI writes, production HTTP/queue/parser/model/DB/Storage; read-only session snapshots.",
+  "answer_key_was_model_input": false,
+  "actual_clock": "24 October 2026 Asia/Singapore; fixture event identity/timestamps are not trusted.",
+  "stages": [
+    {
+      "stage": "initial",
+      "assessment_version_id": "6a0136cb-fe20-4f38-a879-a19167a95814",
+      "input_revision": 2,
+      "current_at_capture": true,
+      "recommendation": "hold",
+      "expected_recommendation": "hold",
+      "recommendation_matches": true,
+      "staffing_status": "unconfirmed",
+      "staffing_status_matches": true,
+      "key_fact_matches": {
+        "title": true,
+        "buyer": true,
+        "closing_at": true,
+        "service_start_on": true,
+        "term_months": true
+      },
+      "candidate_requirements": 14,
+      "server_validated_citation_occurrences": 31,
+      "unique_server_validated_citations": 26,
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "e40b6f0a052e5b3aad2fbbff2084d04891315ef8b59b0e82e30ddef741c9de94"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "3d2d6de77a95e67f59c3fd87024f30a0692a68c2996804a64ee06084d899feb3"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "acdaab9659413ea8ceddaf851a2f044022973514ec6353cc0b54ffe6d2d5b9de"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "aa1cf3c7a943ce33bfa03669a372179975b25dbec935646da6ca94a4c3f47a10"
+        }
+      ],
+      "run": {
+        "calls": 2,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 13509,
+        "prompt_sha256": "3213c8904aca08a079f95103320dbb553563e3ca3b490bb8e1086899c8ad5901",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      }
+    },
+    {
+      "stage": "answered",
+      "assessment_version_id": "e3e2a6d6-8244-462d-910e-c8dbb2213610",
+      "input_revision": 3,
+      "current_at_capture": true,
+      "recommendation": "hold",
+      "expected_recommendation": "pursue",
+      "recommendation_matches": false,
+      "staffing_status": "met",
+      "staffing_status_matches": true,
+      "key_fact_matches": {
+        "title": true,
+        "buyer": true,
+        "closing_at": true,
+        "service_start_on": true,
+        "term_months": true
+      },
+      "candidate_requirements": 14,
+      "server_validated_citation_occurrences": 31,
+      "unique_server_validated_citations": 26,
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "3d2d6de77a95e67f59c3fd87024f30a0692a68c2996804a64ee06084d899feb3"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "acdaab9659413ea8ceddaf851a2f044022973514ec6353cc0b54ffe6d2d5b9de"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "aa1cf3c7a943ce33bfa03669a372179975b25dbec935646da6ca94a4c3f47a10"
+        }
+      ],
+      "run": {
+        "calls": 1,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 10765,
+        "prompt_sha256": "3213c8904aca08a079f95103320dbb553563e3ca3b490bb8e1086899c8ad5901",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      }
+    },
+    {
+      "stage": "amended",
+      "assessment_version_id": "e6897f37-9f02-4902-8c5e-e7c22050c0e4",
+      "input_revision": 4,
+      "current_at_capture": true,
+      "recommendation": "hold",
+      "expected_recommendation": "hold",
+      "recommendation_matches": true,
+      "staffing_status": "unconfirmed",
+      "staffing_status_matches": true,
+      "key_fact_matches": {
+        "title": true,
+        "buyer": true,
+        "closing_at": true,
+        "service_start_on": true,
+        "term_months": true
+      },
+      "candidate_requirements": 14,
+      "server_validated_citation_occurrences": 34,
+      "unique_server_validated_citations": 29,
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "f35fa0e9df85ddb7f8ad2039c4f6172fa842126585a4e779873ef84e74c25c85"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "3d2d6de77a95e67f59c3fd87024f30a0692a68c2996804a64ee06084d899feb3"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "acdaab9659413ea8ceddaf851a2f044022973514ec6353cc0b54ffe6d2d5b9de"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "aa1cf3c7a943ce33bfa03669a372179975b25dbec935646da6ca94a4c3f47a10"
+        },
+        {
+          "code": "RECONCILIATION_REQUIRED",
+          "requirement_id": "e40b6f0a052e5b3aad2fbbff2084d04891315ef8b59b0e82e30ddef741c9de94"
+        },
+        {
+          "code": "RECONCILIATION_REQUIRED",
+          "requirement_id": "328f8b44b34c0ab9d3343639f682afc53e8c1c33ac0ae60286046602ad5172b1"
+        },
+        {
+          "code": "RECONCILIATION_REQUIRED",
+          "requirement_id": "f35fa0e9df85ddb7f8ad2039c4f6172fa842126585a4e779873ef84e74c25c85"
+        },
+        {
+          "code": "RECONCILIATION_REQUIRED",
+          "requirement_id": "492240e0a835b1812bec93d3deca3371fdd608047db5cc6de6057f4002e70035"
+        }
+      ],
+      "run": {
+        "calls": 1,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 11651,
+        "prompt_sha256": "3213c8904aca08a079f95103320dbb553563e3ca3b490bb8e1086899c8ad5901",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      }
+    }
+  ],
+  "recommendation_matches": 2,
+  "staffing_status_matches": 3,
+  "key_fact_matches": 15,
+  "provider_requests": 4,
+  "reported_tokens": 35925,
+  "confirmed_review_tasks": 1,
+  "typed_answers": 1,
+  "human_hold_was_current": true,
+  "hold_non_current_immediately_after_upload": true,
+  "accepted_human_mappings": 1,
+  "rejected_missing_citation_attempts": 1,
+  "unreadable": {
+    "status": "needs_input",
+    "error": "SOURCE_INCOMPLETE",
+    "assessment": null,
+    "provider_requests": 0
+  },
+  "anonymous_status": 401,
+  "foreign_read_statuses": {
+    "/tenders/abc772ee-24db-4184-b595-274175683151": 404,
+    "/tenders/abc772ee-24db-4184-b595-274175683151/history": 404,
+    "/assessments/6a0136cb-fe20-4f38-a879-a19167a95814/sources": 404,
+    "/sources/71bb3527-b84a-46bf-aaaf-49892a53e830": 404
+  },
+  "development_sign_in_verified": true,
+  "extracted_page_view_verified": true,
+  "historical_export_non_current": true,
+  "fictional_accounts_and_workspaces_cleaned": true,
+  "semantic_review": {
+    "assessment_method": "Manual inspection of this recorded capture; not an automated semantic accuracy score.",
+    "key_requirement_groups_covered_each_stage": "6/6 (R5 split across method statement and mobilisation plan)",
+    "initial_qualification_positives_supported": "3/3 eligibility findings; no Saturday-capacity inference from headcount",
+    "additional_delivery_gaps": "planned maintenance, reactive fault response and service reporting retained; staffing answer does not prove these",
+    "correction_effort": "One staffing amendment mapping accepted with all original/replacement quotes; one incomplete citation submission rejected. No finding forced to met or pursue.",
+    "remaining": "Original answered pursue expectation remains a mismatch. D2/D3 and held-out/customer gates not run."
+  }
+}

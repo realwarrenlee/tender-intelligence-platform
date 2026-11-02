@@ -1,0 +1,193 @@
+{
+  "summary": "The addendum requires three Saturday technicians. The existing answer confirms only two, so capacity needs a fresh confirmation.",
+  "key_facts": {
+    "title": {
+      "value": "Skycourt Campus Maintenance Tender",
+      "citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "Skycourt Campus Maintenance Tender"
+        }
+      ]
+    },
+    "buyer": {
+      "value": "Skycourt Property Services",
+      "citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "Buyer: Skycourt Property Services."
+        }
+      ]
+    },
+    "closing_at": {
+      "value": "2026-11-27T16:00:00+08:00",
+      "citations": [
+        {
+          "anchor_id": "addendum-v1-p1",
+          "quote": "Closing time is 27 November 2026 at 16:00 Singapore time (UTC+08:00)."
+        }
+      ]
+    },
+    "service_start_on": {
+      "value": "2027-01-01",
+      "citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "The contract starts on 1 January 2027 and runs for 36 months."
+        }
+      ]
+    },
+    "term_months": {
+      "value": 36,
+      "citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "The contract starts on 1 January 2027 and runs for 36 months."
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "local_ref": "R1",
+      "text": "Bidders must hold a FACILITY-QA-1 certificate valid on the tender closing date.",
+      "kind": "eligibility",
+      "mandatory": true,
+      "tender_citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "Bidders must hold a FACILITY-QA-1 certificate valid on the tender closing date."
+        }
+      ],
+      "status": "met",
+      "company_citations": [
+        {
+          "anchor_id": "profile-v1-p1",
+          "quote": "Our active FACILITY-QA-1 certificate, reference FMDEMO-2026-14, is valid from 1 January 2026 to 31 December 2027."
+        }
+      ],
+      "explanation": "Current accepted company evidence supports this qualification.",
+      "missing_information": null
+    },
+    {
+      "local_ref": "R2",
+      "text": "Bidders must show at least two comparable building-maintenance contracts completed between 1 January 2024 and 25 October 2026.",
+      "kind": "eligibility",
+      "mandatory": true,
+      "tender_citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "Bidders must show at least two comparable building-maintenance contracts completed between 1 January 2024 and 25 October 2026."
+        }
+      ],
+      "status": "met",
+      "company_citations": [
+        {
+          "anchor_id": "profile-v1-p1",
+          "quote": "The fictional Cedar House planned and reactive building-maintenance contract was completed on 31 May 2024."
+        },
+        {
+          "anchor_id": "profile-v1-p1",
+          "quote": "The fictional Harbour Annex building-maintenance contract was completed on 30 November 2025."
+        }
+      ],
+      "explanation": "Current accepted company evidence supports this qualification.",
+      "missing_information": null
+    },
+    {
+      "local_ref": "R3",
+      "text": "Attendance at the compulsory site briefing on 23 October 2026 at 10:00 Singapore time is mandatory.",
+      "kind": "eligibility",
+      "mandatory": true,
+      "tender_citations": [
+        {
+          "anchor_id": "tender-v1-p1",
+          "quote": "Attendance at the compulsory site briefing on 23 October 2026 at 10:00 Singapore time is mandatory."
+        }
+      ],
+      "status": "met",
+      "company_citations": [
+        {
+          "anchor_id": "profile-v1-p1",
+          "quote": "Morgan Lane attended the compulsory SKY-FM-2026-01 site briefing on 23 October 2026 at 10:00 Singapore time."
+        }
+      ],
+      "explanation": "Current accepted company evidence supports this qualification.",
+      "missing_information": null
+    },
+    {
+      "local_ref": "R4",
+      "text": "The contractor must provide three FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+      "kind": "delivery",
+      "mandatory": true,
+      "tender_citations": [
+        {
+          "anchor_id": "addendum-v1-p1",
+          "quote": "The contractor must provide three FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract."
+        }
+      ],
+      "status": "unconfirmed",
+      "company_citations": [
+        {
+          "anchor_id": "engineering-answer-v1-note",
+          "quote": "I confirm that two FM-T2 qualified technicians are available for SKY-FM-2026-01 every Saturday from 09:00 to 13:00 for the 36-month contract starting 1 January 2027. This confirmation covers two technicians only. Alex Tan, engineering lead."
+        }
+      ],
+      "explanation": "The prior answer covers two technicians only and does not establish availability of three.",
+      "missing_information": "Confirm three available technicians under the amended scope."
+    },
+    {
+      "local_ref": "R5",
+      "text": "Submission must include a technical method statement and mobilisation plan.",
+      "kind": "submission",
+      "mandatory": true,
+      "tender_citations": [
+        {
+          "anchor_id": "tender-v1-p2",
+          "quote": "Submission must include a technical method statement and mobilisation plan."
+        }
+      ],
+      "status": "not_assessed",
+      "company_citations": [],
+      "explanation": "Submission preparation is outside this qualification assessment.",
+      "missing_information": null
+    },
+    {
+      "local_ref": "R6",
+      "text": "Submission must include a completed customer price schedule.",
+      "kind": "submission",
+      "mandatory": true,
+      "tender_citations": [
+        {
+          "anchor_id": "tender-v1-p2",
+          "quote": "Submission must include a completed customer price schedule."
+        }
+      ],
+      "status": "not_assessed",
+      "company_citations": [],
+      "explanation": "Submission preparation is outside this qualification assessment.",
+      "missing_information": null
+    }
+  ],
+  "recommendation": {
+    "decision": "hold",
+    "reasons": [
+      "Amended mandatory staffing is not yet confirmed."
+    ],
+    "condition_refs": [
+      "R4"
+    ]
+  },
+  "review_requests": [
+    {
+      "draft_ref": "amended-staffing-question",
+      "requirement_refs": [
+        "R4"
+      ],
+      "suggested_role": "engineering_lead",
+      "question": "Can you confirm three FM-T2 qualified technicians for every Saturday from 09:00 to 13:00 for the 36-month contract?",
+      "rationale": "The addendum changed the requirement; the prior answer covers two only."
+    }
+  ],
+  "warnings": []
+}

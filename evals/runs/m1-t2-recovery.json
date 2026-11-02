@@ -1,0 +1,10 @@
+{
+  "crashed_worker_exit": 23,
+  "replacement_worker_exit": 0,
+  "parsed_outputs": 1,
+  "business_attempts": 1,
+  "remaining_queue_jobs": 0,
+  "status": "needs_input",
+  "error_code": "ASSESSMENT_NOT_IMPLEMENTED",
+  "scope": "Real PDF parser, Storage, PostgreSQL and PgQueuer; crash after output commit before queue acknowledgement. Test uses isolated entrypoint and 2-second heartbeat."
+}

@@ -1,0 +1,13 @@
+{
+  "analysis_provider_requests": 6,
+  "analysis_reported_tokens": 55368,
+  "assistant_failed_turn_requests": 2,
+  "assistant_failed_turn_reported_tokens": 692,
+  "assistant_out_of_scope_requests": 1,
+  "assistant_out_of_scope_reported_tokens": 796,
+  "assistant_after_fix_requests": 3,
+  "assistant_after_fix_reported_tokens": 15546,
+  "additional_diagnostic_rejected_requests": 1,
+  "total_run_requests": 12,
+  "total_reported_tokens": 72402
+}

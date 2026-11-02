@@ -1,0 +1,22 @@
+{
+  "health_status": 200,
+  "unauthenticated_tenders_status": 401,
+  "openapi_status": 200,
+  "routes": [
+    "/api/v1/me",
+    "/api/v1/tenders",
+    "/api/v1/tenders/{tender_id}",
+    "/api/v1/tenders/{tender_id}/analyses",
+    "/api/v1/tenders/{tender_id}/decisions",
+    "/health"
+  ],
+  "backend_postgres_tests_passed": 20,
+  "queue_integration_tests_passed": 1,
+  "actual_user_sign_in_tested": false,
+  "frontend_connected": false,
+  "backend_seconds": 74.94,
+  "final_review_regressions_passed": true,
+  "windows_migration_line_endings_tested": true,
+  "concurrent_detail_snapshot_tested": true,
+  "sanitised_database_outage_tested": true
+}

@@ -1,0 +1,14 @@
+{
+  "fixture_event": true,
+  "workspace_id": "ws-demo",
+  "tender_id": "tender-demo",
+  "requirement_key": "R4",
+  "acting_user_id": "user-engineer",
+  "expected_routing_role": "engineering_lead",
+  "recorded_at": "2026-10-27T09:00:00+08:00",
+  "response_kind": "confirmed",
+  "text": "I confirm that two FM-T2 qualified technicians are available for SKY-FM-2026-01 every Saturday from 09:00 to 13:00 for the 36-month contract starting 1 January 2027. This confirmation covers two technicians only. Alex Tan, engineering lead.",
+  "evidence_version_id": "engineering-answer-v1",
+  "anchor_id": "engineering-answer-v1-note",
+  "usage": "Test event only. In the application, the authenticated assigned reviewer submits this text through the answer endpoint. The server derives identity and authority; do not trust acting_user_id or expected_routing_role from user-provided JSON."
+}

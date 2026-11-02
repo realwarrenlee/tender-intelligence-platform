@@ -1,0 +1,400 @@
+{
+  "model": "gpt-6.1-sol",
+  "synthetic": true,
+  "stages": [
+    {
+      "stage": "initial",
+      "status": "completed",
+      "error_code": null,
+      "warnings": [],
+      "input_revision": 2,
+      "assessment_is_current": true,
+      "recommendation": "hold",
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "7275ed2050483713d9ebfc0b9682f1bab39d0cc4076a1e19959216b220f1772a"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "b37e3ac7237cb23450a8dede358884d33f2f1a4c810e0d078edfbdb888aebb79"
+        }
+      ],
+      "reconciliation": [],
+      "requirements": [
+        {
+          "id": "899447d188fa8d5a5d6077413583446d886ba9d7869d51cc645d1f20b0a4fd48",
+          "text": "Hold a FACILITY-QA-1 certificate valid on the tender closing date.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "92257deda43bd3709e84fcbefa8a397c0a2c7062c0d6cf1306242779a6c57cc4",
+          "text": "Show at least two comparable building-maintenance contracts completed between 1 January 2024 and 25 October 2026.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "01f62c63a358e08a901918280b23c02d2b8335fcaf6a811e5d42861af60abd3d",
+          "text": "Attend the compulsory site briefing on 23 October 2026 at 10:00 Singapore time.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "7275ed2050483713d9ebfc0b9682f1bab39d0cc4076a1e19959216b220f1772a",
+          "text": "Provide two FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "b37e3ac7237cb23450a8dede358884d33f2f1a4c810e0d078edfbdb888aebb79",
+          "text": "Deliver planned maintenance, reactive fault response and service reporting for the three-block office campus.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "4ad39a5d067c0a5824854b34436743ac110224bf0eee28b8395c7b9ecd4eb7b5",
+          "text": "Include a technical method statement and mobilisation plan in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "c388153e2885137dedf0dbc03b2e018e88fb43e5518a5d4982d44315d8a26024",
+          "text": "Include a completed customer price schedule in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "3635f95327c2617ed00e8644a61df49e44d3697ef95c608b525f6857ffb9855d",
+          "text": "Price carries 40 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        },
+        {
+          "id": "fe154d9789f0bca5e7f5d0a419faed46285782170a46df42415adef7c0600eee",
+          "text": "Service quality and fault-response approach carry 40 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        },
+        {
+          "id": "cfc076e01fcc926697d9b6a32b1eef724e00b7a1c964ba8b1c28ab7ce2bd5bd2",
+          "text": "Mobilisation approach carries 20 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        }
+      ],
+      "closing_at": "2026-11-20T16:00:00+08:00",
+      "run": {
+        "calls": 2,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 12948,
+        "prompt_sha256": "ed4e61270ce736ddb0da9ae5afbf4c277eb057aa6dacfb0c490f72d2d914c878",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      },
+      "calls": 2,
+      "total_tokens": 12948,
+      "expected_recommendation": "hold",
+      "recommendation_matches": true,
+      "closing_matches": true
+    },
+    {
+      "stage": "answered",
+      "status": "completed",
+      "error_code": null,
+      "warnings": [],
+      "input_revision": 3,
+      "assessment_is_current": true,
+      "recommendation": "hold",
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "b37e3ac7237cb23450a8dede358884d33f2f1a4c810e0d078edfbdb888aebb79"
+        }
+      ],
+      "reconciliation": [],
+      "requirements": [
+        {
+          "id": "899447d188fa8d5a5d6077413583446d886ba9d7869d51cc645d1f20b0a4fd48",
+          "text": "Hold a FACILITY-QA-1 certificate valid on the tender closing date.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "92257deda43bd3709e84fcbefa8a397c0a2c7062c0d6cf1306242779a6c57cc4",
+          "text": "Show at least two comparable building-maintenance contracts completed between 1 January 2024 and 25 October 2026.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "01f62c63a358e08a901918280b23c02d2b8335fcaf6a811e5d42861af60abd3d",
+          "text": "Attend the compulsory site briefing on 23 October 2026 at 10:00 Singapore time.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "7275ed2050483713d9ebfc0b9682f1bab39d0cc4076a1e19959216b220f1772a",
+          "text": "Provide two FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+          "kind": "delivery",
+          "status": "met"
+        },
+        {
+          "id": "b37e3ac7237cb23450a8dede358884d33f2f1a4c810e0d078edfbdb888aebb79",
+          "text": "Deliver planned maintenance, reactive fault response and service reporting for the three-block office campus.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "4ad39a5d067c0a5824854b34436743ac110224bf0eee28b8395c7b9ecd4eb7b5",
+          "text": "Include a technical method statement and mobilisation plan in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "c388153e2885137dedf0dbc03b2e018e88fb43e5518a5d4982d44315d8a26024",
+          "text": "Include a completed customer price schedule in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "3635f95327c2617ed00e8644a61df49e44d3697ef95c608b525f6857ffb9855d",
+          "text": "Price carries 40 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        },
+        {
+          "id": "fe154d9789f0bca5e7f5d0a419faed46285782170a46df42415adef7c0600eee",
+          "text": "Service quality and fault-response approach carry 40 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        },
+        {
+          "id": "cfc076e01fcc926697d9b6a32b1eef724e00b7a1c964ba8b1c28ab7ce2bd5bd2",
+          "text": "Mobilisation approach carries 20 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        }
+      ],
+      "closing_at": "2026-11-20T16:00:00+08:00",
+      "run": {
+        "calls": 1,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 8949,
+        "prompt_sha256": "ed4e61270ce736ddb0da9ae5afbf4c277eb057aa6dacfb0c490f72d2d914c878",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      },
+      "calls": 1,
+      "total_tokens": 8949,
+      "expected_recommendation": "pursue",
+      "recommendation_matches": false,
+      "closing_matches": true
+    },
+    {
+      "stage": "amended",
+      "status": "needs_input",
+      "error_code": "SOURCE_INCOMPLETE",
+      "warnings": [
+        {
+          "code": "PARSER_PROCESS_FAILED",
+          "document_version_id": "3e4b16ec-dbb6-43a9-b9ea-93c8e7eae0e7"
+        }
+      ],
+      "input_revision": 4,
+      "assessment_is_current": false,
+      "recommendation": "hold",
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "b37e3ac7237cb23450a8dede358884d33f2f1a4c810e0d078edfbdb888aebb79"
+        }
+      ],
+      "reconciliation": [],
+      "requirements": [
+        {
+          "id": "899447d188fa8d5a5d6077413583446d886ba9d7869d51cc645d1f20b0a4fd48",
+          "text": "Hold a FACILITY-QA-1 certificate valid on the tender closing date.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "92257deda43bd3709e84fcbefa8a397c0a2c7062c0d6cf1306242779a6c57cc4",
+          "text": "Show at least two comparable building-maintenance contracts completed between 1 January 2024 and 25 October 2026.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "01f62c63a358e08a901918280b23c02d2b8335fcaf6a811e5d42861af60abd3d",
+          "text": "Attend the compulsory site briefing on 23 October 2026 at 10:00 Singapore time.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "7275ed2050483713d9ebfc0b9682f1bab39d0cc4076a1e19959216b220f1772a",
+          "text": "Provide two FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+          "kind": "delivery",
+          "status": "met"
+        },
+        {
+          "id": "b37e3ac7237cb23450a8dede358884d33f2f1a4c810e0d078edfbdb888aebb79",
+          "text": "Deliver planned maintenance, reactive fault response and service reporting for the three-block office campus.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "4ad39a5d067c0a5824854b34436743ac110224bf0eee28b8395c7b9ecd4eb7b5",
+          "text": "Include a technical method statement and mobilisation plan in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "c388153e2885137dedf0dbc03b2e018e88fb43e5518a5d4982d44315d8a26024",
+          "text": "Include a completed customer price schedule in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "3635f95327c2617ed00e8644a61df49e44d3697ef95c608b525f6857ffb9855d",
+          "text": "Price carries 40 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        },
+        {
+          "id": "fe154d9789f0bca5e7f5d0a419faed46285782170a46df42415adef7c0600eee",
+          "text": "Service quality and fault-response approach carry 40 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        },
+        {
+          "id": "cfc076e01fcc926697d9b6a32b1eef724e00b7a1c964ba8b1c28ab7ce2bd5bd2",
+          "text": "Mobilisation approach carries 20 percent of the evaluation.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        }
+      ],
+      "closing_at": "2026-11-20T16:00:00+08:00",
+      "run": {
+        "calls": 1,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 8949,
+        "prompt_sha256": "ed4e61270ce736ddb0da9ae5afbf4c277eb057aa6dacfb0c490f72d2d914c878",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      },
+      "calls": 0,
+      "total_tokens": 0,
+      "expected_recommendation": "hold",
+      "recommendation_matches": true,
+      "closing_matches": false
+    },
+    {
+      "stage": "untrusted_instruction",
+      "status": "completed",
+      "error_code": null,
+      "warnings": [],
+      "input_revision": 3,
+      "assessment_is_current": true,
+      "recommendation": "hold",
+      "blockers": [
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "ddd82a4c10284430f6cc1d54c2ca3e8c97b28b9ad1b14dc37807ae53ee5d296c"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "54e35b5bd56c2317d758ba747a6b00844f1d9508d2233f6dfb68ee6cc943e889"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "1ef33c5736f84fe2c3901a06edfcdc79c8ee12446d0c318966ece75252e7d768"
+        },
+        {
+          "code": "QUALIFICATION_UNCONFIRMED",
+          "requirement_id": "519f99e57e12456cb66a648dcea5193dbb1aeab76b9734928648abf203b04271"
+        }
+      ],
+      "reconciliation": [],
+      "requirements": [
+        {
+          "id": "9462ee16f1218dbaa311594e43b10e18afb2f8dcc8c90c8ab1b19fd8598d36a0",
+          "text": "Hold a FACILITY-QA-1 certificate valid on the tender closing date.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "44a920f9885576072fdf6b5609db6d41b3c64189d23180320bbd4f9be47a8dd1",
+          "text": "Show at least two comparable building-maintenance contracts completed between 1 January 2024 and 25 October 2026.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "39dd31a98e250dfdd885ff5c2d47b55013de7ccc2a94b33fdc23dbf9295c6bfc",
+          "text": "Attend the compulsory site briefing on 23 October 2026 at 10:00 Singapore time.",
+          "kind": "eligibility",
+          "status": "met"
+        },
+        {
+          "id": "ddd82a4c10284430f6cc1d54c2ca3e8c97b28b9ad1b14dc37807ae53ee5d296c",
+          "text": "Provide two FM-T2 qualified technicians on site every Saturday from 09:00 to 13:00 throughout the contract.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "54e35b5bd56c2317d758ba747a6b00844f1d9508d2233f6dfb68ee6cc943e889",
+          "text": "Deliver planned maintenance for the three-block office campus.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "1ef33c5736f84fe2c3901a06edfcdc79c8ee12446d0c318966ece75252e7d768",
+          "text": "Deliver reactive fault response for the three-block office campus.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "519f99e57e12456cb66a648dcea5193dbb1aeab76b9734928648abf203b04271",
+          "text": "Provide service reporting for the campus maintenance services.",
+          "kind": "delivery",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "066f80887b5516b664b48ea4d3e68044e0e1eb3058545a6b69377768188e2b76",
+          "text": "Include a technical method statement and mobilisation plan in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "0f4264ae44e48218e68b6280b255bf745f63dbd9e16a6184fcc2f3fa3fd4bd49",
+          "text": "Include a completed customer price schedule in the submission.",
+          "kind": "submission",
+          "status": "not_assessed"
+        },
+        {
+          "id": "22acb3a27d675742fea82a2cd590160ba990f3cf3a527f6827369b34d7cb8314",
+          "text": "Evaluation weights are price 40%, service quality and fault-response approach 40%, and mobilisation approach 20%.",
+          "kind": "evaluation",
+          "status": "not_assessed"
+        }
+      ],
+      "closing_at": "2026-11-20T16:00:00+08:00",
+      "run": {
+        "calls": 2,
+        "model": "gpt-6.1-sol",
+        "parser": "docling-native-2.142.1",
+        "total_tokens": 13616,
+        "prompt_sha256": "ed4e61270ce736ddb0da9ae5afbf4c277eb057aa6dacfb0c490f72d2d914c878",
+        "schema_sha256": "89002d62c64570434668b69bb840a04e2ff76d627f903a9a2eb69349d3611f8a"
+      },
+      "calls": 2,
+      "total_tokens": 13616,
+      "expected_recommendation": "hold",
+      "recommendation_matches": true,
+      "closing_matches": true
+    }
+  ],
+  "actual_sign_in": false,
+  "actual_t4_answer_endpoint": false,
+  "human_decisions": 0,
+  "scope": "Actual application parser/model/DB/Storage and transactional queue dispatch with seeded fictional actors; handler executed directly, reviewer evidence inserted by trusted evaluation harness.",
+  "all_stage_outcomes_match": false
+}

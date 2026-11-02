@@ -1,0 +1,26 @@
+{
+  "stage": "initial",
+  "attempts": [
+    {
+      "response_id": "resp_0606df3c57c99d99016adc17226cec87d086918a4f5e9243ca",
+      "status": "completed",
+      "model": "gpt-6.1-sol",
+      "usage": {
+        "input_tokens": 1938,
+        "input_tokens_details": {
+          "cache_write_tokens": 1935,
+          "cached_tokens": 0
+        },
+        "output_tokens": 2960,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 4898
+      }
+    }
+  ],
+  "validation_errors": [],
+  "seconds": 40.859,
+  "prompt_sha256": "2c9909d123453b5c300c17e5a2eecf6e86c63c08eff04794e1952756595cf3c5",
+  "human_semantic_review_required": true
+}

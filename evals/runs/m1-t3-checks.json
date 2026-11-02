@@ -1,0 +1,36 @@
+{
+  "runtime": "WSL Python 3.12.13",
+  "full_suite": {
+    "passed": 90,
+    "seconds": 533.95
+  },
+  "focused_post_review": {
+    "passed": 39,
+    "seconds": 247.87
+  },
+  "pre_review_windows": {
+    "passed": 82,
+    "seconds": 466.2
+  },
+  "pre_review_wsl": {
+    "passed": 82,
+    "seconds": 396.77
+  },
+  "live_linux": {
+    "calls": 10,
+    "reported_tokens": 89577,
+    "all_original_outcomes_match": false,
+    "supplemental_scope_clarification_pursue": true
+  },
+  "offline_saved_candidate_revalidation": {
+    "accepted": 5,
+    "candidate_citations": 151,
+    "reconstructed_fixture_anchors": true
+  },
+  "fixture_verifier": "pass; original answer key preserved",
+  "lock_consistency": "pass",
+  "targeted_ruff_f": "pass; pre-existing routes.py F401 excluded",
+  "actual_sign_in": false,
+  "actual_t4_answer_endpoint": false,
+  "model_worker_crash_recovery": "not tested; parser-only recovery passed"
+}
