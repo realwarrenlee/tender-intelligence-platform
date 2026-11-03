@@ -2,7 +2,7 @@
 
 Help a facilities management bid team decide which tenders deserve preparation effort by connecting source evidence, company knowledge, specialist input and accountable decisions. The challenge requirements are in [BRIEF.md](BRIEF.md).
 
-The current prototype covers qualification and internal coordination. Engineering checks and a reviewed PUB case demonstrate controlled behaviour; independent usefulness, customer acceptance and time savings remain unproven. See [VALIDATION.md](VALIDATION.md).
+The current prototype covers qualification and internal coordination. Engineering checks and a reviewed PUB case demonstrate controlled behaviour; independent usefulness, customer acceptance and time savings remain unproven. See [VALIDATION.md](../engineering/VALIDATION.md).
 
 ## What is implemented
 
@@ -48,7 +48,7 @@ Missing company evidence means **unconfirmed**. A supported failure must be expl
 
 New screenings add a bounded overview evidence set alongside the six critical excerpts. Missing facts and conflicting terms become source-linked draft questions with a suggested function. The bid owner confirms a named reviewer and deadline; the brief shows that assignment. Ordinary unfinished submission outputs and future duties can remain unconfirmed during Qualification only under the conservative preparation-role rules, with exact timing support and an explicit human approval condition. Eligibility, scored thresholds, present material risk, unknown timing and evidenced failures cannot use that exception. Older unclassified findings remain conservative. Model labels and exact quotes still require domain review; they do not establish semantic accuracy.
 
-The current PUB case needs reassessment: bidding-entity evidence, the closing date/amendments and material source gaps remain unresolved. The first rerun's uncited site extract was rejected; its fallback retained twelve earlier findings with a null summary. The repaired producer subsequently returned a source-supported overview, including site-transition qualifiers, but the full response hit its output cap. Offline repairs now support references to unchanged validated findings and reserve bounded input-count headroom. The one-token usage discrepancy was settled through an audited operation, preserving the original limits and receipt. No new qualification artifact was created; earlier artifacts remain in history and are non-current under the latest-job fence. Spending is paused. Live outcomes and offline engineering evidence are recorded separately in [validation](VALIDATION.md); live output quality and representative acceptance remain open.
+The current PUB case needs reassessment: bidding-entity evidence, the closing date/amendments and material source gaps remain unresolved. The first rerun's uncited site extract was rejected; its fallback retained twelve earlier findings with a null summary. The repaired producer subsequently returned a source-supported overview, including site-transition qualifiers, but the full response hit its output cap. Offline repairs now support references to unchanged validated findings and reserve bounded input-count headroom. The one-token usage discrepancy was settled through an audited operation, preserving the original limits and receipt. No new qualification artifact was created; earlier artifacts remain in history and are non-current under the latest-job fence. Spending is paused. Live outcomes and offline engineering evidence are recorded separately in [validation](../engineering/VALIDATION.md); live output quality and representative acceptance remain open.
 
 ## Wider product scope
 
@@ -83,4 +83,4 @@ Proposal drafting lives under the Technical response deliverable. The bid owner 
 
 The challenge's 30–50% effort reduction and at least 70% selected-output accuracy are targets, not achieved results. Review and correction count toward effort. Critical dates, mandatory gates, claim support and arithmetic need separate checks.
 
-Custom development is justified only if this workflow shows a repeatable advantage over suitable products or a configured general agent. Configuration, integration and partnership remain valid outcomes; willingness to use and pay is still unknown. Earlier competitor/reuse research is retained in the [research archive](RESEARCH.md); it is not evidence of current product superiority.
+Custom development is justified only if this workflow shows a repeatable advantage over suitable products or a configured general agent. Configuration, integration and partnership remain valid outcomes; willingness to use and pay is still unknown. Earlier competitor/reuse research is retained in the [research archive](../research/RESEARCH.md); it is not evidence of current product superiority.

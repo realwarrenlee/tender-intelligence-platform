@@ -39,7 +39,7 @@ The default legacy workflow supports uploaded sources, cited assessments, compan
 
 Model calls require explicit model prices and applicable approved spending authority; enabling the workflow does not grant either. Preparation approval is a business decision and does not authorise provider spend. A source citation identifies its location; a person must still assess semantic support.
 
-Tender intake accepts PDF, DOCX, DOC, XLSX and PPTX, with limits of 100 files, 20 MiB per file, 100 MiB per pack, 2,000 PDF pages and 20 million extracted characters. Legacy DOC extraction requires `antiword`. Scans, drawings and other unsupported visual content remain visible coverage gaps; native extraction is not OCR. See the [runtime rules](../../ARCHITECTURE.md#model-and-human-authority) and [product workflow](../../PRODUCT.md#preparation-journey) for behavior and limits.
+Tender intake accepts PDF, DOCX, DOC, XLSX and PPTX, with limits of 100 files, 20 MiB per file, 100 MiB per pack, 2,000 PDF pages and 20 million extracted characters. Legacy DOC extraction requires `antiword`. Scans, drawings and other unsupported visual content remain visible coverage gaps; native extraction is not OCR. See the [runtime rules](../../docs/engineering/ARCHITECTURE.md#model-and-human-authority) and [product workflow](../../docs/product/PRODUCT.md#preparation-journey) for behavior and limits.
 
 A Member or Admin can delete a tender from the active workspace; documents and history are retained for recovery. There is no restore screen.
 
@@ -66,7 +66,7 @@ New producers also supply `overview_issues` and nullable finding `preparation_ro
 
 The private Responses schema uses exact quote-or-null overview fields. The server constructs their public display/citation pairs and validates them against the pinned native excerpts. The public summary schema remains unchanged. This addresses the observed live candidate with a 1,000-character uncited sites value; that rejected candidate and its saved fallback remain unchanged. The repair has controlled coverage and still requires a new authorised live check.
 
-See the [validation record](../../VALIDATION.md) for actual trial results and remaining evidence gaps.
+See the [validation record](../../docs/engineering/VALIDATION.md) for actual trial results and remaining evidence gaps.
 
 Run `uv run --directory apps/api python -m tools.reconcile_usage --help` for usage reconciliation. See the [evaluation index](../../evals/README.md) for current checks and archived runs.
 

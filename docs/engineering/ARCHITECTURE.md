@@ -47,8 +47,6 @@ The root opens `/tenders`. Legacy Inbox and Reviews derive actions from authoris
 
 The board displays backend assessment status without mutating decisions. AI recommendations, source currency and human decisions remain distinct. A paginated workspace-task endpoint is deferred until data volume warrants it. Appearance has persistent Light/Dark tabs; Profile shows the account image, email, name and role read-only.
 
-Source and licence information is recorded in [THIRD_PARTY.md](apps/web/licenses/README.md) and [the adaptation record](apps/web/licenses/README.md).
-
 ## Domain records
 
 Tenders, source versions, accepted company evidence, assessments, screening artifacts, review tasks, decisions and jobs are workspace-scoped. Sources and accepted outputs retain their immutable versions and input manifests. Review and decision history is not rewritten when later inputs change. Chat is separate from authoritative evidence or approval records.
@@ -89,7 +87,7 @@ The server supplies user and workspace identity; a model cannot choose its own a
 
 Source changes invalidate affected current work. An amendment may supersede particular clauses while leaving other original clauses effective. Unclear precedence or impact requires review; history and source references remain available.
 
-The machine-readable contracts are [analysis.schema.json](contracts/qualification/analysis.schema.json), [screening.schema.json](contracts/qualification/screening.schema.json) and the [API schema](contracts/qualification-openapi.json). Implemented limits, tools and validation live in the API modules rather than a separate prose specification.
+The machine-readable contracts are [analysis.schema.json](../../contracts/qualification/analysis.schema.json), [screening.schema.json](../../contracts/qualification/screening.schema.json) and the [API schema](../../contracts/qualification-openapi.json). Implemented limits, tools and validation live in the API modules rather than a separate prose specification.
 
 Findings need permitted source support; missing evidence remains unconfirmed. Scoped answers cannot confirm a changed obligation. Critical screening reasons must quote the cited mandatory/exclusion consequence verbatim. Partial material coverage, conflicting deadlines and stale company evidence remain blockers; a valid quotation alone does not prove semantic correctness.
 

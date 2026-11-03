@@ -31,7 +31,7 @@ Each row shows the next qualification or preparation action, who needs to act, t
 
 The workflow has been exercised with controlled examples. Quote comparison supports one service package, and proposal drafting covers selected sections using approved wording. Preparation and Submission currently cover two deliverables. On a live bid, the team must verify the latest addenda, closing time, and every form, declaration, signature and attachment the buyer requires.
 
-The full challenge brief also calls for broader portal coverage, RFQ follow-up, general costing workbook checks, and learning from past bids. The live PUB qualification case still needs reassessment. The brief’s targets of **30–50% less time** on selected tasks and **at least 70% accuracy** on selected AI outputs remain unverified. See the [validation record](VALIDATION.md) for test evidence and pilot gates.
+The full challenge brief also calls for broader portal coverage, RFQ follow-up, general costing workbook checks, and learning from past bids. The live PUB qualification case still needs reassessment. The brief’s targets of **30–50% less time** on selected tasks and **at least 70% accuracy** on selected AI outputs remain unverified. See the [validation record](docs/engineering/VALIDATION.md) for test evidence and pilot gates.
 
 ## Run locally
 
@@ -47,9 +47,10 @@ To try the newer workflow, follow the [controlled setup instructions](SETUP.md#c
 | `apps/api/` | FastAPI service, Python worker and API tests |
 | `contracts/` | Output schemas and generated API contract |
 | `supabase/migrations/` | Database migration history |
+| [`docs/`](docs/README.md) | Engineering, product, and research documentation |
 | [`evals/`](evals/README.md) | Evaluation fixtures, answer keys and run records |
 
-- [Challenge brief](BRIEF.md) for CBM’s requirements and success measures
-- [Product direction](PRODUCT.md) for workflow details, roles and rollout scope
-- [Architecture](ARCHITECTURE.md) for system components and runtime rules
-- [Company reference](COMPANY.md) for the background used to develop company evidence
+- [Challenge brief](docs/product/BRIEF.md) for CBM’s requirements and success measures
+- [Product direction](docs/product/PRODUCT.md) for workflow details, roles and rollout scope
+- [Architecture](docs/engineering/ARCHITECTURE.md) for system components and runtime rules
+- [Company reference](docs/research/COMPANY.md) for the background used to develop company evidence

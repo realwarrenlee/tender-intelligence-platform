@@ -17,8 +17,8 @@ supabase/.temp/
 evals/runs/local/
 evals/archive/
 evals/fixtures/
+docs/superpowers/
 output/
-docs/
 
-# Requested local MVP account/password table.
+# Local MVP account/password table.
 /MEMBERS.md

@@ -1,6 +1,6 @@
 # Web workspace
 
-The frontend uses Next.js App Router, React, the retained Circle desktop shell, Supabase browser sessions and TanStack Query. It connects to the FastAPI backend; the original Circle demo data and screens have been removed.
+The frontend uses Next.js App Router, React, the retained Linear adapted desktop shell, Supabase browser sessions and TanStack Query. It connects to the FastAPI backend.
 
 ## Run locally
 
@@ -48,7 +48,3 @@ pnpm --dir apps/web check:proxy
 ```
 
 `start` requires a production build; run the route check in a separate terminal with the frontend and API running. The proxy check starts its own isolated frontend and mock API, with no model calls. For contract changes, regenerate the OpenAPI file and browser types using the [API guide](../api/README.md).
-
-## Attribution
-
-See the [Circle adaptation record](licenses/README.md), [Circle notice](licenses/circle-MIT.txt), [shadcn-admin notice](LICENSE), [notice index](licenses/README.md) and [dependency inventory](licenses/README.md).
