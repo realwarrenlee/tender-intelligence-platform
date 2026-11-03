@@ -12,7 +12,7 @@ from uuid import UUID
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"apps/api"))
 
-from app.m1.policy import DomainError
+from app.tenders.policy import DomainError
 
 
 def label_status(manifest):
@@ -118,8 +118,8 @@ async def execute(args,manifest):
         raise DomainError(422,"FORBIDDEN","Live evaluation requires an explicit real actor and workspace scope.")
     from app.config import get_settings
     from app.db import create_pool
-    from app.m1.models import ActorContext
-    from app.m1.decisions_client import DecisionsClient
+    from app.tenders.models import ActorContext
+    from app.tenders.decisions_client import DecisionsClient
     pool=await create_pool()
     try:
         settings=get_settings()

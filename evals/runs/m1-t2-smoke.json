@@ -1,7 +1,0 @@
-{
-  "health_status": 200,
-  "unauthenticated_job_status": 401,
-  "openapi_status": 200,
-  "t2_routes_present": true,
-  "url": "http://127.0.0.1:8765/docs"
-}

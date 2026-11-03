@@ -15,9 +15,10 @@ supabase/.temp/
 
 # Raw model output and extracted runtime inputs stay local.
 evals/runs/local/
+evals/archive/
+evals/fixtures/
 output/
 docs/
 
-# Local quarantine for obsolete files and pre-cleanup copies.
-remove/
-PUB's Tender/
+# Requested local MVP account/password table.
+/MEMBERS.md

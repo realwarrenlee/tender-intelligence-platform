@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { Login } from '@/features/qualification/session'
+import { Login } from '@/features/workspace/session'
 import { Providers } from '../providers'
 
 export default function SignInPage() {

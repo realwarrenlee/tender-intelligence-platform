@@ -1,6 +1,6 @@
 'use client'
-import { Members } from '@/features/qualification/members'
-import { useSession } from '@/features/qualification/session'
+import { Members } from '@/features/workspace/members'
+import { useSession } from '@/features/workspace/session'
 
 export default function Page() {
   const { actor, api } = useSession()

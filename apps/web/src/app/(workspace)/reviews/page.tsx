@@ -1,6 +1,6 @@
 'use client'
-import { useSession } from '@/features/qualification/session'
-import { ReviewWork } from '@/features/qualification/workspace-activity'
+import { useSession } from '@/features/workspace/session'
+import { ReviewWork } from '@/features/workspace/workspace-activity'
 
 export default function Page() {
   const { actor, api } = useSession()

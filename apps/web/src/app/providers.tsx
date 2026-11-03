@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { DirectionProvider } from '@/context/direction-provider'
-import { SessionProvider } from '@/features/qualification/session'
+import { SessionProvider } from '@/features/workspace/session'
 
 const subscribe = () => () => {}
 export function Providers({ children }: { children: React.ReactNode }) {

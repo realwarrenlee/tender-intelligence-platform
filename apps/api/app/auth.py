@@ -5,8 +5,8 @@ from fastapi import Depends, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.config import get_settings
-from app.m1.models import ActorContext
-from app.m1.policy import DomainError
+from app.tenders.models import ActorContext
+from app.tenders.policy import DomainError
 
 bearer = HTTPBearer(auto_error=False)
 

@@ -31,7 +31,7 @@ async def migrate():
             async with connection.transaction():
                 await connection.execute(sql)
                 await connection.execute("INSERT INTO m1_app.schema_migrations(name,sha256) VALUES($1,$2)",path.name,digest)
-        from app.m1.jobs import setup_queue
+        from app.tenders.jobs import setup_queue
         await setup_queue(connection)
     finally:
         await connection.close()

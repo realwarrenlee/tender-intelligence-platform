@@ -1,7 +1,7 @@
 from functools import lru_cache
 
-from app.m1.usage_budget import ModelPrice
-from app.m1.notice_sources import NoticeJob
+from app.tenders.usage_budget import ModelPrice
+from app.tenders.notice_sources import NoticeJob
 from pathlib import Path
 
 from pydantic import SecretStr
@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     openai_decisions_model: str | None = None
     notice_source_jobs: list[NoticeJob] = []
     qualification_workflow_enabled: bool = False
+    preparation_tracking_enabled: bool = False
+    submission_control_enabled: bool = False
 
 
 @lru_cache

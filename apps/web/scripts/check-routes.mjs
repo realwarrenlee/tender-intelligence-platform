@@ -25,6 +25,8 @@ for (const path of [
   '/members',
   '/tenders',
   '/tenders/route-smoke',
+  '/tenders/route-smoke?section=preparation',
+  '/tenders/route-smoke?section=submission',
   '/settings',
   '/company',
 ]) {

@@ -2,7 +2,7 @@
 
 | Source | Where it is used | Full notice |
 |---|---|---|
-| Circle by lndev-ui, copyright 2025 | Retained desktop frame, sidebar/UI primitives, split panes and theme tokens in `src/circle/` | [circle-MIT.txt](circle-MIT.txt) |
+| Circle by lndev-ui, copyright 2025 | Retained desktop frame, sidebar/UI primitives, split panes and theme tokens in `src/components/` and `src/app/globals.css` | [circle-MIT.txt](circle-MIT.txt) |
 | shadcn-admin by Sat Naing, copyright 2024 | Retained qualification UI components and original template tooling | [../LICENSE](../LICENSE) |
 
 Keep both notices with their respective copied source. The Sat Naing notice was retained when the frontend migrated to Next.js; Circle's notice does not replace it.

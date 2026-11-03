@@ -7,10 +7,10 @@ from fastapi.responses import JSONResponse
 import httpx
 
 from app.db import create_pool
-from app.m1.policy import DomainError
-from app.m1.repository import Repository
-from app.m1.routes import router
-from app.m1.storage import SourceStorage
+from app.tenders.policy import DomainError
+from app.tenders.repository import Repository
+from app.tenders.routes import router
+from app.tenders.storage import SourceStorage
 
 
 def create_app():

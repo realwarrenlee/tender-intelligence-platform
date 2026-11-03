@@ -37,9 +37,9 @@ The application uses Next.js App Router, React and TypeScript; FastAPI and Pydan
 | Path | Responsibility |
 |---|---|
 | `apps/web/src/app/layout.tsx` | Shared fonts, persistent theme provider and toast host. |
-| `apps/web/src/circle/` | Retained desktop frame/sidebar, UI primitives, split panes and standard theme tokens. |
+| `apps/web/src/components/`, `hooks/` and `app/globals.css` | Shared desktop frame/sidebar, UI primitives, split panes and theme tokens. |
 | `apps/web/src/app/(workspace)/` | Protected Tenders, Inbox, Reviews, Members, Company profile, a single Settings page for Appearance and Profile. |
-| `apps/web/src/features/qualification/` | Existing business controls plus real-data workspace views. |
+| `apps/web/src/features/workspace/` | Existing business controls plus real-data workspace views. |
 | `apps/web/src/app/sign-in/` | Supabase sign-in and restricted post-login destinations. |
 | `apps/web/next.config.ts` | Root-to-Tenders and compatibility redirects, shared public environment values and API proxy. |
 
@@ -53,7 +53,13 @@ Source and licence information is recorded in [THIRD_PARTY.md](apps/web/licenses
 
 Tenders, source versions, accepted company evidence, assessments, screening artifacts, review tasks, decisions and jobs are workspace-scoped. Sources and accepted outputs retain their immutable versions and input manifests. Review and decision history is not rewritten when later inputs change. Chat is separate from authoritative evidence or approval records.
 
+The existing bounded screening call produces a required nullable `QualificationSummary`: buyer, reference, scope, contract period and sites. Each non-null field is a verbatim extract within an exact quote from a tender/addendum excerpt in the pinned source index; unknown fields have no citations. Persisted `screening.v1` reads default a missing summary to null. Each new artifact supplies its own summary, without merging earlier values; conservative fallback briefs retain prior findings under existing rules but have a null summary. The existing workspace/tender-scoped source read also resolves summary-only anchors against that artifact's pinned index. These extracts confer no semantic acceptance, eligibility status, date or business authority, and use no additional provider call or enlarged context allowance. Closing-time validation remains separate. Reassessment supplies prior obligation IDs, kinds, due stages, critical flags and exact tender citations to the model, preserving the full earlier artifacts on the server without repeating their draft prose in the bounded request.
+
+The private provider schema now uses `ProducerInterpretation` with `QuotedOverview`: each fact is one to three exact `{anchor_id, quote}` entries or null. The server derives the public display value from the first quote and retains all entries as citations, then applies the unchanged pinned-source and domain validation. Additional quotes preserve material qualifiers without concatenating them into a fabricated extract. This removes duplicated model-generated text and the structural possibility of a populated but uncited fact. Quotes still need exact native support and semantic review. The public artifact/OpenAPI shape, older reads, spending controls and output/context limits are unchanged; deploy API and worker together for the private producer change.
+
 ## Source processing and retrieval
+
+Qualification supplements the six critical excerpts with `SourceIndex.retrieve_overview`: labelled identity, named-site/transition and differing term passages from the same native tender/addendum index, capped at 5,000 serialized UTF-8 bytes. Validation retains separate windows per anchor; quotations cannot cross a fabricated window boundary. The reasoning wire samples four deferred names and eight gaps with full counts/truncation flags; saved coverage remains complete. Compact JSON, overview metadata and classifier labels preserve the existing 49,152-byte input guard, 6,000 output-token cap and single reasoning call. Oversized contexts still stop before dispatch.
 
 1. Validate a supported upload and preserve the original bytes and hash. Record every file before parsing begins.
 2. Parse to text/tables plus source locations. Store a manifest with complete/partial/failed status and the reason. Scanned or unreadable sections require visible review.
@@ -72,6 +78,12 @@ Current screening/preparation reads are fenced by the latest screening job gener
 The shared source API accepts screening versions and resolves only cited native anchors and attributed scoped answers within the workspace/tender, including historical source pins. Review lists carry bounded summaries; exact detail is fetched on opening one case. Preparation decisions and old artifact/task records remain immutable history. New private preparation_decisions has RLS enabled and no anon/authenticated CRUD grants. Rollback blocks legacy enqueue for cases that have entered screening while preserving legacy-only behavior.
 
 ## Model and human authority
+
+New producer findings require nullable `preparation_role` and exact `preparation_basis`; stored findings default both to null. Conditional roles require unconfirmed status, explicitly nonmaterial present impact and the permitted kind/timing, with conservative exclusions for observable entry/financial gates. Every such finding requires a human condition even when `material_now=false`; the server derives required IDs again at approval. `overview_issues` is required from new producers and optional for stored reads. Conflicts require distinct exact passages and an unknown affected fact; they retain wider review and cannot restore an older closing date. Source reads include issue-only citations under the same pinned index and workspace/tender scope.
+
+Overview task manifests pin the field and enqueue an empty affected-finding list. An overview answer cannot reclassify findings, and scoped finding answers preserve kind, timing, criticality/basis, materiality, role/basis and tender citations. Same-source known critical classifications and source conflicts remain conservative; changed classification requires wider investigation and a source conflict needs source clarification. Older accepted answer scopes are not silently expanded. No stored version is rewritten.
+
+Conflict retention uses a separate `tender_source_signature` over tender/addendum document identity/hash/role and notice version. Company updates therefore cannot clear a contract-period or deadline conflict; answer currency continues using the broader existing signature. For older artifacts, the tender identity is derived from the pinned native manifest under workspace/tender scope without rewriting history. An unresolvable old identity retains the conflict conservatively. Overview selection enumerates up to eight labelled positions per bounded native match, allowing differing terms on the same anchor without joining their quotations.
 
 The server supplies user and workspace identity; a model cannot choose its own authority. Model outputs are validated candidates, not human answers or decisions. Users confirm review requests and authorised humans make decisions through application commands. The bounded assistant can retrieve permitted evidence, explain a pinned assessment and prepare a review-request draft; it cannot approve, assign, send messages or access a general shell.
 

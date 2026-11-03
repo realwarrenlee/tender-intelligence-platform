@@ -4,10 +4,9 @@ The FastAPI application serves authenticated, workspace-scoped tender data and c
 
 ## Local setup
 
-Run these commands from the repository root in WSL. Use a Linux environment outside the Windows checkout and set the same environment variable in each API, worker and test terminal:
+Run these commands from the repository root in WSL. If you use the cached WSL environment, first run `export UV_PROJECT_ENVIRONMENT="$HOME/.cache/tender-api-venv"` in each API, worker and test terminal.
 
 ```bash
-export UV_PROJECT_ENVIRONMENT="$HOME/.cache/tender-api-venv"
 uv sync --frozen --project apps/api --python 3.12
 ```
 
@@ -15,17 +14,12 @@ Configure the root `.env` as described in [setup](../../SETUP.md). For a new dev
 
 ```bash
 uv run --directory apps/api python -m app.db
-uv run --directory apps/api python -m app.m1.storage
+uv run --directory apps/api python -m app.tenders.storage
 ```
 
 These commands modify the configured database and Storage project. The migration command also installs/verifies the PgQueuer schema and records application migration hashes; do not apply the same migrations through another tool without reconciling migration history. The bucket command refuses an existing public bucket. Neither command runs automatically when the API starts.
 
-Start the API and, in a separate terminal, the worker:
-
-```bash
-uv run --directory apps/api uvicorn app.main:app --host 127.0.0.1 --port 8765
-uv run --directory apps/api python -m app.m1.jobs
-```
+Use the [startup commands](../../SETUP.md#run-locally) to run the API and worker in separate terminals.
 
 The worker needs the same root environment and workflow flag as the API. Local endpoints include `/health`, `/docs` and authenticated `/api/v1/*`.
 
@@ -47,13 +41,13 @@ Model calls require explicit model prices and applicable approved spending autho
 
 Tender intake accepts PDF, DOCX, DOC, XLSX and PPTX, with limits of 100 files, 20 MiB per file, 100 MiB per pack, 2,000 PDF pages and 20 million extracted characters. Legacy DOC extraction requires `antiword`. Scans, drawings and other unsupported visual content remain visible coverage gaps; native extraction is not OCR. See the [runtime rules](../../ARCHITECTURE.md#model-and-human-authority) and [product workflow](../../PRODUCT.md#preparation-journey) for behavior and limits.
 
-A bid owner can delete a tender from the active workspace; documents and history are retained for recovery. There is no restore screen.
+A Member or Admin can delete a tender from the active workspace; documents and history are retained for recovery. There is no restore screen.
 
 ## Checks and generated types
 
 ```bash
 uv run --project apps/api pytest apps/api/tests -q
-uv run --directory apps/api python -m evals.export_openapi --check
+uv run --directory apps/api python -m tools.export_openapi --check
 ```
 
 The API test suite uses the configured development database and Storage, creates and removes its own fictional test records, and runs migration/bucket setup. Stop a development worker before running it so it cannot consume test jobs. Ordinary tests use controlled model responses rather than paid calls.
@@ -61,9 +55,19 @@ The API test suite uses the configured development database and Storage, creates
 After changing API models or routes, regenerate the contract and browser types:
 
 ```bash
-uv run --directory apps/api python -m evals.export_openapi
+uv run --directory apps/api python -m tools.export_openapi
 pnpm --dir apps/web api:types
-uv run --directory apps/api python -m evals.export_openapi --check
+uv run --directory apps/api python -m tools.export_openapi --check
 ```
 
+The exporter generates/checks both OpenAPI and `contracts/qualification/screening.schema.json` without runtime services. Screening producers must explicitly supply the nullable `summary` with five source-backed candidate extracts; older persisted artifacts can omit it. Deploy/restart the API and worker together for this producer-contract change. Saved artifacts are not rewritten or automatically re-screened. New null summaries, unknown fields and conservative fallback briefs never inherit an older summary. Source links use the artifact's existing pinned, workspace-scoped source route. Exact quotation does not establish semantic correctness or change preparation authority.
+
+New producers also supply `overview_issues` and nullable finding `preparation_role`/`preparation_basis`. The native overview read adds at most 5,000 bytes without replacing critical excerpts or increasing the 49,152-byte reasoning input guard. Conditional preparation work/future duties remain unconfirmed and require human conditions, including when present materiality is false; unknown/legacy classifications keep conservative blockers. Overview answers pin a field and cannot change findings. API and worker must use the same contract; deploy them together. No migrations, automatic re-screening, new provider call or spending authority accompanies this change.
+
+The private Responses schema uses exact quote-or-null overview fields. The server constructs their public display/citation pairs and validates them against the pinned native excerpts. The public summary schema remains unchanged. This addresses the observed live candidate with a 1,000-character uncited sites value; that rejected candidate and its saved fallback remain unchanged. The repair has controlled coverage and still requires a new authorised live check.
+
 See the [validation record](../../VALIDATION.md) for actual trial results and remaining evidence gaps.
+
+Run `uv run --directory apps/api python -m tools.reconcile_usage --help` for usage reconciliation. See the [evaluation index](../../evals/README.md) for current checks and archived runs.
+
+MVP memberships have exactly one access level: `admin`, `member` or `viewer`. Admin includes Member permissions; tender ownership and named task assignments still apply. The role migration preserves historical actors and decisions. Existing development sign-ins are recorded locally in the ignored `MEMBERS.md`.

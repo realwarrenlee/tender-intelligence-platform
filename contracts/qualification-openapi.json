@@ -4,6 +4,11 @@
       "ActorView": {
         "additionalProperties": false,
         "properties": {
+          "preparation_tracking_enabled": {
+            "default": false,
+            "title": "Preparation Tracking Enabled",
+            "type": "boolean"
+          },
           "qualification_workflow_enabled": {
             "default": false,
             "title": "Qualification Workflow Enabled",
@@ -12,9 +17,7 @@
           "roles": {
             "items": {
               "enum": [
-                "bid_owner",
-                "service_reviewer",
-                "approver",
+                "member",
                 "admin",
                 "viewer"
               ],
@@ -28,6 +31,17 @@
             "const": "m1.v1",
             "title": "Schema Version",
             "type": "string"
+          },
+          "submission_control_enabled": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submission Control Enabled"
           },
           "user_id": {
             "format": "uuid",
@@ -135,6 +149,30 @@
           "citations"
         ],
         "title": "AnalysisWarning",
+        "type": "object"
+      },
+      "AnswerOpportunityFeedback": {
+        "additionalProperties": false,
+        "properties": {
+          "answer": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Answer",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "answer",
+          "client_request_id"
+        ],
+        "title": "AnswerOpportunityFeedback",
         "type": "object"
       },
       "AnswerReviewTask": {
@@ -705,6 +743,77 @@
         "title": "CorrectAssessment",
         "type": "object"
       },
+      "CreateDeliverable": {
+        "additionalProperties": false,
+        "properties": {
+          "approval_id": {
+            "format": "uuid",
+            "title": "Approval Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "due_at": {
+            "format": "date-time",
+            "title": "Due At",
+            "type": "string"
+          },
+          "finding_ids": {
+            "items": {
+              "maxLength": 160,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Finding Ids",
+            "type": "array"
+          },
+          "kind": {
+            "enum": [
+              "technical_response",
+              "pricing_workbook"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "owner_id": {
+            "format": "uuid",
+            "title": "Owner Id",
+            "type": "string"
+          },
+          "proposal_entity": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Entity"
+          },
+          "reviewer_id": {
+            "format": "uuid",
+            "title": "Reviewer Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "client_request_id",
+          "approval_id",
+          "kind",
+          "owner_id",
+          "reviewer_id",
+          "due_at"
+        ],
+        "title": "CreateDeliverable",
+        "type": "object"
+      },
       "CreateReviewTask": {
         "additionalProperties": false,
         "properties": {
@@ -795,6 +904,43 @@
         "title": "CreateTender",
         "type": "object"
       },
+      "DecideRelease": {
+        "additionalProperties": false,
+        "properties": {
+          "checks_confirmed": {
+            "default": false,
+            "title": "Checks Confirmed",
+            "type": "boolean"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "note": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Note",
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "approved",
+              "rejected"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "client_request_id",
+          "outcome",
+          "note"
+        ],
+        "title": "DecideRelease",
+        "type": "object"
+      },
       "DecisionView": {
         "properties": {
           "actor_id": {
@@ -882,6 +1028,178 @@
         "title": "DecisionView",
         "type": "object"
       },
+      "Deliverable": {
+        "additionalProperties": false,
+        "properties": {
+          "due_at": {
+            "format": "date-time",
+            "title": "Due At",
+            "type": "string"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/PreparationFile"
+            },
+            "title": "Files",
+            "type": "array"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/PreparationFinding"
+            },
+            "title": "Findings",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "technical_response",
+              "pricing_workbook"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "owner_id": {
+            "format": "uuid",
+            "title": "Owner Id",
+            "type": "string"
+          },
+          "permitted_actions": {
+            "items": {
+              "enum": [
+                "upload",
+                "draft_proposal",
+                "request_review",
+                "accept",
+                "request_changes",
+                "reconfirm",
+                "update_plan"
+              ],
+              "type": "string"
+            },
+            "title": "Permitted Actions",
+            "type": "array"
+          },
+          "plan_revision": {
+            "title": "Plan Revision",
+            "type": "integer"
+          },
+          "previous_plans": {
+            "items": {
+              "$ref": "#/components/schemas/PreviousPreparationPlan"
+            },
+            "title": "Previous Plans",
+            "type": "array"
+          },
+          "proposal_entity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Entity"
+          },
+          "proposal_issue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Issue"
+          },
+          "proposal_requires_confirmation": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Requires Confirmation"
+          },
+          "reviewer_id": {
+            "format": "uuid",
+            "title": "Reviewer Id",
+            "type": "string"
+          },
+          "reviews": {
+            "items": {
+              "$ref": "#/components/schemas/PreparationReview"
+            },
+            "title": "Reviews",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "screening_version_id": {
+            "format": "uuid",
+            "title": "Screening Version Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "in_review",
+              "changes_requested",
+              "accepted",
+              "non_current"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "owner_id",
+          "reviewer_id",
+          "due_at",
+          "revision",
+          "plan_revision",
+          "screening_version_id",
+          "status",
+          "findings",
+          "files",
+          "reviews",
+          "previous_plans",
+          "permitted_actions"
+        ],
+        "title": "Deliverable",
+        "type": "object"
+      },
+      "DeliverableReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "revision"
+        ],
+        "title": "DeliverableReceipt",
+        "type": "object"
+      },
       "DocumentView": {
         "properties": {
           "amends_version_id": {
@@ -956,6 +1274,63 @@
           "created_at"
         ],
         "title": "DocumentView",
+        "type": "object"
+      },
+      "DraftProposal": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "const": "draft_proposal",
+            "title": "Action",
+            "type": "string"
+          },
+          "approval_id": {
+            "format": "uuid",
+            "title": "Approval Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "company_version_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Version Id"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "selections": {
+            "additionalProperties": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "maxProperties": 30,
+            "title": "Selections",
+            "type": "object"
+          }
+        },
+        "required": [
+          "client_request_id",
+          "approval_id",
+          "expected_revision",
+          "action",
+          "company_version_id",
+          "selections"
+        ],
+        "title": "DraftProposal",
         "type": "object"
       },
       "FactCorrections": {
@@ -1098,6 +1473,36 @@
             ],
             "title": "Owner Function",
             "type": "string"
+          },
+          "preparation_basis": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Basis"
+          },
+          "preparation_role": {
+            "anyOf": [
+              {
+                "enum": [
+                  "decision_gate",
+                  "preparation_work",
+                  "future_duty",
+                  "review"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Role"
           },
           "request_question": {
             "maxLength": 1000,
@@ -1342,7 +1747,10 @@
             "enum": [
               "screening_input",
               "preparation_approval",
-              "information_request"
+              "information_request",
+              "preparation_deliverable",
+              "preparation_review",
+              "preparation_reconfirm"
             ],
             "title": "Kind",
             "type": "string"
@@ -1939,6 +2347,120 @@
         "title": "OpportunitiesView",
         "type": "object"
       },
+      "OpportunityDiscoveryView": {
+        "properties": {
+          "can_edit": {
+            "title": "Can Edit",
+            "type": "boolean"
+          },
+          "configured": {
+            "title": "Configured",
+            "type": "boolean"
+          },
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "configured",
+          "enabled",
+          "can_edit"
+        ],
+        "title": "OpportunityDiscoveryView",
+        "type": "object"
+      },
+      "OpportunityFeedbackList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OpportunityFeedbackView"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "OpportunityFeedbackList",
+        "type": "object"
+      },
+      "OpportunityFeedbackView": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "answered_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answered At"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "notice": {
+            "$ref": "#/components/schemas/NoticeSnapshot"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "recipient_id": {
+            "title": "Recipient Id",
+            "type": "string"
+          },
+          "sender_id": {
+            "title": "Sender Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "sender_id",
+          "recipient_id",
+          "question",
+          "answer",
+          "created_at",
+          "answered_at",
+          "notice"
+        ],
+        "title": "OpportunityFeedbackView",
+        "type": "object"
+      },
       "OpportunityView": {
         "properties": {
           "budget_id": {
@@ -2048,6 +2570,169 @@
           "last_checked_at"
         ],
         "title": "OpportunityView",
+        "type": "object"
+      },
+      "OversightAction": {
+        "properties": {
+          "assignee_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignee Id"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due At"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "section": {
+            "enum": [
+              "assessment",
+              "questions",
+              "preparation"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Task Id"
+          }
+        },
+        "required": [
+          "label",
+          "assignee_id",
+          "due_at",
+          "section"
+        ],
+        "title": "OversightAction",
+        "type": "object"
+      },
+      "OverviewIssue": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Support"
+            },
+            "maxItems": 3,
+            "title": "Citations",
+            "type": "array"
+          },
+          "field": {
+            "enum": [
+              "buyer",
+              "reference",
+              "scope",
+              "contract_period",
+              "sites",
+              "closing_at"
+            ],
+            "title": "Field",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "not_established",
+              "conflicting"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "question": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "kind",
+          "question",
+          "citations"
+        ],
+        "title": "OverviewIssue",
+        "type": "object"
+      },
+      "PackageId": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "PackageId",
+        "type": "object"
+      },
+      "PortalReceipt": {
+        "additionalProperties": false,
+        "properties": {
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "portal_reference": {
+            "title": "Portal Reference",
+            "type": "string"
+          },
+          "recorded_at": {
+            "format": "date-time",
+            "title": "Recorded At",
+            "type": "string"
+          },
+          "recorded_by": {
+            "format": "uuid",
+            "title": "Recorded By",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "submitted_at": {
+            "format": "date-time",
+            "title": "Submitted At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "portal_reference",
+          "submitted_at",
+          "recorded_by",
+          "recorded_at",
+          "filename",
+          "sha256"
+        ],
+        "title": "PortalReceipt",
         "type": "object"
       },
       "PreparationBudget-Input": {
@@ -2222,6 +2907,508 @@
           "currency_reason"
         ],
         "title": "PreparationDecisionView",
+        "type": "object"
+      },
+      "PreparationFile": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "format": "uuid",
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "sha256": {
+            "title": "Sha256",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "filename",
+          "sha256",
+          "actor_id",
+          "created_at"
+        ],
+        "title": "PreparationFile",
+        "type": "object"
+      },
+      "PreparationFinding": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Condition"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "citations"
+        ],
+        "title": "PreparationFinding",
+        "type": "object"
+      },
+      "PreparationProgress": {
+        "properties": {
+          "accepted": {
+            "title": "Accepted",
+            "type": "integer"
+          },
+          "non_current": {
+            "title": "Non Current",
+            "type": "integer"
+          },
+          "pending_reviews": {
+            "title": "Pending Reviews",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "accepted",
+          "pending_reviews",
+          "non_current"
+        ],
+        "title": "PreparationProgress",
+        "type": "object"
+      },
+      "PreparationReview": {
+        "additionalProperties": false,
+        "properties": {
+          "approval_id": {
+            "format": "uuid",
+            "title": "Approval Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "file_id": {
+            "format": "uuid",
+            "title": "File Id",
+            "type": "string"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "is_current": {
+            "title": "Is Current",
+            "type": "boolean"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "enum": [
+                  "accepted",
+                  "changes_requested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "plan_revision": {
+            "title": "Plan Revision",
+            "type": "integer"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "requested_by": {
+            "format": "uuid",
+            "title": "Requested By",
+            "type": "string"
+          },
+          "requirements_checked": {
+            "title": "Requirements Checked",
+            "type": "boolean"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "reviewer_id": {
+            "format": "uuid",
+            "title": "Reviewer Id",
+            "type": "string"
+          },
+          "scope": {
+            "title": "Scope",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "approval_id",
+          "file_id",
+          "plan_revision",
+          "requested_by",
+          "reviewer_id",
+          "scope",
+          "outcome",
+          "reason",
+          "created_at",
+          "reviewed_at",
+          "is_current",
+          "requirements_checked"
+        ],
+        "title": "PreparationReview",
+        "type": "object"
+      },
+      "PreparationView": {
+        "additionalProperties": false,
+        "properties": {
+          "approval_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approval Id"
+          },
+          "can_create": {
+            "title": "Can Create",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Deliverable"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          }
+        },
+        "required": [
+          "approval_id",
+          "scope",
+          "can_create",
+          "items"
+        ],
+        "title": "PreparationView",
+        "type": "object"
+      },
+      "PreviousPreparationPlan": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "format": "uuid",
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "due_at": {
+            "format": "date-time",
+            "title": "Due At",
+            "type": "string"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/PreparationFinding"
+            },
+            "title": "Findings",
+            "type": "array"
+          },
+          "owner_id": {
+            "format": "uuid",
+            "title": "Owner Id",
+            "type": "string"
+          },
+          "proposal_entity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Entity"
+          },
+          "reviewer_id": {
+            "format": "uuid",
+            "title": "Reviewer Id",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "integer"
+          },
+          "screening_version_id": {
+            "format": "uuid",
+            "title": "Screening Version Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "revision",
+          "screening_version_id",
+          "owner_id",
+          "reviewer_id",
+          "due_at",
+          "actor_id",
+          "created_at",
+          "findings"
+        ],
+        "title": "PreviousPreparationPlan",
+        "type": "object"
+      },
+      "ProposalRequirement": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "title": "Citations",
+            "type": "array"
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Condition"
+          },
+          "evidenced_failure": {
+            "title": "Evidenced Failure",
+            "type": "boolean"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "request_ref": {
+            "title": "Request Ref",
+            "type": "string"
+          },
+          "section": {
+            "enum": [
+              "Delivery approach",
+              "Qualifications and supporting evidence"
+            ],
+            "title": "Section",
+            "type": "string"
+          },
+          "statement": {
+            "title": "Statement",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "statement",
+          "citations",
+          "section",
+          "evidenced_failure",
+          "request_ref",
+          "question"
+        ],
+        "title": "ProposalRequirement",
+        "type": "object"
+      },
+      "ProposalView": {
+        "additionalProperties": false,
+        "properties": {
+          "can_request_input": {
+            "title": "Can Request Input",
+            "type": "boolean"
+          },
+          "company_filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Filename"
+          },
+          "company_version_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company Version Id"
+          },
+          "entity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity"
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/ProposalRequirement"
+            },
+            "title": "Requirements",
+            "type": "array"
+          },
+          "saved_selections": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Saved Selections"
+          },
+          "wording": {
+            "items": {
+              "$ref": "#/components/schemas/ReusableWording"
+            },
+            "title": "Wording",
+            "type": "array"
+          }
+        },
+        "required": [
+          "entity",
+          "company_version_id",
+          "company_filename",
+          "wording",
+          "requirements",
+          "can_request_input"
+        ],
+        "title": "ProposalView",
+        "type": "object"
+      },
+      "QualificationSummary": {
+        "additionalProperties": false,
+        "properties": {
+          "buyer": {
+            "$ref": "#/components/schemas/SummaryFact"
+          },
+          "contract_period": {
+            "$ref": "#/components/schemas/SummaryFact"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/SummaryFact"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/SummaryFact"
+          },
+          "sites": {
+            "$ref": "#/components/schemas/SummaryFact"
+          }
+        },
+        "required": [
+          "buyer",
+          "reference",
+          "scope",
+          "contract_period",
+          "sites"
+        ],
+        "title": "QualificationSummary",
         "type": "object"
       },
       "Recommendation": {
@@ -2536,6 +3723,128 @@
         "title": "RecordPreparationDecision",
         "type": "object"
       },
+      "ReleaseCheck": {
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "label",
+          "passed"
+        ],
+        "title": "ReleaseCheck",
+        "type": "object"
+      },
+      "ReleaseDecision": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "format": "uuid",
+            "title": "Actor Id",
+            "type": "string"
+          },
+          "decided_at": {
+            "format": "date-time",
+            "title": "Decided At",
+            "type": "string"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "approved",
+              "rejected"
+            ],
+            "title": "Outcome",
+            "type": "string"
+          }
+        },
+        "required": [
+          "outcome",
+          "actor_id",
+          "note",
+          "decided_at"
+        ],
+        "title": "ReleaseDecision",
+        "type": "object"
+      },
+      "ReleaseFile": {
+        "additionalProperties": false,
+        "properties": {
+          "file_id": {
+            "format": "uuid",
+            "title": "File Id",
+            "type": "string"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "item_id": {
+            "format": "uuid",
+            "title": "Item Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "technical_response",
+              "pricing_workbook"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "plan_revision": {
+            "title": "Plan Revision",
+            "type": "integer"
+          },
+          "requirements_checked": {
+            "title": "Requirements Checked",
+            "type": "boolean"
+          },
+          "review_id": {
+            "format": "uuid",
+            "title": "Review Id",
+            "type": "string"
+          },
+          "reviewer_id": {
+            "format": "uuid",
+            "title": "Reviewer Id",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "kind",
+          "item_id",
+          "file_id",
+          "filename",
+          "version",
+          "sha256",
+          "review_id",
+          "reviewer_id",
+          "plan_revision",
+          "requirements_checked"
+        ],
+        "title": "ReleaseFile",
+        "type": "object"
+      },
       "RequestAnalysis": {
         "additionalProperties": false,
         "properties": {
@@ -2555,6 +3864,42 @@
           "client_request_id"
         ],
         "title": "RequestAnalysis",
+        "type": "object"
+      },
+      "RequestOpportunityFeedback": {
+        "additionalProperties": false,
+        "properties": {
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "question": {
+            "maxLength": 1000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Question",
+            "type": "string"
+          },
+          "recipient_id": {
+            "format": "uuid",
+            "title": "Recipient Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_revision",
+          "recipient_id",
+          "question",
+          "client_request_id"
+        ],
+        "title": "RequestOpportunityFeedback",
         "type": "object"
       },
       "RequestScreening": {
@@ -2697,6 +4042,35 @@
         "title": "RequirementRecord",
         "type": "object"
       },
+      "ReusableWording": {
+        "additionalProperties": false,
+        "properties": {
+          "entity": {
+            "title": "Entity",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "location": {
+            "title": "Location",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "entity",
+          "text",
+          "location"
+        ],
+        "title": "ReusableWording",
+        "type": "object"
+      },
       "ReviewCaseView": {
         "properties": {
           "attention": {
@@ -2749,6 +4123,16 @@
             ],
             "title": "Job Status"
           },
+          "next_action": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OversightAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "next_actor_id": {
             "anyOf": [
               {
@@ -2778,6 +4162,16 @@
             },
             "title": "Permitted Actions",
             "type": "array"
+          },
+          "preparation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreparationProgress"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "preparation_decision": {
             "anyOf": [
@@ -2845,6 +4239,17 @@
             ],
             "title": "State",
             "type": "string"
+          },
+          "submission_history": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submission History"
           },
           "tender_id": {
             "title": "Tender Id",
@@ -2921,6 +4326,62 @@
           "next_cursor"
         ],
         "title": "ReviewCasesView",
+        "type": "object"
+      },
+      "ReviewCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "request_review",
+              "accept",
+              "request_changes"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "approval_id": {
+            "format": "uuid",
+            "title": "Approval Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "note": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Note",
+            "type": "string"
+          },
+          "requirements_checked": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requirements Checked"
+          }
+        },
+        "required": [
+          "client_request_id",
+          "approval_id",
+          "expected_revision",
+          "action",
+          "note"
+        ],
+        "title": "ReviewCommand",
         "type": "object"
       },
       "ReviewDraft": {
@@ -3197,10 +4658,31 @@
             "title": "Findings",
             "type": "array"
           },
+          "overview_issues": {
+            "items": {
+              "$ref": "#/components/schemas/OverviewIssue"
+            },
+            "title": "Overview Issues",
+            "type": "array"
+          },
           "pins": {
             "additionalProperties": true,
             "title": "Pins",
             "type": "object"
+          },
+          "preparation_condition_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preparation Condition Ids"
           },
           "recommendation": {
             "enum": [
@@ -3223,6 +4705,16 @@
             "const": "screening.v1",
             "title": "Schema Version",
             "type": "string"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualificationSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "title": {
             "title": "Title",
@@ -3299,6 +4791,61 @@
           "artifact"
         ],
         "title": "ScreeningView",
+        "type": "object"
+      },
+      "SealPackage": {
+        "additionalProperties": false,
+        "properties": {
+          "approver_id": {
+            "format": "uuid",
+            "title": "Approver Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "expected_snapshot": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Expected Snapshot",
+            "type": "string"
+          },
+          "previous_package_id": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Package Id"
+          }
+        },
+        "required": [
+          "client_request_id",
+          "expected_snapshot",
+          "previous_package_id",
+          "approver_id"
+        ],
+        "title": "SealPackage",
+        "type": "object"
+      },
+      "SetOpportunityDiscovery": {
+        "additionalProperties": false,
+        "properties": {
+          "enabled": {
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "title": "SetOpportunityDiscovery",
         "type": "object"
       },
       "SourceAnchor": {
@@ -3521,6 +5068,192 @@
           "anchors"
         ],
         "title": "SourcesView",
+        "type": "object"
+      },
+      "SubmissionPackage": {
+        "additionalProperties": false,
+        "properties": {
+          "approver_id": {
+            "format": "uuid",
+            "title": "Approver Id",
+            "type": "string"
+          },
+          "can_decide": {
+            "title": "Can Decide",
+            "type": "boolean"
+          },
+          "can_record_receipt": {
+            "title": "Can Record Receipt",
+            "type": "boolean"
+          },
+          "closing_at": {
+            "format": "date-time",
+            "title": "Closing At",
+            "type": "string"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReleaseDecision"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseFile"
+            },
+            "title": "Files",
+            "type": "array"
+          },
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "preparation_approval_id": {
+            "format": "uuid",
+            "title": "Preparation Approval Id",
+            "type": "string"
+          },
+          "receipt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PortalReceipt"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sealed_at": {
+            "format": "date-time",
+            "title": "Sealed At",
+            "type": "string"
+          },
+          "sealed_by": {
+            "format": "uuid",
+            "title": "Sealed By",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "awaiting_release",
+              "approved",
+              "rejected",
+              "submitted",
+              "closed",
+              "non_current"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "approver_id",
+          "sealed_by",
+          "sealed_at",
+          "closing_at",
+          "preparation_approval_id",
+          "files",
+          "decision",
+          "receipt",
+          "state",
+          "can_decide",
+          "can_record_receipt"
+        ],
+        "title": "SubmissionPackage",
+        "type": "object"
+      },
+      "SubmissionView": {
+        "additionalProperties": false,
+        "properties": {
+          "can_seal": {
+            "title": "Can Seal",
+            "type": "boolean"
+          },
+          "candidate_files": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseFile"
+            },
+            "title": "Candidate Files",
+            "type": "array"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/ReleaseCheck"
+            },
+            "title": "Checks",
+            "type": "array"
+          },
+          "packages": {
+            "items": {
+              "$ref": "#/components/schemas/SubmissionPackage"
+            },
+            "title": "Packages",
+            "type": "array"
+          },
+          "snapshot": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot"
+          }
+        },
+        "required": [
+          "snapshot",
+          "candidate_files",
+          "checks",
+          "can_seal",
+          "packages"
+        ],
+        "title": "SubmissionView",
+        "type": "object"
+      },
+      "SummaryFact": {
+        "additionalProperties": false,
+        "properties": {
+          "citations": {
+            "items": {
+              "$ref": "#/components/schemas/Support"
+            },
+            "maxItems": 3,
+            "title": "Citations",
+            "type": "array"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "maxLength": 1000,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "value",
+          "citations"
+        ],
+        "title": "SummaryFact",
         "type": "object"
       },
       "Support": {
@@ -3837,7 +5570,6 @@
           "action": {
             "enum": [
               "start_assessment",
-              "defer",
               "dismiss"
             ],
             "title": "Action",
@@ -3861,6 +5593,83 @@
           "client_request_id"
         ],
         "title": "TriageSuggestion",
+        "type": "object"
+      },
+      "UpdateDeliverablePlan": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "enum": [
+              "reconfirm",
+              "update_plan"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "approval_id": {
+            "format": "uuid",
+            "title": "Approval Id",
+            "type": "string"
+          },
+          "client_request_id": {
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Client Request Id",
+            "type": "string"
+          },
+          "due_at": {
+            "format": "date-time",
+            "title": "Due At",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 1.0,
+            "title": "Expected Revision",
+            "type": "integer"
+          },
+          "finding_ids": {
+            "items": {
+              "maxLength": 160,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 30,
+            "title": "Finding Ids",
+            "type": "array"
+          },
+          "owner_id": {
+            "format": "uuid",
+            "title": "Owner Id",
+            "type": "string"
+          },
+          "proposal_entity": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proposal Entity"
+          },
+          "reviewer_id": {
+            "format": "uuid",
+            "title": "Reviewer Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "client_request_id",
+          "approval_id",
+          "expected_revision",
+          "action",
+          "owner_id",
+          "reviewer_id",
+          "due_at"
+        ],
+        "title": "UpdateDeliverablePlan",
         "type": "object"
       },
       "ValidationError": {
@@ -4367,6 +6176,189 @@
         "summary": "Workspace Members"
       }
     },
+    "/api/v1/opportunity-discovery": {
+      "get": {
+        "operationId": "get_opportunity_discovery_api_v1_opportunity_discovery_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityDiscoveryView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Opportunity Discovery"
+      },
+      "put": {
+        "operationId": "set_opportunity_discovery_api_v1_opportunity_discovery_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetOpportunityDiscovery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityDiscoveryView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Set Opportunity Discovery"
+      }
+    },
+    "/api/v1/opportunity-feedback": {
+      "get": {
+        "operationId": "opportunity_feedback_api_v1_opportunity_feedback_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "after",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "After"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityFeedbackList"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Opportunity Feedback"
+      }
+    },
+    "/api/v1/opportunity-feedback/{feedback_id}/answer": {
+      "post": {
+        "operationId": "answer_opportunity_feedback_api_v1_opportunity_feedback__feedback_id__answer_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "feedback_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Feedback Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswerOpportunityFeedback"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityFeedbackView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Answer Opportunity Feedback"
+      }
+    },
     "/api/v1/opportunity-suggestions": {
       "get": {
         "operationId": "opportunity_suggestions_api_v1_opportunity_suggestions_get",
@@ -4488,6 +6480,61 @@
           }
         ],
         "summary": "Import Opportunity"
+      }
+    },
+    "/api/v1/opportunity-suggestions/{suggestion_id}/feedback": {
+      "post": {
+        "operationId": "request_opportunity_feedback_api_v1_opportunity_suggestions__suggestion_id__feedback_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "suggestion_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Suggestion Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestOpportunityFeedback"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpportunityFeedbackView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Request Opportunity Feedback"
       }
     },
     "/api/v1/opportunity-suggestions/{suggestion_id}/triage": {
@@ -4748,6 +6795,49 @@
           }
         ],
         "summary": "Get Source"
+      }
+    },
+    "/api/v1/sources/{version_id}/original": {
+      "get": {
+        "operationId": "get_original_source_api_v1_sources__version_id__original_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "version_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Version Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Original Source"
       }
     },
     "/api/v1/tenders": {
@@ -5244,6 +7334,104 @@
         "summary": "Tender History"
       }
     },
+    "/api/v1/tenders/{tender_id}/preparation": {
+      "get": {
+        "operationId": "get_preparation_api_v1_tenders__tender_id__preparation_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Preparation"
+      },
+      "post": {
+        "operationId": "create_deliverable_api_v1_tenders__tender_id__preparation_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeliverable"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeliverableReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Deliverable"
+      }
+    },
     "/api/v1/tenders/{tender_id}/preparation-decisions": {
       "post": {
         "operationId": "record_preparation_api_v1_tenders__tender_id__preparation_decisions_post",
@@ -5297,6 +7485,349 @@
           }
         ],
         "summary": "Record Preparation"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/preparation/{item_id}/actions": {
+      "post": {
+        "operationId": "change_deliverable_api_v1_tenders__tender_id__preparation__item_id__actions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "discriminator": {
+                  "mapping": {
+                    "accept": "#/components/schemas/ReviewCommand",
+                    "reconfirm": "#/components/schemas/UpdateDeliverablePlan",
+                    "request_changes": "#/components/schemas/ReviewCommand",
+                    "request_review": "#/components/schemas/ReviewCommand",
+                    "update_plan": "#/components/schemas/UpdateDeliverablePlan"
+                  },
+                  "propertyName": "action"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ReviewCommand"
+                  },
+                  {
+                    "$ref": "#/components/schemas/UpdateDeliverablePlan"
+                  }
+                ],
+                "title": "Command"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeliverableReceipt"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Change Deliverable"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/preparation/{item_id}/files": {
+      "post": {
+        "operationId": "upload_preparation_file_api_v1_tenders__tender_id__preparation__item_id__files_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "JSON: approval_id, expected_revision, client_request_id",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationFile"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Upload Preparation File"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/preparation/{item_id}/files/{file_id}": {
+      "get": {
+        "operationId": "get_preparation_file_api_v1_tenders__tender_id__preparation__item_id__files__file_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "file_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "File Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Preparation File"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/preparation/{item_id}/proposal": {
+      "get": {
+        "operationId": "read_proposal_api_v1_tenders__tender_id__preparation__item_id__proposal_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProposalView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Read Proposal"
+      },
+      "post": {
+        "operationId": "draft_proposal_api_v1_tenders__tender_id__preparation__item_id__proposal_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Item Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftProposal"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationFile"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Draft Proposal"
       }
     },
     "/api/v1/tenders/{tender_id}/qualification-brief": {
@@ -5460,6 +7991,301 @@
           }
         ],
         "summary": "Request Screening"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/submission": {
+      "get": {
+        "operationId": "get_submission_api_v1_tenders__tender_id__submission_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubmissionView"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Submission"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/submission/packages": {
+      "post": {
+        "operationId": "seal_submission_api_v1_tenders__tender_id__submission_packages_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SealPackage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageId"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Seal Submission"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/submission/packages/{package_id}/decision": {
+      "post": {
+        "operationId": "decide_submission_api_v1_tenders__tender_id__submission_packages__package_id__decision_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "package_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Package Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideRelease"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageId"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Decide Submission"
+      }
+    },
+    "/api/v1/tenders/{tender_id}/submission/packages/{package_id}/receipt": {
+      "get": {
+        "operationId": "get_submission_receipt_api_v1_tenders__tender_id__submission_packages__package_id__receipt_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "package_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Package Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Submission Receipt"
+      },
+      "post": {
+        "operationId": "record_submission_receipt_api_v1_tenders__tender_id__submission_packages__package_id__receipt_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tender_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Tender Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "package_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Package Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "format": "binary",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "JSON: portal_reference, submitted_at, client_request_id",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "metadata",
+                  "file"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PackageId"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Record Submission Receipt"
       }
     },
     "/health": {

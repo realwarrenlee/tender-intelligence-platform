@@ -84,6 +84,38 @@
           "title": "Owner Function",
           "type": "string"
         },
+        "preparation_basis": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preparation Basis"
+        },
+        "preparation_role": {
+          "anyOf": [
+            {
+              "enum": [
+                "decision_gate",
+                "preparation_work",
+                "future_duty",
+                "review"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preparation Role"
+        },
         "request_question": {
           "maxLength": 1000,
           "minLength": 1,
@@ -131,6 +163,114 @@
         "request_question"
       ],
       "title": "Finding",
+      "type": "object"
+    },
+    "OverviewIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/Support"
+          },
+          "maxItems": 3,
+          "title": "Citations",
+          "type": "array"
+        },
+        "field": {
+          "enum": [
+            "buyer",
+            "reference",
+            "scope",
+            "contract_period",
+            "sites",
+            "closing_at"
+          ],
+          "title": "Field",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "not_established",
+            "conflicting"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "kind",
+        "question",
+        "citations"
+      ],
+      "title": "OverviewIssue",
+      "type": "object"
+    },
+    "QualificationSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "buyer": {
+          "$ref": "#/$defs/SummaryFact"
+        },
+        "contract_period": {
+          "$ref": "#/$defs/SummaryFact"
+        },
+        "reference": {
+          "$ref": "#/$defs/SummaryFact"
+        },
+        "scope": {
+          "$ref": "#/$defs/SummaryFact"
+        },
+        "sites": {
+          "$ref": "#/$defs/SummaryFact"
+        }
+      },
+      "required": [
+        "buyer",
+        "reference",
+        "scope",
+        "contract_period",
+        "sites"
+      ],
+      "title": "QualificationSummary",
+      "type": "object"
+    },
+    "SummaryFact": {
+      "additionalProperties": false,
+      "properties": {
+        "citations": {
+          "items": {
+            "$ref": "#/$defs/Support"
+          },
+          "maxItems": 3,
+          "title": "Citations",
+          "type": "array"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "citations"
+      ],
+      "title": "SummaryFact",
       "type": "object"
     },
     "Support": {
@@ -220,10 +360,32 @@
       "title": "Findings",
       "type": "array"
     },
+    "overview_issues": {
+      "items": {
+        "$ref": "#/$defs/OverviewIssue"
+      },
+      "title": "Overview Issues",
+      "type": "array"
+    },
     "pins": {
       "additionalProperties": true,
       "title": "Pins",
       "type": "object"
+    },
+    "preparation_condition_ids": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Preparation Condition Ids"
     },
     "recommendation": {
       "enum": [
@@ -246,6 +408,17 @@
       "const": "screening.v1",
       "title": "Schema Version",
       "type": "string"
+    },
+    "summary": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/QualificationSummary"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "title": {
       "title": "Title",

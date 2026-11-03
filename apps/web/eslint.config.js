@@ -10,8 +10,7 @@ export default defineConfig(
     ignores: [
       'dist',
       'src/components/ui',
-      'src/circle/components/ui',
-      'src/circle/hooks',
+      'src/hooks/use-mobile.ts',
       '.next',
       'next-env.d.ts',
     ],

@@ -1,11 +1,11 @@
 'use client'
 
-import MainLayout from '@/circle/components/layout/main-layout'
-import { SidebarTrigger } from '@/circle/components/ui/sidebar'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { SessionGate } from '@/features/qualification/session'
+import MainLayout from '@/components/layout/main-layout'
+import { SidebarTrigger } from '@/components/ui/sidebar'
+import { SessionGate } from '@/features/workspace/session'
 
 export function AuthenticatedLayout({
   children,

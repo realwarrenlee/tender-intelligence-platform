@@ -2,6 +2,8 @@
 
 ## Current direction
 
+- MVP workspace access is Admin, Member or Viewer, one level per membership. Admin inherits Member actions. Bid ownership, specialist input and preparation decisions are per-case assignments; any Member or Admin can be assigned. The assigned person must act, with actor/version history retained. Legacy pursuit decisions require Member or Admin access without assignment. Confirm customer delegation before a pilot.
+
 - Build an approachable business workspace for tender qualification and coordination, with human review at consequential decisions. The wider product hypothesis covers discovery, qualification, quotations and costing, proposal preparation and coordination; later capabilities remain subject to evidence and scope decisions. See [PRODUCT.md](PRODUCT.md) and [BRIEF.md](BRIEF.md).
 - Keep a shared tender record and current evidence, tasks and decision history. The newer workflow separates source-backed screening and authorisation of bid preparation from a later final offer or release decision.
 - In the enabled bounded workflow, Inbox separates personal Human actions from Agent opportunity suggestions; Reviews shows the team's cases without granting extra authority. A named authorised person answers a scoped request, and a delegated approver makes the preparation decision.

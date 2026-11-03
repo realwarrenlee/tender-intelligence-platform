@@ -13,10 +13,10 @@ The following labels are for internal evaluation, not an app onboarding task. An
 
 The benchmark labels remain null until independent review. Agent proposals stay in a separate artifact. The research inspected the evaluation document used by PUB-29; if this informs tuning, re-establish an independent evaluation set before claiming held-out quality. Do not tune questions on held-out answers. Before a live evaluation, a reviewer must confirm separate clause families and at least eight critical, eight benign/scored/delivery, and eight ambiguous examples in each split; candidates may need replacing to achieve that balance.
 
-Offline check (no provider calls):
+From the repository root, use the Python environment from the [API guide](../../../../apps/api/README.md) to run the offline check.
 
 ```bash
-UV_PROJECT_ENVIRONMENT=/home/warren/.cache/tender-api-t3-venv uv run --no-sync --project apps/api python evals/run_decisions_screening.py
+uv run --project apps/api python evals/run_decisions_screening.py
 ```
 
 Live mode additionally requires the explicit flag, a real actor/workspace scope and an already-approved persisted budget capped at US$1 and 60 cumulative requests. The harness grants no budget, retries no uncertain call and stops on a missed critical gate.
@@ -27,7 +27,7 @@ Live mode additionally requires the explicit flag, a real actor/workspace scope 
 
 The audit uses the actual bounded context/retrieval/Company code and saved immutable native index. Only index creation is replaced with that existing index. Database work is rolled back; no job, business decision, model client or paid authority is created. A separate public-notice check concerns PA, never PUB.
 
-Run from the repository root: `UV_PROJECT_ENVIRONMENT=/home/warren/.cache/tender-api-t3-venv uv run --no-sync --project apps/api python evals/run_pub_source_audit.py --output output/implementation/bid-qualification-2026-11-01/task-6-retrieval-audit.json`.
+Run from the repository root with `uv run --project apps/api python evals/run_pub_source_audit.py --output output/task-6-retrieval-audit.json`.
 
 Exact expected text supplied to the reasoner measures evidence delivery, not model critical-gate recall. Oracle-informed searches are a diagnostic, not a default-product/held-out result. Model accuracy, unsupported-claim and human-effort measures stay null. The original offline benchmark's zero critical-miss counter with zero evaluated examples does not mean zero model misses.
 

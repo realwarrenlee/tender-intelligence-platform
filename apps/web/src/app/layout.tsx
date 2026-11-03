@@ -1,8 +1,8 @@
-import { ThemeProvider } from '@/circle/components/layout/theme-provider'
-import { Toaster } from '@/circle/components/ui/sonner'
-import '@/circle/globals.css'
+import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { ThemeProvider } from '@/components/layout/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
 const mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })

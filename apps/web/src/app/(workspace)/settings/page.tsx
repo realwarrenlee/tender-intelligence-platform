@@ -1,1 +1,1 @@
-export { WorkspaceSettings as default } from '@/features/qualification/workspace-settings'
+export { WorkspaceSettings as default } from '@/features/workspace/workspace-settings'

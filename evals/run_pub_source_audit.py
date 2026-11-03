@@ -52,12 +52,12 @@ class AuditPool:
 
 async def run():
     from app.db import create_pool
-    from app.m1.company_facts import CompanyFacts
-    from app.m1.models import ActorContext
-    from app.m1.policy import DomainError
-    from app.m1.retrieval import SourceIndex
-    from app.m1.screening_workflow import DEFAULT_QUERIES, ScreeningReasoner, _context, snapshot
-    from app.m1.screening import screening_artifact
+    from app.tenders.company_facts import CompanyFacts
+    from app.tenders.models import ActorContext
+    from app.tenders.policy import DomainError
+    from app.tenders.retrieval import SourceIndex
+    from app.tenders.screening_workflow import DEFAULT_QUERIES, ScreeningReasoner, _context, snapshot
+    from app.tenders.screening import screening_artifact
 
     manifest_path = ROOT / "evals/fixtures/development/PUB-screening/task-6-scenario.json"
     manifest = json.loads(manifest_path.read_text())
@@ -95,7 +95,7 @@ async def run():
 
                 cases = []
                 # Freeze the existing native index: never reparse/reindex or save a job.
-                with patch("app.m1.screening_workflow._native_index", saved_index):
+                with patch("app.tenders.screening_workflow._native_index", saved_index):
                     for name, queries in [
                         ("default", list(DEFAULT_QUERIES)),
                         ("oracle_informed_diagnostic", manifest["diagnostic_queries"]),
@@ -196,8 +196,8 @@ async def run():
         ],
         "code_sha256": {
             f: hashlib.sha256((ROOT / f).read_bytes()).hexdigest()
-            for f in ("apps/api/app/m1/retrieval.py", "apps/api/app/m1/screening_workflow.py",
-                      "apps/api/app/m1/company_facts.py", "evals/run_pub_source_audit.py")
+            for f in ("apps/api/app/tenders/retrieval.py", "apps/api/app/tenders/screening_workflow.py",
+                      "apps/api/app/tenders/company_facts.py", "evals/run_pub_source_audit.py")
         },
     }
 

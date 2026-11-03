@@ -6,31 +6,33 @@ The current prototype covers qualification and internal coordination. Engineerin
 
 ## What is implemented
 
-The Next.js workspace has Tenders, Inbox, Reviews, Company, Members and Settings. Existing assessments, assigned questions, pursuit decisions, source readers, history and the contextual assistant remain supported.
+The Next.js workspace has Tenders, Inbox, Oversight, Company, Members and Settings. Existing assessments, assigned questions, pursuit decisions, source readers, history and the contextual assistant remain supported.
+
+The tender detail presents a Qualification brief with the current recommendation, material blockers, known facts, next actor and requirements grouped by obligation type. Review requests are grouped by suggested function; exact source gaps and processing usage remain available in expandable details. New screenings can include buyer, reference, scope, contract period and sites as cited verbatim extracts, labelled `Extracted · verify against sources`. Missing fields and older briefs show unknowns. Citation validation checks source support, not whether a passage answers the intended field correctly; independent semantic review remains required.
 
 The newer workflow is implemented behind `QUALIFICATION_WORKFLOW_ENABLED`, which defaults to `false`. When enabled, it adds a public-notice collector and labelled controlled imports, Human and Agent Inbox tabs, bounded source-backed screening, shared review cases, scoped input requests and preparation decisions. Enabling it grants neither model-spending authority nor business approval.
 
 | Surface | Purpose |
 | --- | --- |
 | Inbox / Human | Personal requests, updates and preparation approvals |
-| Inbox / Agent | Opportunity suggestions with source, matching reasons and uncertainties; start, defer or dismiss |
+| Inbox / Agent | Review opportunity suggestions, check the source and matching reasons, ask for input, start an assessment or dismiss |
 | Tenders | Shared case, owner, deadline, sources, current review and history |
-| Reviews | Team progress, outstanding inputs, next actor and decision readiness; opens the same tender review |
+| Oversight | Team-wide overdue and upcoming work, with the next action, assignee and deadlines. Each row opens the relevant section in Tenders. |
 | Company | Accepted, dated company evidence and its source/version history |
 
 The [product workflow](PRODUCT.md#preparation-journey) defines detailed behaviour. [DESIGN.md](DESIGN.md) records the desktop design rules.
 
 ## Users and authority
 
-These are product roles, not a confirmed CBM organisation chart. A member may hold several roles.
+The MVP has three workspace access levels, each member holding exactly one:
 
-- **Bid owner:** register an opportunity, start an authorised assessment, confirm named input requests and assemble a preparation recommendation.
-- **Service reviewer or estimator:** answer assigned questions about capability, availability and delivery assumptions, recording the basis.
-- **Approver:** approve specified preparation scope and budget, request information or decline.
-- **Administrator:** manage memberships and accept shared company evidence. Administration alone grants no commercial approval.
-- **Viewer:** read permitted workspace records.
+- **Admin:** all Member actions, plus membership administration and acceptance of shared company evidence.
+- **Member:** create and work on tenders, answer assigned requests and record assigned preparation decisions.
+- **Viewer:** read workspace records without changing business records or recording decisions.
 
-Team visibility does not grant authority to answer someone else's request or approve a decision. The app asks people for scoped business facts; routine users are not required to label evaluation datasets.
+Bid owner, service reviewer and preparation decision-maker are responsibilities assigned per tender or request, not permanent workspace roles. Any Member or Admin can be assigned. Only the named assignee may answer a request or decide its preparation approval; ownership still controls screening and request confirmation. Legacy pursuit decisions are available to Members and Admins without assignment. All decisions retain actor and version attribution.
+
+This is an MVP trust model. Confirm actual customer delegation before a pilot. Preparation decisions grant neither provider spending authority nor final offer release. Temporary development accounts are documented locally in MEMBERS.md.
 
 ## Preparation journey
 
@@ -44,7 +46,9 @@ Team visibility does not grant authority to answer someone else's request or app
 
 Missing company evidence means **unconfirmed**. A supported failure must be explicit. Conditional award or delivery obligations retain their timing; they are not proof that the bidder must already have fulfilled them.
 
-The current PUB development brief remains `needs_information`: bidding-entity evidence, the current closing date/amendments and material source gaps are unresolved. All 12 findings remain unconfirmed. The single authorised trial is closed; its cost and limits are recorded in [validation](VALIDATION.md).
+New screenings add a bounded overview evidence set alongside the six critical excerpts. Missing facts and conflicting terms become source-linked draft questions with a suggested function. The bid owner confirms a named reviewer and deadline; the brief shows that assignment. Ordinary unfinished submission outputs and future duties can remain unconfirmed during Qualification only under the conservative preparation-role rules, with exact timing support and an explicit human approval condition. Eligibility, scored thresholds, present material risk, unknown timing and evidenced failures cannot use that exception. Older unclassified findings remain conservative. Model labels and exact quotes still require domain review; they do not establish semantic accuracy.
+
+The current PUB case needs reassessment: bidding-entity evidence, the closing date/amendments and material source gaps remain unresolved. The first rerun's uncited site extract was rejected; its fallback retained twelve earlier findings with a null summary. The repaired producer subsequently returned a source-supported overview, including site-transition qualifiers, but the full response hit its output cap. Offline repairs now support references to unchanged validated findings and reserve bounded input-count headroom. The one-token usage discrepancy was settled through an audited operation, preserving the original limits and receipt. No new qualification artifact was created; earlier artifacts remain in history and are non-current under the latest-job fence. Spending is paused. Live outcomes and offline engineering evidence are recorded separately in [validation](VALIDATION.md); live output quality and representative acceptance remain open.
 
 ## Wider product scope
 
@@ -61,6 +65,16 @@ For costing, people must supply or approve workloads, staffing/relief, rates, ov
 Outbound messages remain drafts until a user approves the message version, recipients and configured delivery route. Automatic bid submission, general spreadsheet verification, predictive win probabilities, marketing analytics, vendor scoring, mobilisation management and a public agent interface are outside the current prototype. Draft export does not establish release readiness.
 
 ## Delivery gates
+
+Increment 3 implements a controlled Preparation tab for a technical response and pricing workbook. The bid owner sets the internal deadline, assigns a deliverable owner and a separate reviewer, and can link requirements from the approved screening. The deliverable owner uploads working versions and requests a scoped review. Inbox and Reviews show the same work. Acceptance covers the reviewed file and plan only. Amendments require fresh preparation approval and reconfirmation; earlier plans, files and reviews remain available.
+
+Preparation writes are off by default. Rollout requires representative Qualification acceptance and agreement on the actual deliverables, review responsibilities and internal deadlines. Each tender needs current preparation approval before production actions.
+
+The controlled Submission tab seals the accepted technical and commercial file versions, their hashes and review records. The bid owner names a separate release approver. After that approver clears the release checks and approves the package, the bid owner can record the portal reference, submission time and PDF receipt. Changes to qualification evidence, accepted files or plans can make a package non-current. Earlier packages, decisions and receipts remain available. Submission writes are off by default and rollout requires agreement on real release delegation and acceptable portal evidence.
+
+The controlled costing feature lives under the Pricing workbook deliverable. It compares supplier quotes against one service package and flags missing, excluded, partial and non-comparable lines. It calculates a selected scenario in SGD before tax using comparable rates and any explicitly selected estimates with approval references. A complete working workbook for the current tender can be saved as a new pricing version for the existing review and release workflow. The fictional HVAC example is available for practice. Pilot use requires representative quotes and approved company workbook rules.
+
+Proposal drafting lives under the Technical response deliverable. The bid owner confirms the bidding legal entity, links tender requirements and can assign input requests for evidence gaps. The assigned owner matches each requirement to approved wording from the current Company evidence. The app assembles the chosen wording and evidence references into a DOCX. A generated draft with gaps or an outdated plan stays out of review, and the named reviewer must confirm requirement coverage before acceptance.
 
 1. **Validate qualification:** resolve material evidence gaps, establish representative acceptance criteria and compare equivalent manual and assisted work.
 2. **Add one commercial slice:** only after that gate, connect a narrow supplier scope and supported costing workbook.

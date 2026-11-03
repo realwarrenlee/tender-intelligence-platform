@@ -79,7 +79,7 @@ async def provision(email,output):
                 await c.execute('INSERT INTO m1_app.workspaces(id,name) VALUES($1,$2) ON CONFLICT(id) DO NOTHING',
                                 UUID(record['workspace_id']),'Development workspace')
                 await c.execute('INSERT INTO m1_app.memberships(workspace_id,user_id,roles,display_name) VALUES($1,$2,$3,$4) ON CONFLICT(workspace_id,user_id) DO NOTHING',
-                    UUID(record['workspace_id']),UUID(user),['bid_owner','service_reviewer','approver','admin'],email)
+                    UUID(record['workspace_id']),UUID(user),['admin'],email)
             await sign_in(http,record)
             record['status']='ready'
             save_record(output,record)
