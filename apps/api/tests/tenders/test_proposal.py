@@ -97,7 +97,6 @@ def test_proposal_pins_entity_source_and_plan_and_replays_safely(screening_case,
     approved = decide(c, task)
     assert approved.status_code == 201, approved.text
     c.approval = approved.json()["id"]
-    c.app.state.preparation_enabled = True
     c.current[0] = c.actor
     c.url = f"/api/v1/tenders/{c.tender['id']}/preparation"
     created = c.http.post(c.url, json=create(c, actors["approver"], proposal_entity="Fictional FM Pte Ltd",

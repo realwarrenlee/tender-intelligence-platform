@@ -125,9 +125,7 @@ def test_forwarded_notice_and_reply_are_visible_only_to_participants(client,acto
     assert http.get(base).json()['items'][0]['answer']==reply['answer']
 
 
-def test_activation_without_budget_creates_case_without_starting_screening(client,actors,monkeypatch):
-    from app.config import get_settings
-    monkeypatch.setattr(get_settings(),'qualification_workflow_enabled',True)
+def test_activation_without_budget_creates_case_without_starting_screening(client,actors):
     http,_,app=client
     item=imported(http)
     response=triage(http,item)
@@ -149,7 +147,6 @@ def test_schedule_switch_is_workspace_scoped_and_controls_collection(client,acto
     job=NoticeJob(key='test-scan',workspace_id=owner.workspace_id,intake_owner_user_id=owner.user_id,
                   source_url=LISTING_URL,enabled=True)
     monkeypatch.setattr(get_settings(),'notice_source_jobs',[job])
-    monkeypatch.setattr(get_settings(),'qualification_workflow_enabled',True)
     path='/api/v1/opportunity-discovery'
     assert http.get(path).json()=={'configured':True,'enabled':True,'can_edit':True}
     current[0]=actors['viewer']

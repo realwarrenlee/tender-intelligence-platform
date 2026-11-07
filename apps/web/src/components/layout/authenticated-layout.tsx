@@ -15,7 +15,7 @@ export function AuthenticatedLayout({
   const pathname = usePathname()
   const labels: Record<string, string> = {
     '/inbox': 'Inbox',
-    '/reviews': 'Reviews',
+    '/oversight': 'Oversight',
     '/tenders': 'Tenders',
     '/members': 'Members',
     '/company': 'Company',

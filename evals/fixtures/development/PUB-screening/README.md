@@ -31,6 +31,6 @@ Run from the repository root with `uv run --project apps/api python evals/run_pu
 
 Exact expected text supplied to the reasoner measures evidence delivery, not model critical-gate recall. Oracle-informed searches are a diagnostic, not a default-product/held-out result. Model accuracy, unsupported-claim and human-effort measures stay null. The original offline benchmark's zero critical-miss counter with zero evaluated examples does not mean zero model misses.
 
-See Task 6 result (local only) and [comparison protocol](../../../../VALIDATION.md). Task 6 remains in progress; improve default evidence selection before a paid trial/pilot.
+See Task 6 result (local only) and [comparison protocol](../../../../docs/engineering/VALIDATION.md). Task 6 remains in progress; improve default evidence selection before a paid trial/pilot.
 
 Retrieval repair (local only) raises the declared development critical-span delivery from 0/11 to 11/11 without changing coverage/approval/spending limits. The evaluator also preflights the real reasoner byte guard with no model configured; no inference/client/reservation follows. Original baseline artifacts are preserved. This remains development evidence, not model or human-outcome validation.

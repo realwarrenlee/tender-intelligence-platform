@@ -36,9 +36,7 @@ class Reasoner:
 @pytest.fixture
 def screening_case(client,actors,request):
     from app.tenders.screening_workflow import execute_screening_job
-    from functools import partial
     http,current,app=client
-    app.state.qualification_enabled=True
     item=imported(http,notice_id="SCREEN-"+str(uuid4()),closing_at="2099-01-01T16:00:00+08:00")
     budget=approve(http,app,actors["owner"],item["id"])
     active=triage(http,item).json()
@@ -47,7 +45,7 @@ def screening_case(client,actors,request):
     db(http,app,"INSERT INTO m1_app.memberships(workspace_id,user_id,roles) VALUES($1,$2,$3) RETURNING user_id",
        reviewer.workspace_id,reviewer.user_id,["member"])
     case=SimpleNamespace(http=http,current=current,app=app,actor=actors["owner"],reviewer=reviewer,
-        tender=tender,item=item,budget=budget,run=partial(execute_screening_job,enabled=True))
+        tender=tender,item=item,budget=budget,run=execute_screening_job)
     http.portal.call(seed_parsed,case,[{"filename":"instructions.pdf",
         "text":"Critical registration is required before submission. Minimum staffing is due during mobilisation.",
         "status":"partial" if getattr(request,"param",False)=="partial" else "complete"}])
@@ -95,14 +93,15 @@ def decide(c,task,**changes):
     return c.http.post("/api/v1/tenders/"+c.tender["id"]+"/preparation-decisions",json=body)
 
 
-def test_disabled_new_entry_and_enabled_legacy_entry_are_explicit(client):
-    http,_,app=client
+def test_qualification_is_the_only_entry_point(client):
+    http,_,_=client
     tender=http.post("/api/v1/tenders",json={"title":"Fictional","client_request_id":str(uuid4())}).json()
     body={"expected_input_revision":1,"client_request_id":str(uuid4())}
-    assert http.post("/api/v1/tenders/"+tender["id"]+"/screenings",json=body).status_code==409
-    app.state.qualification_enabled=True
-    response=http.post("/api/v1/tenders/"+tender["id"]+"/analyses",json=body)
-    assert response.status_code==409 and response.json()["code"]=="BOUNDED_WORKFLOW_REQUIRED"
+    path="/api/v1/tenders/"+tender["id"]
+    response=http.post(path+"/screenings",json=body)
+    assert response.status_code==422 and response.json()["code"]=="USAGE_BUDGET_REQUIRED"
+    assert http.post(path+"/analyses",json=body).status_code==404
+    assert set(http.get("/api/v1/me").json())=={"schema_version","user_id","workspace_id","roles"}
 
 
 def test_drafts_do_not_assign_and_confirmed_requests_are_personal(screening_case):
@@ -292,16 +291,6 @@ def test_queue_failure_rolls_back_new_answer_and_revisions(screening_case,monkey
     assert reply(c,task).status_code==503
     assert not db(c.http,c.app,"SELECT id FROM m1_app.review_answers WHERE task_id=$1",UUID(task["id"]))
     assert db(c.http,c.app,"SELECT input_revision FROM m1_app.tenders WHERE id=$1",UUID(c.tender["id"]))[0]["input_revision"]==c.review["input_revision"]
-
-
-def test_rollback_disables_new_confirmations_but_keeps_evidence_readable(screening_case):
-    c=screening_case;c.app.state.qualification_enabled=False
-    assert confirm(c).status_code==409
-    assert c.http.get("/api/v1/review-cases/"+c.tender["id"]).status_code==200
-    fallback=c.http.post("/api/v1/tenders/"+c.tender["id"]+"/analyses",json={
-        "expected_input_revision":c.review["input_revision"],"client_request_id":str(uuid4())})
-    assert fallback.status_code==409 and fallback.json()["code"]=="BOUNDED_WORKFLOW_REQUIRED"
-
 
 def test_supersession_and_finalization_do_not_deadlock(screening_case,monkeypatch):
     c=screening_case
@@ -496,7 +485,7 @@ def test_native_upload_and_company_expiry_use_the_bounded_path(client,actors):
     from test_company_profile import command as company_command
     from test_screening import finding,candidate
     from app.tenders.screening_workflow import execute_screening_job
-    http,current,app=client;app.state.qualification_enabled=True
+    http,current,app=client
     item=imported(http,notice_id="NATIVE-"+str(uuid4()),closing_at="2099-01-01T16:00:00+08:00")
     approve(http,app,actors["owner"],item["id"])
     active=triage(http,item).json()
@@ -519,8 +508,7 @@ def test_native_upload_and_company_expiry_use_the_bounded_path(client,actors):
             cite=ctx["excerpts"][0];company=ctx["company_excerpts"][0]
             return candidate(finding(status="supported",company_citations=[{"anchor_id":company["anchor_id"],"quote":company["quote"]}],
                 tender_citations=[{"anchor_id":cite["anchor_id"],"quote":"Critical registration is required before submission."}]))
-    from functools import partial
-    http.portal.call(partial(execute_screening_job,enabled=True),app.state.pool,app.state.storage,
+    http.portal.call(execute_screening_job,app.state.pool,app.state.storage,
                      UUID(job.json()["id"]),Decisions(),ClaimsCompanySupport())
     review=http.get("/api/v1/review-cases/"+active["tender_id"]).json()
     assert review["screening"]["artifact"]["findings"][0]["status"]=="unconfirmed"
@@ -574,7 +562,6 @@ def test_source_pane_resolves_summary_and_closing_separately_from_findings(clien
     from test_screening import finding,candidate
     from test_screening_summary import summary,summary_context
     http,current,app=client
-    app.state.qualification_enabled=True
     item=imported(http,notice_id="FACT-SOURCE-"+str(uuid4()),closing_at="2099-01-01T16:00:00+08:00")
     approve(http,app,actors["owner"],item["id"])
     tender_id=triage(http,item).json()["tender_id"]
@@ -607,7 +594,7 @@ def test_source_pane_resolves_summary_and_closing_separately_from_findings(clien
         "client_request_id":str(uuid4())})
     assert response.status_code==202,response.text
     http.portal.call(execute_screening_job,app.state.pool,app.state.storage,UUID(response.json()["id"]),
-        Decisions(),FactReasoner(),True)
+        Decisions(),FactReasoner())
     review=http.get("/api/v1/review-cases/"+tender_id).json()
     version=review["screening"]["id"]
     assert review["screening"]["artifact"]["attention"] is None
@@ -628,7 +615,7 @@ def test_source_pane_resolves_summary_and_closing_separately_from_findings(clien
         "expected_input_revision":1,"investigation_queries":["registration","closing","overview"],
         "client_request_id":str(uuid4())}).json()
     http.portal.call(execute_screening_job,app.state.pool,app.state.storage,UUID(job["id"]),
-        Decisions(),InvalidSummary(),True)
+        Decisions(),InvalidSummary())
     latest=http.get("/api/v1/review-cases/"+tender_id).json()["screening"]
     assert latest["id"]!=version
     assert latest["artifact"]["attention"]=="SCREENING_INVALID"
@@ -637,11 +624,3 @@ def test_source_pane_resolves_summary_and_closing_separately_from_findings(clien
     assert {a["text"] for a in http.get("/api/v1/assessments/"+version+"/sources").json()["anchors"]}=={gate,closing,overview,term_note}
     assert any(i["kind"]=="conflicting" and i["field"]=="contract_period" for i in latest["artifact"]["overview_issues"])
     assert {a["text"] for a in http.get("/api/v1/assessments/"+latest["id"]+"/sources").json()["anchors"]}=={gate,closing,overview,term_note}
-
-
-def test_browser_cutover_follows_server_and_retains_bounded_history(screening_case):
-    c=screening_case
-    assert c.http.get('/api/v1/me').json()['qualification_workflow_enabled'] is True
-    c.app.state.qualification_enabled=False
-    assert c.http.get('/api/v1/me').json()['qualification_workflow_enabled'] is False
-    assert c.http.get('/api/v1/tenders/'+c.tender['id']).json()['workflow']=='screening'

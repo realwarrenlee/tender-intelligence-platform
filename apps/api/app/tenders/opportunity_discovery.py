@@ -12,7 +12,7 @@ async def discovery_enabled(connection, workspace_id):
 async def discovery_settings(repository,actor,settings,command=None):
     jobs=[job for job in settings.notice_source_jobs if job.enabled and
           job.workspace_id==actor.workspace_id and job.source_url==LISTING_URL]
-    configured=bool(jobs) and settings.qualification_workflow_enabled
+    configured=bool(jobs)
     async with repository.pool.acquire() as c,c.transaction():
         await repository._member(c,actor)
         roles=await c.fetchval("""SELECT roles FROM m1_app.memberships

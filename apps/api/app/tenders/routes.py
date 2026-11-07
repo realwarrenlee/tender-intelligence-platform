@@ -13,12 +13,12 @@ from starlette.datastructures import UploadFile
 from starlette.exceptions import HTTPException
 
 from app.auth import get_actor
-from app.tenders.models import ActorContext, CreateTender, RecordDecision, RequestAnalysis, UploadMetadata, RegisterSources, SourceInput
+from app.tenders.models import ActorContext, CreateTender, RequestAnalysis, UploadMetadata, RegisterSources, SourceInput
 from app.tenders.policy import DomainError
 from app.tenders.documents import inspect_upload, MAX_PACK, MAX_FILE, MAX_FILES
-from app.tenders.models import SaveCompanyProfile,AcceptCompanyEvidence,CorrectAssessment,CreateReviewTask,AnswerReviewTask,AskAssessment
+from app.tenders.models import SaveCompanyProfile,AcceptCompanyEvidence,CreateReviewTask,AnswerReviewTask
 
-from app.tenders.views import ActorView,InboxView,TenderDetail,JobView,CompanyVersion,CompanyView,AssessmentView,DecisionView,AssistantView,ReviewTaskView,MembersView,SourcesView,HistoryView
+from app.tenders.views import ActorView,InboxView,TenderDetail,JobView,CompanyVersion,CompanyView,AssessmentView,ReviewTaskView,MembersView,SourcesView,HistoryView
 
 from app.tenders.models import ImportOpportunity,TriageSuggestion,RequestOpportunityFeedback,AnswerOpportunityFeedback,SetOpportunityDiscovery
 from app.tenders.opportunities import Opportunities
@@ -38,11 +38,8 @@ router = APIRouter(prefix="/api/v1")
 
 
 @router.get("/me",response_model=ActorView)
-async def me(request:Request,actor: ActorContext = Depends(get_actor)):
-    return {"schema_version":"m1.v1",**actor.model_dump(mode="json"),
-            "qualification_workflow_enabled":qualification_workflow(request).enabled,
-            "preparation_tracking_enabled":preparation_tracking(request).enabled,
-            "submission_control_enabled":submission_control(request).enabled}
+async def me(actor: ActorContext = Depends(get_actor)):
+    return {"schema_version":"m1.v1",**actor.model_dump(mode="json")}
 
 
 @router.get("/tenders",response_model=InboxView)
@@ -63,13 +60,6 @@ async def get_tender(tender_id: UUID, request: Request, actor: ActorContext = De
 @router.delete("/tenders/{tender_id}")
 async def delete_tender(tender_id: UUID, command: RequestAnalysis, request: Request, actor: ActorContext = Depends(get_actor)):
     return await request.app.state.repository.delete_tender(actor,tender_id,command)
-
-
-@router.post("/tenders/{tender_id}/analyses",status_code=202,response_model=JobView)
-async def request_analysis(tender_id: UUID, command: RequestAnalysis, request: Request, actor: ActorContext = Depends(get_actor)):
-    if qualification_workflow(request).enabled:
-        raise DomainError(409,"BOUNDED_WORKFLOW_REQUIRED","Use bounded screening for new enabled-workflow assessments.")
-    return await request.app.state.repository.request_analysis(actor,tender_id,command)
 
 
 @router.post('/tenders/{tender_id}/documents',status_code=201,openapi_extra={'requestBody':{
@@ -182,12 +172,6 @@ async def save_company_profile(command:SaveCompanyProfile,request:Request,actor:
     return await accept_company(repository,actor,command,info,data,request.app.state.storage)
 
 
-@router.patch('/tenders/{tender_id}/assessment',response_model=AssessmentView)
-async def correct_assessment(tender_id:UUID,command:CorrectAssessment,request:Request,actor:ActorContext=Depends(get_actor)):
-    from app.tenders.assessments import correct_assessment as correct
-    return await correct(request.app.state.repository,actor,tender_id,command)
-
-
 @router.get('/assessments/{version_id}',response_model=AssessmentView)
 async def get_assessment(version_id:UUID,request:Request,actor:ActorContext=Depends(get_actor)):
     from app.tenders.assessments import get_assessment as get
@@ -199,36 +183,15 @@ async def cancel_job(job_id: UUID,command: RequestAnalysis,request: Request,acto
     return await request.app.state.repository.cancel_job(actor,job_id,command)
 
 
-@router.post("/tenders/{tender_id}/decisions",status_code=201,response_model=DecisionView)
-async def record_decision(tender_id: UUID, command: RecordDecision, request: Request, actor: ActorContext = Depends(get_actor)):
-    return await request.app.state.repository.record_decision(actor,tender_id,command)
-
-
 @router.post('/tenders/{tender_id}/review-tasks',status_code=201,response_model=ReviewTaskView)
 async def create_review_task(tender_id:UUID,command:CreateReviewTask,request:Request,actor:ActorContext=Depends(get_actor)):
-    from app.tenders.reviews import create_review_task as create
-    return await create(request.app.state.repository,actor,tender_id,command,qualification_workflow(request).enabled,
-                        proposal_enabled=preparation_tracking(request).enabled if command.draft_ref.startswith("proposal:") else False)
+    return await qualification_workflow(request).confirm_task(actor,tender_id,command)
 
 
 @router.post('/review-tasks/{task_id}/answers',status_code=201)
 async def answer_review_task(task_id:UUID,command:AnswerReviewTask,request:Request,actor:ActorContext=Depends(get_actor)):
-    from app.tenders.reviews import answer_review_task as answer
-    return await answer(request.app.state.repository,actor,task_id,command)
+    return await qualification_workflow(request).answer(actor,task_id,command)
 
-
-@router.get('/tenders/{tender_id}/qualification-brief')
-async def qualification_brief(tender_id:UUID,assessment_version_id:UUID,request:Request,actor:ActorContext=Depends(get_actor)):
-    from app.tenders.exports import export_qualification_brief
-    body=await export_qualification_brief(request.app.state.repository,actor,tender_id,assessment_version_id)
-    return Response(body,media_type='text/markdown',headers={'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff',
-        'Content-Disposition':f'attachment; filename="qualification-{tender_id}-{assessment_version_id}.md"'})
-
-
-@router.post('/tenders/{tender_id}/assistant-messages',response_model=AssistantView)
-async def assistant_message(tender_id:UUID,command:AskAssessment,request:Request,actor:ActorContext=Depends(get_actor)):
-    from app.tenders.assistant_runtime import answer_assessment_question
-    return await answer_assessment_question(request.app.state.repository,actor,tender_id,command,getattr(request.app.state,'assistant_model',None))
 
 @router.get('/members',response_model=MembersView)
 async def workspace_members(request:Request,actor:ActorContext=Depends(get_actor)):
@@ -302,10 +265,8 @@ from app.tenders.views import ReviewCaseView,ReviewCasesView,InboxActionsView,Pr
 
 
 def qualification_workflow(request):
-    from app.config import get_settings
     from app.tenders.screening_workflow import ScreeningWorkflow
-    return ScreeningWorkflow(request.app.state.pool,
-        getattr(request.app.state,"qualification_enabled",get_settings().qualification_workflow_enabled))
+    return ScreeningWorkflow(request.app.state.pool)
 
 
 @router.post("/tenders/{tender_id}/screenings",status_code=202,response_model=JobView)
@@ -319,10 +280,7 @@ async def record_preparation(tender_id:UUID,command:RecordPreparationDecision,re
 
 
 def preparation_tracking(request):
-    from app.config import get_settings
-    enabled = qualification_workflow(request).enabled and getattr(
-        request.app.state, "preparation_enabled", get_settings().preparation_tracking_enabled)
-    return Preparation(request.app.state.repository, request.app.state.storage, enabled)
+    return Preparation(request.app.state.repository, request.app.state.storage)
 
 
 @router.get("/tenders/{tender_id}/preparation", response_model=PreparationView)
@@ -412,10 +370,7 @@ def private_attachment(filename, content_type, data):
 
 
 def submission_control(request):
-    from app.config import get_settings
-    prep = preparation_tracking(request)
-    return Submission(prep, prep.enabled and getattr(
-        request.app.state, "submission_enabled", get_settings().submission_control_enabled))
+    return Submission(preparation_tracking(request))
 
 
 @router.get("/tenders/{tender_id}/submission", response_model=SubmissionView)
@@ -468,4 +423,4 @@ async def review_case(tender_id:UUID,request:Request,actor:ActorContext=Depends(
 @router.get("/inbox-actions",response_model=InboxActionsView)
 async def human_actions(request:Request,actor:ActorContext=Depends(get_actor),after:UUID|None=None,limit:int=Query(default=50,ge=1,le=50)):
     from app.tenders.workspace_views import list_inbox_actions
-    return await list_inbox_actions(request.app.state.repository,actor,after,limit,preparation_tracking(request).enabled)
+    return await list_inbox_actions(request.app.state.repository,actor,after,limit)

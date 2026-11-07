@@ -37,7 +37,7 @@ The full challenge brief also calls for broader portal coverage, RFQ follow-up, 
 
 Follow [development setup](SETUP.md) to configure and start the API, worker and frontend.
 
-To try the newer workflow, follow the [controlled setup instructions](SETUP.md#controlled-preparation-tracking). Qualification, Preparation writes and Submission writes each have a flag that defaults to off. Paid model calls require separate spending approval. In **Preparation → Pricing workbook**, use **Load fictional example** to try quote comparison with the included HVAC data.
+See the [Preparation and Submission walkthrough](SETUP.md#preparation-and-submission). Paid model calls require separate spending approval. In **Preparation → Pricing workbook**, use **Load fictional example** to try quote comparison with the included HVAC data.
 
 ## Repository guide
 
@@ -54,3 +54,7 @@ To try the newer workflow, follow the [controlled setup instructions](SETUP.md#c
 - [Product direction](docs/product/PRODUCT.md) for workflow details, roles and rollout scope
 - [Architecture](docs/engineering/ARCHITECTURE.md) for system components and runtime rules
 - [Company reference](docs/research/COMPANY.md) for the background used to develop company evidence
+
+## License
+
+The platform is open source under the [MIT License](LICENSE).

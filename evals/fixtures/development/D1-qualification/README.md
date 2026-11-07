@@ -12,7 +12,7 @@ All organisations, people, credentials, contracts and facts in this pack are fic
 - [Manifest](manifest.json): generated hashes, source roles, page counts and evaluation-only stage/actor setup.
 - [Answer key](../../../answer-keys/D1-qualification.json): control-only expected facts and outcomes. Do not upload it or include it in model context.
 
-This slice contains the D1 qualification fixture only. It does not establish commercial-workbook coverage, held-out evaluation or full corpus readiness; see [validation](../../../../VALIDATION.md).
+This slice contains the D1 qualification fixture only. It does not establish commercial-workbook coverage, held-out evaluation or full corpus readiness; see [validation](../../../../docs/engineering/VALIDATION.md).
 
 ## Walkthrough
 
@@ -36,6 +36,6 @@ python evals/build_qualification_fixture.py
 python evals/verify_qualification_fixture.py
 ```
 
-The generator reads `source-spec.json`, produces the four PDF inputs and writes manifest hashes. The manually authored answer key is separate. It also produces three explicitly labelled mock responses for API/UI tests; they are not observed model outputs. The verifier checks files/pages/hashes, source quotes, chronology, JSON Schema and expected control consistency. It does not call a model or test application rules. Application checks are documented in the [API guide](../../../../apps/api/README.md), [frontend guide](../../../../apps/web/README.md) and [validation record](../../../../VALIDATION.md).
+The generator reads `source-spec.json`, produces the four PDF inputs and writes manifest hashes. The manually authored answer key is separate. It also produces three explicitly labelled mock responses for API/UI tests; they are not observed model outputs. The verifier checks files/pages/hashes, source quotes, chronology, JSON Schema and expected control consistency. It does not call a model or test application rules. Application checks are documented in the [API guide](../../../../apps/api/README.md), [frontend guide](../../../../apps/web/README.md) and [validation record](../../../../docs/engineering/VALIDATION.md).
 
 PDF page anchors are `VERSION_ID-pN`, one-based and immutable for these generated files. Production IDs may differ; evaluation maps the parser's anchors to source version/page/meaning. Input JSON authoring/control files are not part of the assistant's source set.

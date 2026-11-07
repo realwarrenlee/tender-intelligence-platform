@@ -64,11 +64,8 @@ async def screening_is_current(c,workspace,tender,pins,row):
 
 
 class ScreeningWorkflow:
-    def __init__(self,pool,enabled=False):
-        self.pool=pool;self.repo=Repository(pool);self.enabled=enabled
-
-    def require_enabled(self):
-        if not self.enabled: raise DomainError(409,"WORKFLOW_DISABLED","The bounded qualification workflow is not enabled.")
+    def __init__(self,pool):
+        self.pool=pool;self.repo=Repository(pool)
 
     async def _owner(self,c,actor,tender):
         await self.repo._member(c,actor,"member")
@@ -98,7 +95,6 @@ class ScreeningWorkflow:
         return job_view(row)
 
     async def request(self,actor,tender_id,command):
-        self.require_enabled()
         async with self.pool.acquire() as c,c.transaction():
             await self.repo._member(c,actor,"member")
             operation="request_screening:"+str(tender_id)
@@ -115,8 +111,7 @@ class ScreeningWorkflow:
             result=await self.enqueue(c,actor,tender,pins,docs,budget,command.investigation_queries)
             return await self.repo._finish(c,actor,operation,command,result)
 
-    async def confirm_task(self,actor,tender_id,command,*,proposal_enabled=False):
-        self.require_enabled()
+    async def confirm_task(self,actor,tender_id,command):
         async with self.pool.acquire() as c,c.transaction():
             await self.repo._member(c,actor,"member")
             operation="confirm_screening_task:"+str(tender_id)
@@ -130,7 +125,7 @@ class ScreeningWorkflow:
                 raise DomainError(409,"STALE_SCREENING","Confirm a draft from the current exact screening.")
             payload=json.loads(screening["payload"])
             draft=next((d for d in payload["request_drafts"] if d["draft_ref"]==command.draft_ref),None)
-            if draft is None and proposal_enabled and command.draft_ref.startswith("proposal:"):
+            if draft is None and command.draft_ref.startswith("proposal:"):
                 from app.tenders.proposal import proposal_request_draft
                 draft = await proposal_request_draft(self.repo,c,actor,tender_id,screening["id"],payload,command.draft_ref)
             if draft is None: raise DomainError(422,"INVALID_DRAFT","This draft does not exist in the reviewed screening.")
@@ -166,7 +161,8 @@ class ScreeningWorkflow:
             replay=await self.repo._claim(c,actor,operation,command)
             if replay is not None: return replay
             task=await c.fetchrow("SELECT * FROM m1_app.review_tasks WHERE workspace_id=$1 AND id=$2",actor.workspace_id,task_id)
-            if task is None: raise DomainError(404,"NOT_FOUND","Task not found.")
+            if task is None or json.loads(task["manifest"]).get("workflow")!="screening.v1":
+                raise DomainError(404,"NOT_FOUND","Task not found.")
             tender,pins,documents,_,_=await snapshot(c,actor,task["tender_id"],True)
             task=await c.fetchrow("SELECT * FROM m1_app.review_tasks WHERE workspace_id=$1 AND id=$2 FOR UPDATE",actor.workspace_id,task_id)
             roles=await c.fetchval("SELECT roles FROM m1_app.memberships WHERE workspace_id=$1 AND user_id=$2",actor.workspace_id,actor.user_id)
@@ -214,7 +210,6 @@ class ScreeningWorkflow:
             return await self.repo._finish(c,actor,operation,command,result)
 
     async def decide(self,actor,tender_id,command):
-        self.require_enabled()
         async with self.pool.acquire() as c,c.transaction():
             await self.repo._member(c,actor,"member")
             operation="preparation_decision:"+str(tender_id)
@@ -356,7 +351,10 @@ class ScreeningReasoner:
                 "For each critical finding, critical_basis must be a verbatim nonblank substring of one of that finding's "
                 "tender_citations quotes showing the mandatory or exclusion consequence. Include its parent criterion quote "
                 "when needed; put explanatory reasoning in statement, never paraphrase critical_basis. "
+                "Check that the emitted citations actually contain critical_basis; use a parent-consequence citation instead of a less necessary detail when the three-citation limit applies. "
+                "Conditional preparation_work/future_duty citations cannot contain eligibility, registration, licence, debarment, suspension, financial-threshold or rejection language; use conservative review/decision_gate classification instead. "
                 "For manual intake, report a closing timestamp only with an exact current deadline quote including date and time; otherwise null. "
+                "Every closing_citations entry must independently state the complete closing date and time. Prefer one exact ISO deadline quote; do not add time-only, GeBIZ-pointer or snapshot-retrieval passages as closing citations. "
                 "Keep previous finding IDs and all decision fields including kind, due stage, critical/basis, material_now, preparation_role/basis and exact obligation citations. "
                 "For an unchanged finding listed in reusable_finding_ids, return only {retain_id: its ID} instead of repeating its fields and quotes. "
                 "The server restores that exact finding and revalidates its evidence and expiry. A reference cannot change any finding field. "
@@ -506,15 +504,10 @@ async def _context(pool,storage,actor,job):
             "requires_wider_review":bool(truncated)}}
 
 
-async def execute_screening_job(pool,storage,job_id,decisions_client=None,reasoning_client=None,enabled=None):
+async def execute_screening_job(pool,storage,job_id,decisions_client=None,reasoning_client=None):
     from app.tenders.screening import run_screening,screening_artifact
     from app.tenders.decisions_client import DecisionsClient
     from app.config import get_settings
-    if enabled is None: enabled=get_settings().qualification_workflow_enabled
-    if not enabled:
-        async with pool.acquire() as c:
-            await c.execute("UPDATE m1_app.jobs SET status='cancelled',error_code='WORKFLOW_DISABLED' WHERE id=$1 AND job_kind='screening' AND status IN ('queued','running')",job_id)
-        return
     async with pool.acquire() as c,c.transaction():
         job=await c.fetchrow("SELECT * FROM m1_app.jobs WHERE id=$1 AND job_kind='screening' FOR UPDATE",job_id)
         if job is None or job["status"] not in {"queued","running"}: return

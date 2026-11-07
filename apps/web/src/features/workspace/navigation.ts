@@ -13,7 +13,7 @@ export function workspaceDestination(path: string) {
     path
   ) ||
     /^\/inbox(?:\?tab=(?:human|agent))?$/.test(path) ||
-    ['/reviews', '/members', '/settings', '/company'].includes(path)
+    ['/oversight', '/members', '/settings', '/company'].includes(path)
     ? path
     : '/tenders'
 }

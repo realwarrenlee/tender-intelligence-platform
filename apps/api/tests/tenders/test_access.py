@@ -19,19 +19,6 @@ def test_viewer_cannot_create_and_foreign_tender_id_is_hidden(client,actors):
     assert http.get(f"/api/v1/tenders/{tender['id']}").status_code==404
     assert http.get("/api/v1/tenders").json()["items"]==[]
 
-
-def test_admin_inherits_member_decisions_but_requires_an_assessment(client,actors):
-    http,current,_=client
-    tender=http.post("/api/v1/tenders",json={"title":"Fictional", "client_request_id":str(uuid4())}).json()
-    decision={"expected_input_revision":1,"assessment_version_id":str(uuid4()),
-        "decision":"pursue","reason":"Test only","review_complete":True,"client_request_id":str(uuid4())}
-    current[0]=actors["admin"]
-    assert http.post(f"/api/v1/tenders/{tender['id']}/decisions",json=decision).status_code==422
-    current[0]=actors["approver"]
-    assert http.post(f"/api/v1/tenders/{tender['id']}/decisions",json=decision).status_code==422
-    assert http.post(f"/api/v1/tenders/{tender['id']}/decisions",json={**decision,"expected_input_revision":0}).status_code==409
-
-
 def test_client_cannot_supply_roles_or_workspace(client):
     http,_,_=client
     response=http.post("/api/v1/tenders",json={"title":"Fictional", "client_request_id":str(uuid4()),"roles":["admin"],"workspace_id":str(uuid4())})

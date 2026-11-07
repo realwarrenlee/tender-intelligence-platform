@@ -5,12 +5,9 @@ export type Tender = components['schemas']['TenderDetail']
 export type Assessment = components['schemas']['AssessmentView']
 export type Anchor = components['schemas']['SourceAnchor']
 export type Member = components['schemas']['MemberView']
-export type History = components['schemas']['HistoryView']
 export type Task = components['schemas']['ReviewTaskView']
 export type Citation = components['schemas']['Citation']
-export type Draft = components['schemas']['ReviewDraft']
 export type Company = components['schemas']['CompanyView']
-export type AssistantAnswer = components['schemas']['AssistantView']
 export type Inbox = components['schemas']['InboxView']
 
 export class ApiError extends Error {

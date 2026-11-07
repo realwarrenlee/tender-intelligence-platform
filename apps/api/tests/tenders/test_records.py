@@ -17,7 +17,7 @@ def test_application_exists():
     implemented()
 
 
-def test_create_replay_conflict_and_unready_analysis(client):
+def test_create_replay_conflict_and_unready_screening(client):
     http, _, _ = client
     body = payload()
     created = http.post("/api/v1/tenders",json=body)
@@ -27,7 +27,7 @@ def test_create_replay_conflict_and_unready_analysis(client):
     assert http.post("/api/v1/tenders",json=body).json()["id"] == tender["id"]
     assert http.post("/api/v1/tenders",json={**body,"title":"Changed"}).status_code == 409
     assert http.get(f"/api/v1/tenders/{tender['id']}").json()["assessment"] is None
-    assert http.post(f"/api/v1/tenders/{tender['id']}/analyses",json={"expected_input_revision":1,"client_request_id":str(uuid4())}).status_code == 422
+    assert http.post(f"/api/v1/tenders/{tender['id']}/screenings",json={"expected_input_revision":1,"client_request_id":str(uuid4())}).status_code == 422
 
 
 def test_concurrent_duplicate_creates_one_tender(client):

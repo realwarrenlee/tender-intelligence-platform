@@ -1,6 +1,6 @@
 # CBM requirement coverage map
 
-As of 23 October 2026. Read alongside RESEARCH.md. This is a map of documented coverage and validation needs, not a product test or numerical vendor ranking.
+As of 23 October 2026. Read alongside the [market research](../research/RESEARCH.md). This is a map of documented coverage and validation needs, not a product test or numerical vendor ranking.
 
 A named product means a relevant feature is documented. It does not establish complete CBM compatibility. "Not established" means the inspected public material did not answer the question; it does not mean the capability is absent.
 

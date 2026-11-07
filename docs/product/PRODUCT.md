@@ -6,11 +6,11 @@ The current prototype covers qualification and internal coordination. Engineerin
 
 ## What is implemented
 
-The Next.js workspace has Tenders, Inbox, Oversight, Company, Members and Settings. Existing assessments, assigned questions, pursuit decisions, source readers, history and the contextual assistant remain supported.
+The Next.js workspace has Tenders, Inbox, Oversight, Company, Members and Settings. Tender detail brings together screening, assigned questions, preparation decisions and source readers.
 
 The tender detail presents a Qualification brief with the current recommendation, material blockers, known facts, next actor and requirements grouped by obligation type. Review requests are grouped by suggested function; exact source gaps and processing usage remain available in expandable details. New screenings can include buyer, reference, scope, contract period and sites as cited verbatim extracts, labelled `Extracted · verify against sources`. Missing fields and older briefs show unknowns. Citation validation checks source support, not whether a passage answers the intended field correctly; independent semantic review remains required.
 
-The newer workflow is implemented behind `QUALIFICATION_WORKFLOW_ENABLED`, which defaults to `false`. When enabled, it adds a public-notice collector and labelled controlled imports, Human and Agent Inbox tabs, bounded source-backed screening, shared review cases, scoped input requests and preparation decisions. Enabling it grants neither model-spending authority nor business approval.
+Qualification includes a configurable public-notice collector, labelled controlled imports, Human and Agent Inbox tabs, bounded source-backed screening, shared review cases, scoped input requests and preparation decisions. Model spending and business approval require explicit authority.
 
 | Surface | Purpose |
 | --- | --- |
@@ -30,7 +30,7 @@ The MVP has three workspace access levels, each member holding exactly one:
 - **Member:** create and work on tenders, answer assigned requests and record assigned preparation decisions.
 - **Viewer:** read workspace records without changing business records or recording decisions.
 
-Bid owner, service reviewer and preparation decision-maker are responsibilities assigned per tender or request, not permanent workspace roles. Any Member or Admin can be assigned. Only the named assignee may answer a request or decide its preparation approval; ownership still controls screening and request confirmation. Legacy pursuit decisions are available to Members and Admins without assignment. All decisions retain actor and version attribution.
+Bid owner, service reviewer and preparation decision-maker are responsibilities assigned per tender or request, not permanent workspace roles. Any Member or Admin can be assigned. Only the named assignee may answer a request or decide its preparation approval; ownership still controls screening and request confirmation. All decisions retain actor and version attribution.
 
 This is an MVP trust model. Confirm actual customer delegation before a pilot. Preparation decisions grant neither provider spending authority nor final offer release. Temporary development accounts are documented locally in MEMBERS.md.
 
@@ -66,11 +66,11 @@ Outbound messages remain drafts until a user approves the message version, recip
 
 ## Delivery gates
 
-Increment 3 implements a controlled Preparation tab for a technical response and pricing workbook. The bid owner sets the internal deadline, assigns a deliverable owner and a separate reviewer, and can link requirements from the approved screening. The deliverable owner uploads working versions and requests a scoped review. Inbox and Reviews show the same work. Acceptance covers the reviewed file and plan only. Amendments require fresh preparation approval and reconfirmation; earlier plans, files and reviews remain available.
+Increment 3 implements a controlled Preparation tab for a technical response and pricing workbook. The bid owner sets the internal deadline, assigns a deliverable owner and a separate reviewer, and can link requirements from the approved screening. The deliverable owner uploads working versions and requests a scoped review. Inbox and Oversight show the same work. Acceptance covers the reviewed file and plan only. Amendments require fresh preparation approval and reconfirmation; earlier plans, files and reviews remain available.
 
-Preparation writes are off by default. Rollout requires representative Qualification acceptance and agreement on the actual deliverables, review responsibilities and internal deadlines. Each tender needs current preparation approval before production actions.
+Preparation writes require current preparation approval for the tender.
 
-The controlled Submission tab seals the accepted technical and commercial file versions, their hashes and review records. The bid owner names a separate release approver. After that approver clears the release checks and approves the package, the bid owner can record the portal reference, submission time and PDF receipt. Changes to qualification evidence, accepted files or plans can make a package non-current. Earlier packages, decisions and receipts remain available. Submission writes are off by default and rollout requires agreement on real release delegation and acceptable portal evidence.
+The controlled Submission tab seals the accepted technical and commercial file versions, their hashes and review records. The bid owner names a separate release approver. After that approver clears the release checks and approves the package, the bid owner can record the portal reference, submission time and PDF receipt. Changes to qualification evidence, accepted files or plans can make a package non-current. Earlier packages, decisions and receipts remain available.
 
 The controlled costing feature lives under the Pricing workbook deliverable. It compares supplier quotes against one service package and flags missing, excluded, partial and non-comparable lines. It calculates a selected scenario in SGD before tax using comparable rates and any explicitly selected estimates with approval references. A complete working workbook for the current tender can be saved as a new pricing version for the existing review and release workflow. The fictional HVAC example is available for practice. Pilot use requires representative quotes and approved company workbook rules.
 

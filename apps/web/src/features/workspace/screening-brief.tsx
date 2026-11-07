@@ -379,7 +379,6 @@ export function ScreeningBrief({
   focusTaskId,
   embedded,
   onBack,
-  onLegacy,
 }: {
   tender: Tender
   actor: Actor
@@ -388,7 +387,6 @@ export function ScreeningBrief({
   focusTaskId?: string
   embedded?: boolean
   onBack?: () => void
-  onLegacy?: () => void
 }) {
   const cache = useQueryClient()
   const sourceCoverage = tender.source_coverage as
@@ -443,8 +441,7 @@ export function ScreeningBrief({
   const action = useAction(refresh)
   const processing = ['queued', 'running'].includes(review?.job_status || '')
   const errors = reviewQuery.error || sources.error || members.error
-  const enabled = actor.qualification_workflow_enabled === true
-  const paused = !enabled || !!errors || reviewQuery.isFetching || processing
+  const paused = !!errors || reviewQuery.isFetching || processing
   const current = review?.screening_is_current === true
   const owner = review?.permitted_actions.includes('start_screening') === true
   const locked = paused || !current
@@ -575,18 +572,14 @@ export function ScreeningBrief({
       )
   )
   const decision = review?.preparation_decision
-  const showPreparation =
-    initialTab === 'Preparation' ||
-    actor.preparation_tracking_enabled ||
-    !!review?.preparation
-  const showSubmission =
-    initialTab === 'Submission' ||
-    actor.submission_control_enabled ||
-    !!review?.submission_history
   const tenderTabs = [
     'Qualification',
-    ...(showPreparation ? ['Preparation'] : []),
-    ...(showSubmission ? ['Submission'] : []),
+    ...(!embedded || initialTab === 'Preparation' || review?.preparation
+      ? ['Preparation']
+      : []),
+    ...(!embedded || initialTab === 'Submission' || review?.submission_history
+      ? ['Submission']
+      : []),
     ...(embedded ? [] : ['Sources']),
   ]
   const body = (
@@ -750,48 +743,42 @@ export function ScreeningBrief({
           )}
         </TabsContent>
         <TabsContent value='Preparation' className='min-h-0 overflow-y-auto'>
-          {showPreparation && (
-            <PreparationPanel
-              api={api}
-              actor={actor}
-              tenderId={tender.id}
-              focusItemId={
-                initialTab === 'Preparation' ? focusTaskId : undefined
-              }
-              members={members.data?.items || []}
-              findings={screening?.findings || []}
-              onOpen={(screeningId, citation) =>
-                void openPreparationSource(screeningId, citation)
-              }
-              onChange={refresh}
-              requestedProposalRefs={tasks
-                .filter((task) => task.status === 'open' && taskCurrent(task))
-                .map((task) => task.draft_ref)}
-              onRequestProposal={
-                owner && !locked
-                  ? (requirement, button) => {
-                      trigger.current = button
-                      setDraft({
-                        draft_ref: requirement.request_ref,
-                        purpose: 'screening_input',
-                        question: requirement.question,
-                      })
-                    }
-                  : undefined
-              }
-            />
-          )}
+          <PreparationPanel
+            api={api}
+            actor={actor}
+            tenderId={tender.id}
+            focusItemId={initialTab === 'Preparation' ? focusTaskId : undefined}
+            members={members.data?.items || []}
+            findings={screening?.findings || []}
+            onOpen={(screeningId, citation) =>
+              void openPreparationSource(screeningId, citation)
+            }
+            onChange={refresh}
+            requestedProposalRefs={tasks
+              .filter((task) => task.status === 'open' && taskCurrent(task))
+              .map((task) => task.draft_ref)}
+            onRequestProposal={
+              owner && !locked
+                ? (requirement, button) => {
+                    trigger.current = button
+                    setDraft({
+                      draft_ref: requirement.request_ref,
+                      purpose: 'screening_input',
+                      question: requirement.question,
+                    })
+                  }
+                : undefined
+            }
+          />
         </TabsContent>
         <TabsContent value='Submission' className='min-h-0 overflow-y-auto'>
-          {showSubmission && (
-            <SubmissionPanel
-              api={api}
-              actor={actor}
-              tenderId={tender.id}
-              members={members.data?.items || []}
-              onChange={refresh}
-            />
-          )}
+          <SubmissionPanel
+            api={api}
+            actor={actor}
+            tenderId={tender.id}
+            members={members.data?.items || []}
+            onChange={refresh}
+          />
         </TabsContent>
         <TabsContent
           value='Qualification'
@@ -799,26 +786,7 @@ export function ScreeningBrief({
           className='min-h-0 overflow-y-auto data-[state=inactive]:hidden'
         >
           <div className='space-y-2 border-b px-6 py-4'>
-            <div className='flex flex-wrap items-center justify-between gap-x-4 gap-y-2'>
-              <h2 className='text-lg font-medium'>Qualification brief</h2>
-              {onLegacy && (
-                <Button
-                  variant='link'
-                  className='h-auto p-0'
-                  onClick={onLegacy}
-                >
-                  View earlier assessment and history
-                </Button>
-              )}
-            </div>
-            {!enabled && (
-              <p
-                role='status'
-                className='text-sm text-amber-700 dark:text-amber-300'
-              >
-                Screening is disabled. This saved brief is read-only.
-              </p>
-            )}
+            <h2 className='text-lg font-medium'>Qualification brief</h2>
             {reviewQuery.isPending && (
               <p role='status'>Loading qualification brief…</p>
             )}
@@ -982,7 +950,6 @@ export function ScreeningBrief({
                       ) && (
                         <AnswerForm
                           api={api}
-                          actor={actor}
                           task={task}
                           locked={locked}
                           onChange={refresh}

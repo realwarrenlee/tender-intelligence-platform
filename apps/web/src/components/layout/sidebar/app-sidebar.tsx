@@ -29,7 +29,7 @@ import { useSession } from '@/features/workspace/session'
 
 const links = [
   { name: 'Inbox', href: '/inbox', icon: Inbox },
-  { name: 'Reviews', href: '/reviews', icon: ClipboardCheck },
+  { name: 'Oversight', href: '/oversight', icon: ClipboardCheck },
   { name: 'Tenders', href: '/tenders', icon: Files },
   {
     name: 'Company',
@@ -76,12 +76,7 @@ export function AppSidebar() {
                         aria-current={active ? 'page' : undefined}
                       >
                         <Icon />
-                        <span>
-                          {href === '/reviews' &&
-                          actor?.qualification_workflow_enabled
-                            ? 'Oversight'
-                            : name}
-                        </span>
+                        <span>{name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

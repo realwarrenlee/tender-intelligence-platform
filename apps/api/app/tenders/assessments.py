@@ -1,10 +1,6 @@
-from copy import deepcopy
 import json
 from uuid import uuid4
 
-from app.tenders.analysis import validate_candidate,requirement_identity
-from app.tenders.analysis_runtime import utc_now
-from app.tenders.citations import citation_errors,normalise_quote
 from app.tenders.documents import docx_bytes, parse_isolated
 from app.tenders.policy import DomainError
 
@@ -115,92 +111,3 @@ async def get_assessment(repository,actor,version_id):
         view=assessment_view(row,tender['input_revision'],evidence_revision)
         view['is_current'] &= row['id']==latest
         return {'schema_version':'m1.v1',**view}
-
-
-async def correct_assessment(repository,actor,tender_id,command):
-    async with repository.pool.acquire() as connection,connection.transaction():
-        await repository._member(connection,actor,'member')
-        replay=await repository._claim(connection,actor,'correct_assessment:'+str(tender_id),command)
-        if replay is not None: return replay
-        evidence_revision=await connection.fetchval('SELECT evidence_revision FROM m1_app.workspaces WHERE id=$1 FOR SHARE',actor.workspace_id)
-        tender=await repository._tender(connection,actor,tender_id,lock=True)
-        row=await connection.fetchrow("SELECT * FROM m1_app.artifact_versions WHERE workspace_id=$1 AND tender_id=$2 AND kind='assessment' ORDER BY input_revision DESC,created_at DESC,id DESC LIMIT 1",actor.workspace_id,tender_id)
-        if not row or row['id']!=command.expected_assessment_version_id or not assessment_view(row,tender['input_revision'],evidence_revision)['is_current']:
-            raise DomainError(409,'STALE_ASSESSMENT','A current assessment version is required for correction.')
-        previous=json.loads(row['payload'])
-        candidate=deepcopy(previous['candidate'])
-        candidate['recommendation']={'decision':'hold','reasons':['A human corrected this assessment; reassessment is required.'],'condition_refs':[]}
-        by_id={r['id']:r for r in previous['requirements']}
-        changes=[]
-        edited=set()
-        for edit in command.edits.requirements:
-            if edit.requirement_id in edited or edit.requirement_id not in by_id: raise DomainError(422,'INVALID_CORRECTION','Correction references an unknown or duplicate requirement.')
-            edited.add(edit.requirement_id)
-            value={**by_id[edit.requirement_id]['requirement'],**edit.model_dump(mode='json',exclude={'requirement_id'})}
-            found=False
-            for index,requirement in enumerate(candidate['requirements']):
-                if requirement_identity(requirement)==edit.requirement_id:
-                    candidate['requirements'][index]=value
-                    found=True
-            if not found: candidate['requirements'].append(value)
-            changes.append({'kind':'requirement','id':edit.requirement_id,'value':value})
-        if command.edits.key_facts:
-            for name in type(command.edits.key_facts).model_fields:
-                fact=getattr(command.edits.key_facts,name)
-                if fact is None: continue
-                value=fact.model_dump(mode='json')
-                candidate['key_facts'][name]=value
-                changes.append({'kind':'fact','id':name,'value':value})
-        prev=deepcopy(previous)
-        prev['manual_corrections']=[c for c in prev.get('manual_corrections',[]) if not any(c['kind']==e['kind'] and c['id']==e['id'] for e in changes)]
-        resolution_records=[]
-        new_ids={requirement_identity(r):r for r in candidate['requirements']}
-        pending=prev.get('reconciliation',[])
-        for mapping in command.edits.reconciliations:
-            prior=by_id.get(mapping.previous_requirement_id)
-            targets=[new_ids.get(key) for key in mapping.replacement_requirement_ids]
-            outstanding=[c for c in pending if c.get('requirement_id')==mapping.previous_requirement_id and not c.get('resolved')]
-            cites=[c.model_dump() for c in mapping.citations]
-            if not prior or not outstanding or any(r is None for r in targets) or citation_errors(cites,previous['context']['source_anchors'],{'tender','addendum'}):
-                raise DomainError(422,'INVALID_RECONCILIATION','Reconciliation needs an outstanding change, existing replacements and valid tender citations.')
-            old=next((c['previous_requirement'] for c in outstanding if c.get('previous_requirement')),prior['requirement'])
-            # Require a shared source clause, not merely a quote elsewhere in the pack.
-            # New addendum clauses can accompany that original clause; unrelated obligations cannot replace it.
-            def overlaps(left,right):
-                return left['anchor_id']==right['anchor_id'] and (normalise_quote(left['quote']) in normalise_quote(right['quote']) or normalise_quote(right['quote']) in normalise_quote(left['quote']))
-            anchors=previous['context']['source_anchors']
-            def related(left,right):
-                target=anchors[right['anchor_id']]
-                return overlaps(left,right) or (target['source_role']=='addendum' and target.get('amends_version_id')==anchors[left['anchor_id']]['document_version_id'])
-            affected=old['tender_citations']+[c for r in targets for c in r['tender_citations']]
-            if any(not any(overlaps(c,e) for e in cites) for c in affected) or any(not any(related(a,b) for a in old['tender_citations'] for b in r['tender_citations']) for r in targets):
-                raise DomainError(422,'INVALID_RECONCILIATION','Mappings must cite affected original/replacement clauses and retain a shared clause or a registered amendment relationship.')
-            if old['mandatory'] and old['kind'] in ('eligibility','delivery') and any(not r['mandatory'] or r['kind'] not in ('eligibility','delivery') for r in targets):
-                raise DomainError(422,'INVALID_RECONCILIATION','A mandatory qualification obligation cannot be downgraded through replacement.')
-            if old['status'] in ('unconfirmed','unmet') and mapping.previous_requirement_id not in edited and any(r['status']=='met' for r in targets):
-                raise DomainError(422,'INVALID_RECONCILIATION','Resolve the original finding explicitly before replacing it with a met finding.')
-            resolved_ids={mapping.previous_requirement_id,*mapping.replacement_requirement_ids}
-            for change in pending:
-                if change.get('requirement_id') in resolved_ids: change['resolved']=True
-            prev['requirements']=[r for r in prev['requirements'] if r['id']!=mapping.previous_requirement_id]
-            # Seed accepted targets so validation does not recreate additions/changes.
-            for key in mapping.replacement_requirement_ids:
-                prev['requirements']=[r for r in prev['requirements'] if r['id']!=key]
-                prev['requirements'].append({'id':key,'requirement':deepcopy(new_ids[key]),'carried_forward':False})
-            resolution_records.append(mapping.model_dump(mode='json'))
-        for change in pending:
-            if change['kind']=='manual_correction_conflict' and any((edit['kind']=='requirement' and edit['id']==change.get('requirement_id')) or (edit['kind']=='fact' and edit['id']==change.get('fact_id')) for edit in changes):
-                change['resolved']=True
-        if not changes and not resolution_records: raise DomainError(422,'EMPTY_CORRECTION','Supply a fact, finding or source-backed reconciliation change.')
-        context={**previous['context'],'previous_assessment':prev,'as_of':utc_now().isoformat(),'input_revision':tender['input_revision']+1}
-        # Human corrections are explicit judgements; the same strict source/schema rules still apply.
-        result=validate_candidate(candidate,context,human_correction=True)
-        result['manual_corrections']+=changes
-        result['human_reason']=command.reason
-        result['reconciliation_resolutions']=previous.get('reconciliation_resolutions',[])+resolution_records
-        result['run']=previous.get('run')
-        revision=await connection.fetchval('UPDATE m1_app.tenders SET input_revision=input_revision+1 WHERE id=$1 RETURNING input_revision',tender_id)
-        manifest=json.loads(row['manifest'])
-        manifest['correction_of']=str(row['id'])
-        inserted=await connection.fetchrow("INSERT INTO m1_app.artifact_versions(workspace_id,tender_id,kind,input_revision,manifest,payload,created_by) VALUES($1,$2,'assessment',$3,$4::jsonb,$5::jsonb,$6) RETURNING *",actor.workspace_id,tender_id,revision,json.dumps(manifest),json.dumps(result),actor.user_id)
-        return await repository._finish(connection,actor,'correct_assessment',command,assessment_view(inserted,revision,evidence_revision))

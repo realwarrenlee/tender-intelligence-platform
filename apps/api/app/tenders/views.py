@@ -13,9 +13,6 @@ JobStatus=Literal['queued','running','needs_input','failed','completed','cancell
 
 class ActorView(ActorContext):
     schema_version:Literal['m1.v1']
-    qualification_workflow_enabled:bool=False
-    preparation_tracking_enabled:bool=False
-    submission_control_enabled:bool|None=None
 
 
 class MemberView(BaseModel):

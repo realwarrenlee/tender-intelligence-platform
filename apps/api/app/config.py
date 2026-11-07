@@ -21,9 +21,6 @@ class Settings(BaseSettings):
     openai_prices: dict[str, ModelPrice] = {}
     openai_decisions_model: str | None = None
     notice_source_jobs: list[NoticeJob] = []
-    qualification_workflow_enabled: bool = False
-    preparation_tracking_enabled: bool = False
-    submission_control_enabled: bool = False
 
 
 @lru_cache

@@ -2,12 +2,10 @@ import type { Actor, Tender, Task } from '../api'
 import type { components } from '../api.generated'
 import { tenderFixture } from './review'
 
-export const owner: Actor & { qualification_workflow_enabled: boolean } = {
+export const owner: Actor = {
   user_id: 'owner',
   workspace_id: 'workspace',
   roles: ['member'],
-  qualification_workflow_enabled: true,
-  preparation_tracking_enabled: false,
 }
 export const reviewer: Actor = {
   ...owner,

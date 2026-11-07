@@ -1,6 +1,6 @@
 # Architecture
 
-The application uses Next.js, FastAPI, PgQueuer and Supabase PostgreSQL/Storage/Auth. Existing assessments, source readers and the assistant remain supported. Screening and preparation are implemented behind `QUALIFICATION_WORKFLOW_ENABLED`, which defaults to false. Controlled checks and one reviewed case do not establish independent usefulness or pilot readiness; see the reliability follow-up (local only). Broader lifecycle capabilities below remain proposals.
+The application uses Next.js, FastAPI, PgQueuer and Supabase PostgreSQL/Storage/Auth. Qualification uses bounded screening and native source readers. Preparation and Submission enforce tender-level approvals and assigned roles. Controlled checks and one reviewed case do not establish independent usefulness or pilot readiness; see the reliability follow-up (local only). Broader lifecycle capabilities below remain proposals.
 
 ## Design intent
 
@@ -38,12 +38,12 @@ The application uses Next.js App Router, React and TypeScript; FastAPI and Pydan
 |---|---|
 | `apps/web/src/app/layout.tsx` | Shared fonts, persistent theme provider and toast host. |
 | `apps/web/src/components/`, `hooks/` and `app/globals.css` | Shared desktop frame/sidebar, UI primitives, split panes and theme tokens. |
-| `apps/web/src/app/(workspace)/` | Protected Tenders, Inbox, Reviews, Members, Company profile, a single Settings page for Appearance and Profile. |
+| `apps/web/src/app/(workspace)/` | Protected Tenders, Inbox, Oversight, Members, Company profile, a single Settings page for Appearance and Profile. |
 | `apps/web/src/features/workspace/` | Existing business controls plus real-data workspace views. |
 | `apps/web/src/app/sign-in/` | Supabase sign-in and restricted post-login destinations. |
 | `apps/web/next.config.ts` | Root-to-Tenders and compatibility redirects, shared public environment values and API proxy. |
 
-The root opens `/tenders`. Legacy Inbox and Reviews derive actions from authorised tender reads. With screening enabled, the bounded inbox-actions and review-cases endpoints supply Human/Agent Inbox and team assessment progress. Members uses the workspace directory. There is no fake organization/team switcher or canned global agent. The existing bounded assistant remains inside tender detail.
+The root opens `/tenders`. The bounded inbox-actions and review-cases endpoints supply Human and Agent Inbox, team progress and Oversight. Members uses the workspace directory.
 
 The board displays backend assessment status without mutating decisions. AI recommendations, source currency and human decisions remain distinct. A paginated workspace-task endpoint is deferred until data volume warrants it. Appearance has persistent Light/Dark tabs; Profile shows the account image, email, name and role read-only.
 
@@ -69,11 +69,11 @@ A requirement may cite an older original clause that remains effective alongside
 
 ## Screening and preparation decisions
 
-The enabled workflow uses artifact_versions.kind=screening, jobs.job_kind=screening and private preparation_decisions. Reuse source indexes, native readers, current Company evidence, durable jobs, shared usage reservations and existing confirmed review_tasks/answers. A review case is a projection keyed by tender_id, not a second editable case. Read models return bounded team Review pages and personal Human actions; the latter is based on the person owing an action regardless of draft author. Source/Company/notice changes and answers invalidate old versions; new screening and preparation decisions retain exact pins. Same-source native extraction can be reused after immutable identity/hash checks without a download/reparse. Scoped reassessment retains unrelated findings; cancellation/stale attempts cannot publish. QUALIFICATION_WORKFLOW_ENABLED controls cutover and defaults false; rollback disables new entry, preserves sources/history/tasks/decisions/budgets and prevents simultaneous broad/new model pipelines. The screens are implemented; independent quality and effort validation remain open.
+Qualification uses artifact_versions.kind=screening, jobs.job_kind=screening and private preparation_decisions. Reuse source indexes, native readers, current Company evidence, durable jobs, shared usage reservations and existing confirmed review_tasks/answers. A review case is a projection keyed by tender_id, not a second editable case. Read models return bounded team Oversight pages and personal Human actions; the latter is based on the person owing an action regardless of draft author. Source/Company/notice changes and answers invalidate old versions; new screening and preparation decisions retain exact pins. Same-source native extraction can be reused after immutable identity/hash checks without a download/reparse. Scoped reassessment retains unrelated findings; cancellation/stale attempts cannot publish. The screens are implemented; independent quality and effort validation remain open.
 
 Current screening/preparation reads are fenced by the latest screening job generation as well as input/evidence revisions. A new run or changed approval delegation invalidates old authority immediately. Finalisation locks membership, workspace/tender, then job to avoid cancellation/supersession deadlocks; late or cancelled attempts cannot publish. Classification checkpoints live in the private job manifest and are copied only across unchanged source signatures.
 
-The shared source API accepts screening versions and resolves only cited native anchors and attributed scoped answers within the workspace/tender, including historical source pins. Review lists carry bounded summaries; exact detail is fetched on opening one case. Preparation decisions and old artifact/task records remain immutable history. New private preparation_decisions has RLS enabled and no anon/authenticated CRUD grants. Rollback blocks legacy enqueue for cases that have entered screening while preserving legacy-only behavior.
+The shared source API accepts screening versions and resolves only cited native anchors and attributed scoped answers within the workspace/tender, including historical source pins. Review lists carry bounded summaries; exact detail is fetched on opening one case. Preparation decisions and old artifact/task records remain immutable history. New private preparation_decisions has RLS enabled and no anon/authenticated CRUD grants.
 
 ## Model and human authority
 

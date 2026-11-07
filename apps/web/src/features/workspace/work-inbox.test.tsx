@@ -2,27 +2,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-react'
 import { userEvent } from 'vitest/browser'
-import { createApi, type Actor, type Inbox } from './api'
+import { createApi, type Actor } from './api'
+import { reviewCase } from './test-fixtures/screening'
 import { WorkInbox } from './work-inbox'
 
 const navigation = vi.hoisted(() => ({ push: vi.fn() }))
 vi.mock('next/navigation', () => ({ useRouter: () => navigation }))
 
-const item: Inbox['items'][number] = {
-  schema_version: 'm1.v1',
-  workspace_id: 'workspace',
-  owner_user_id: 'owner',
+const item = {
+  ...reviewCase(),
   input_revision: 1,
-  created_at: '2026-10-24T01:00:00Z',
-  id: 'tender-1',
-  title: 'Campus maintenance',
-  buyer: 'Campus buyer',
-  source_label: 'Reference A',
-  closing_at: '2026-11-20T16:00:00+08:00',
-  assessment_status: 'current',
-  recommendation: 'hold',
-  decision: null,
-  next_action: 'Confirm Saturday staffing',
 }
 let cache: QueryClient
 let commands: Array<Record<string, unknown>>
@@ -78,12 +67,14 @@ beforeEach(() => {
           path.endsWith(interruptedSuffix) &&
           networkFailures-- > 0
         )
-          throw new TypeError('Interrupted analysis response')
+          throw new TypeError('Interrupted source intake response')
         return Response.json({
           id: 'created-tender',
           input_revision: path.endsWith('/documents') ? 2 : 1,
         })
       }
+      if (String(_input).endsWith('/members'))
+        return Response.json({ items: [] })
       if (fail)
         return Response.json(
           { code: 'UNAVAILABLE', message: 'Inbox is unavailable.' },
@@ -95,12 +86,12 @@ beforeEach(() => {
           item,
           {
             ...item,
-            id: 'tender-2',
+            tender_id: 'tender-2',
             title: 'Office cleaning',
-            source_label: 'Reference B',
           },
-        ].filter((t) => !removed.includes(t.id)),
-      } as Inbox)
+        ].filter((t) => !removed.includes(t.tender_id)),
+        next_cursor: null,
+      })
     })
   )
 })
@@ -120,15 +111,15 @@ function open(roles = ['member']) {
   )
 }
 
-it('filters real inbox rows by title or reference and retains detail links', async () => {
+it('filters real inbox rows by title and retains detail links', async () => {
   const screen = await open()
   const campus = screen.getByRole('link', { name: /Campus maintenance/ })
   await expect.element(campus).toHaveAttribute('href', '/tenders/tender-1')
   await userEvent.fill(
     screen.getByRole('textbox', {
-      name: 'Filter tenders by name or reference',
+      name: 'Find loaded tenders',
     }),
-    'reference b'
+    'Office cleaning'
   )
   await expect
     .element(screen.getByRole('link', { name: /Office cleaning/ }))
@@ -136,7 +127,7 @@ it('filters real inbox rows by title or reference and retains detail links', asy
   await expect.element(campus).not.toBeInTheDocument()
 })
 
-it('creates, uploads and analyses a pack without asking for tender details', async () => {
+it('saves sources and opens qualification without starting a model run', async () => {
   const screen = await open()
   await userEvent.click(
     screen.getByRole('button', { name: 'Create tender', exact: true })
@@ -154,7 +145,7 @@ it('creates, uploads and analyses a pack without asking for tender details', asy
     new File(['pack'], 'Campus maintenance.pdf', { type: 'application/pdf' }),
   ])
   await userEvent.click(
-    screen.getByRole('button', { name: 'Analyse tender', exact: true })
+    screen.getByRole('button', { name: 'Save sources', exact: true })
   )
   await expect
     .poll(() => navigation.push.mock.calls[0]?.[0])
@@ -162,7 +153,6 @@ it('creates, uploads and analyses a pack without asking for tender details', asy
   expect(commands.map((command) => command.path)).toEqual([
     '/api/v1/tenders',
     '/api/v1/tenders/created-tender/documents',
-    '/api/v1/tenders/created-tender/analyses',
   ])
   expect(commands[0]).toMatchObject({
     title: 'Campus maintenance',
@@ -172,15 +162,12 @@ it('creates, uploads and analyses a pack without asking for tender details', asy
     expected_input_revision: 1,
     filenames: ['Campus maintenance.pdf'],
   })
-  expect(commands[2]).toMatchObject({ expected_input_revision: 2 })
   await expect
-    .element(
-      screen.getByRole('button', { name: 'Analyse tender', exact: true })
-    )
+    .element(screen.getByRole('button', { name: 'Save sources', exact: true }))
     .toBeDisabled()
 })
 
-it.each(['/tenders', '/documents', '/analyses'])(
+it.each(['/tenders', '/documents'])(
   'resumes an interrupted %s request without duplicating completed stages',
   async (suffix) => {
     interruptedSuffix = suffix
@@ -193,7 +180,7 @@ it.each(['/tenders', '/documents', '/analyses'])(
       new File(['pack'], 'Campus.pdf', { type: 'application/pdf' }),
     ])
     await userEvent.click(
-      screen.getByRole('button', { name: 'Analyse tender', exact: true })
+      screen.getByRole('button', { name: 'Save sources', exact: true })
     )
     await userEvent.click(
       screen.getByRole('button', { name: 'Retry same request' })
@@ -201,7 +188,7 @@ it.each(['/tenders', '/documents', '/analyses'])(
     await expect
       .poll(() => navigation.push.mock.calls[0]?.[0])
       .toBe('/tenders/created-tender')
-    expect(commands).toHaveLength(4)
+    expect(commands).toHaveLength(3)
     const retries = commands.filter((command) =>
       String(command.path).endsWith(suffix)
     )
@@ -249,25 +236,6 @@ it('shows a failed inbox without claiming there are no tenders', async () => {
   await expect
     .element(screen.getByText(/No tenders yet/))
     .not.toBeInTheDocument()
-})
-
-it('shows real assessment states in a read-only tender board with detail links', async () => {
-  const screen = await open()
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Board', exact: true })
-  )
-  await expect
-    .element(screen.getByRole('region', { name: 'Tender board' }))
-    .toBeVisible()
-  await expect
-    .element(screen.getByRole('link', { name: /Campus maintenance/ }))
-    .toHaveAttribute('href', '/tenders/tender-1')
-  await expect
-    .element(screen.getByRole('button', { name: /Record pursue/ }))
-    .not.toBeInTheDocument()
-  await expect
-    .element(screen.getByRole('heading', { name: /Current assessment/ }))
-    .toBeVisible()
 })
 
 it('requires confirmation and removes only the selected tender', async () => {
@@ -340,13 +308,10 @@ it('keeps a changed tender visible when deletion fails', async () => {
     .toBeVisible()
 })
 
-it('retries an interrupted deletion with the same request and supports board deletion', async () => {
+it('retries an interrupted deletion with the same request', async () => {
   interruptedSuffix = '/tender-1'
   networkFailures = 1
   const screen = await open()
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Board', exact: true })
-  )
   await userEvent.click(
     screen.getByRole('button', {
       name: 'Delete Campus maintenance',
@@ -381,43 +346,4 @@ it('hides deletion controls from viewers', async () => {
       })
     )
     .not.toBeInTheDocument()
-})
-
-it('saves enabled-workflow intake sources without starting a model run', async () => {
-  const previous = globalThis.fetch
-  vi.stubGlobal('fetch', (input: RequestInfo | URL, init?: RequestInit) => {
-    if (!init?.method && /\/review-cases|\/members/.test(String(input)))
-      return Promise.resolve(Response.json({ items: [], next_cursor: null }))
-    return previous(input, init)
-  })
-  const screen = await render(
-    <QueryClientProvider client={cache}>
-      <WorkInbox
-        actor={{
-          user_id: 'owner',
-          workspace_id: 'workspace',
-          roles: ['member'],
-          qualification_workflow_enabled: true,
-          preparation_tracking_enabled: false,
-        }}
-        api={createApi(async () => 'test-token')}
-      />
-    </QueryClientProvider>
-  )
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Create tender', exact: true })
-  )
-  await userEvent.upload(screen.getByLabelText('Tender files'), [
-    new File(['pack'], 'Campus.pdf', { type: 'application/pdf' }),
-  ])
-  await userEvent.click(
-    screen.getByRole('button', { name: 'Save sources', exact: true })
-  )
-  await expect
-    .poll(() => navigation.push.mock.calls.at(-1)?.[0])
-    .toBe('/tenders/created-tender')
-  expect(commands.map((command) => command.path)).toEqual([
-    '/api/v1/tenders',
-    '/api/v1/tenders/created-tender/documents',
-  ])
 })

@@ -11,7 +11,8 @@ it('preserves the supported review tab and clean workspace destinations after si
   expect(workspaceDestination('/tenders/one?section=submission')).toBe(
     '/tenders/one?section=submission'
   )
-  expect(workspaceDestination('/reviews')).toBe('/reviews')
+  expect(workspaceDestination('/reviews')).toBe('/tenders')
+  expect(workspaceDestination('/oversight')).toBe('/oversight')
   expect(workspaceDestination('/company')).toBe('/company')
   expect(workspaceDestination('/settings/company-evidence')).toBe('/company')
   expect(workspaceDestination('/settings')).toBe('/settings')

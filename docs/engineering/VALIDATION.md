@@ -160,13 +160,15 @@ Evidence is available in the [repair outcomes and operator procedure](../../outp
 
 This sequencing supersedes the development gate recorded in the earlier trial entries. Increment 3 can be developed and tested on controlled cases with valid preparation approval while Qualification validation continues. Representative domain review and effort measurement are required for rollout. Each tender requires current preparation approval before production actions. PUB still needs reassessment.
 
+Qualification, Preparation and Submission are now always available in the app. The 3 November results below describe the configuration used at the time. Representative acceptance and pilot validation are tracked separately.
+
 ## Controlled Preparation tracking — 3 November 2026
 
 Three new API cases passed against disposable PostgreSQL and a private-storage test double. They exercised current approval, workspace and assignment checks, retry and revision behavior, file version acceptance, amendment and reapproval, reassignment, historical links, and reads with writes disabled. A separate controlled run uploaded the PDF technical response and XLSX pricing workbook. The new tables have row-level security and no direct browser grants.
 
 The production browser build, typecheck, lint, route and proxy checks, dependency check, focused formatting check, and exported API contract checks passed. A browser run opened the Preparation deep link and the same assigned review from Inbox. Qualification and Preparation were visually compared at the same desktop viewport using controlled records.
 
-The full API suite passed **512** and reproduced the **7** previously documented role assertions. The full browser suite passed **122** and reported **3** failures in existing Company and Office preview cases. The repository-wide formatting check reported existing style differences in 22 files. No migration was applied to the configured Supabase project, no paid inference ran, and the feature remains disabled by default.
+The full API suite passed **512** and reproduced the **7** previously documented role assertions. The full browser suite passed **122** and reported **3** failures in existing Company and Office preview cases. The repository-wide formatting check reported existing style differences in 22 files. This run applied no migration to the configured Supabase project and made no paid model calls. Preparation writes were disabled by default at the time.
 
 ## Controlled Submission — 3 November 2026
 
@@ -174,7 +176,7 @@ The Submission tab seals the controlled technical response and pricing workbook 
 
 The new API cases passed on disposable PostgreSQL with a private-storage test double. They covered delegation, exact package currency, retry, separation of approval and receipt, late receipt entry, and history after amendment or disabling writes. An independent review found that simply linking a finding could clear a release check. The regression now verifies that sealing requires the assigned file reviewer to confirm the linked requirement and its approval condition. Database checks confirmed update protection, row-level security and revoked direct browser grants for the three submission tables.
 
-The **51 focused browser tests**, production build, typecheck, lint, changed-file formatting, route and proxy checks, and exported contracts passed. The full API suite passed **516** and reproduced the **7** previously documented role assertions. Submission writes remain off by default. Rollout requires representative Qualification acceptance, real delegation rules and agreed portal receipt evidence.
+The **51 focused browser tests**, production build, typecheck, lint, changed-file formatting, route and proxy checks, and exported contracts passed. The full API suite passed **516** and reproduced the **7** previously documented role assertions. Submission writes were disabled by default at the time. Pilot use requires representative Qualification acceptance, real delegation rules and agreed portal receipt evidence.
 
 ## Controlled supplier quote comparison and costing — 3 November 2026
 

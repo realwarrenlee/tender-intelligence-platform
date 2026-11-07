@@ -2,13 +2,11 @@ import asyncio
 from copy import deepcopy
 import json
 import threading
-from concurrent.futures import ThreadPoolExecutor
 from uuid import UUID,uuid4
 
 import pytest
 
 from test_analysis import fixture
-from test_reviews import review_case as review_case
 
 
 def context():
@@ -111,63 +109,6 @@ def ask(http,tender,assessment,**changes):
         'assessment_version_id':assessment['id'],'text':'What is stopping this bid?',
         'client_request_id':str(uuid4()),**changes})
 
-
-def test_assistant_http_persists_usage_replays_and_drafts_need_human_confirmation(client,review_case,actors):
-    http,current,app=client
-    tender,assessment,reviewer,_=review_case
-    draft={'requirement_refs':['R4'],'suggested_role':'engineering_lead','question':'Can you confirm Saturday availability?','rationale':'Missing staffing allocation.'}
-    model=Scripted([{'calls':[call('prepare_review_request',draft)]},{'answer':final()}])
-    app.state.assistant_model=model
-    key=str(uuid4())
-    response=ask(http,tender,assessment,client_request_id=key)
-    assert response.status_code==200,response.text
-    result=response.json()
-    assert ask(http,tender,assessment,client_request_id=key).json()==result
-    view=http.get('/api/v1/tenders/'+tender['id']).json()
-    assert view['review_tasks']==[] and view['decision'] is None
-    prepared=result['review_request_drafts'][0]
-    task=http.post(f"/api/v1/tenders/{tender['id']}/review-tasks",json={
-        'expected_assessment_version_id':assessment['id'],'draft_ref':prepared['draft_ref'],
-        'assignee_id':str(reviewer.user_id),'client_request_id':str(uuid4())})
-    assert task.status_code==201,task.text
-    async def stored():
-        async with app.state.pool.acquire() as c:
-            row=await c.fetchrow('SELECT * FROM m1_app.assistant_runs WHERE id=$1',UUID(result['run_id']))
-            assert row['status']=='completed'
-            assert len(json.loads(row['calls']))==2
-    http.portal.call(stored)
-    current[0]=actors['other']
-    assert ask(http,tender,assessment).status_code==404
-
-
-def test_inflight_replay_is_bounded_and_upload_does_not_wait_for_model(client,review_case):
-    from test_documents import upload
-    http,current,app=client
-    tender,assessment,_,_=review_case
-    started,release=threading.Event(),threading.Event()
-    class Slow(Scripted):
-        async def generate(self,*args):
-            started.set()
-            await asyncio.to_thread(release.wait,10)
-            return await super().generate(*args)
-    app.state.assistant_model=Slow([{'answer':final()}])
-    key=str(uuid4())
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        pending=executor.submit(ask,http,tender,assessment,client_request_id=key)
-        assert started.wait(10)
-        try:
-            duplicate=ask(http,tender,assessment,client_request_id=key)
-            assert duplicate.status_code==409,duplicate.text
-            assert upload(http,tender,revision=2).status_code==201
-        finally: release.set()
-        result=pending.result()
-    assert result.status_code==200,result.text
-    assert result.json()['is_current'] is False
-    assert result.json()['answer'].startswith('This snapshot is no longer current.')
-    replay=ask(http,tender,assessment,client_request_id=key)
-    assert not replay.json()['is_current']
-
-
 def test_invalid_tool_batch_is_acknowledged_before_schema_repair():
     class ChecksProtocol(Scripted):
         async def generate(self,messages,*args):
@@ -178,37 +119,6 @@ def test_invalid_tool_batch_is_acknowledged_before_schema_repair():
             return await super().generate(messages,*args)
     result=run(ChecksProtocol([{'calls':[call('send_email'),call('get_assessment')]},{'answer':final()}]))
     assert result['run']['calls']==2
-
-
-def test_concurrent_same_identity_reservation_has_one_paid_turn(client,review_case,monkeypatch):
-    http,current,app=client
-    tender,assessment,_,_=review_case
-    claimed,release,second_started=threading.Event(),threading.Event(),threading.Event()
-    original=app.state.repository._claim
-    entries=0
-    async def pause(c,actor,operation,command):
-        nonlocal entries
-        entries+=1
-        entry=entries
-        if entry==2: second_started.set()
-        replay=await original(c,actor,operation,command)
-        if entry==1:
-            claimed.set()
-            await asyncio.to_thread(release.wait,10)
-        return replay
-    monkeypatch.setattr(app.state.repository,'_claim',pause)
-    app.state.assistant_model=Scripted([{'answer':final()}])
-    key=str(uuid4())
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        first=executor.submit(ask,http,tender,assessment,client_request_id=key)
-        assert claimed.wait(10)
-        second=executor.submit(ask,http,tender,assessment,client_request_id=key)
-        try: assert second_started.wait(10)
-        finally: release.set()
-        results=[first.result(),second.result()]
-    assert all(r.status_code in (200,409) for r in results)
-    assert app.state.assistant_model.calls==1
-
 
 def test_review_answer_retrieval_preserves_original_question_and_scope():
     from app.tenders.assistant import search_evidence

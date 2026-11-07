@@ -416,74 +416,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/v1/tenders/{tender_id}/analyses': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Request Analysis */
-    post: operations['request_analysis_api_v1_tenders__tender_id__analyses_post']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/v1/tenders/{tender_id}/assessment': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** Correct Assessment */
-    patch: operations['correct_assessment_api_v1_tenders__tender_id__assessment_patch']
-    trace?: never
-  }
-  '/api/v1/tenders/{tender_id}/assistant-messages': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Assistant Message */
-    post: operations['assistant_message_api_v1_tenders__tender_id__assistant_messages_post']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/v1/tenders/{tender_id}/decisions': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** Record Decision */
-    post: operations['record_decision_api_v1_tenders__tender_id__decisions_post']
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/api/v1/tenders/{tender_id}/documents': {
     parameters: {
       query?: never
@@ -622,23 +554,6 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/v1/tenders/{tender_id}/qualification-brief': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** Qualification Brief */
-    get: operations['qualification_brief_api_v1_tenders__tender_id__qualification_brief_get']
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
   '/api/v1/tenders/{tender_id}/review-tasks': {
     parameters: {
       query?: never
@@ -765,16 +680,6 @@ export interface components {
   schemas: {
     /** ActorView */
     ActorView: {
-      /**
-       * Preparation Tracking Enabled
-       * @default false
-       */
-      preparation_tracking_enabled: boolean
-      /**
-       * Qualification Workflow Enabled
-       * @default false
-       */
-      qualification_workflow_enabled: boolean
       /** Roles */
       roles: ('member' | 'admin' | 'viewer')[]
       /**
@@ -782,8 +687,6 @@ export interface components {
        * @constant
        */
       schema_version: 'm1.v1'
-      /** Submission Control Enabled */
-      submission_control_enabled?: boolean | null
       /**
        * User Id
        * Format: uuid
@@ -848,26 +751,6 @@ export interface components {
       /** Text */
       text: string
     }
-    /** AskAssessment */
-    AskAssessment: {
-      /**
-       * Assessment Version Id
-       * Format: uuid
-       */
-      assessment_version_id: string
-      /** Client Request Id */
-      client_request_id: string
-      /** Text */
-      text: string
-    }
-    /** AssessmentEdits */
-    AssessmentEdits: {
-      key_facts?: components['schemas']['FactCorrections'] | null
-      /** Reconciliations */
-      reconciliations?: components['schemas']['ReconcileChange'][]
-      /** Requirements */
-      requirements?: components['schemas']['FindingCorrection'][]
-    }
     /** AssessmentHistory */
     AssessmentHistory: {
       /** Created At */
@@ -913,32 +796,6 @@ export interface components {
       /**
        * Schema Version
        * @default m1.v1
-       * @constant
-       */
-      schema_version: 'm1.v1'
-    }
-    /** AssistantView */
-    AssistantView: {
-      /** Answer */
-      answer: string
-      /** Assessment Version Id */
-      assessment_version_id: string
-      /** Citations */
-      citations: components['schemas']['Citation'][]
-      /** Is Current */
-      is_current: boolean
-      /** Out Of Scope */
-      out_of_scope: boolean
-      /** Review Request Drafts */
-      review_request_drafts: components['schemas']['ReviewDraft'][]
-      /** Run */
-      run: {
-        [key: string]: unknown
-      }
-      /** Run Id */
-      run_id: string
-      /**
-       * Schema Version
        * @constant
        */
       schema_version: 'm1.v1'
@@ -1018,19 +875,6 @@ export interface components {
        * @constant
        */
       schema_version: 'm1.v1'
-    }
-    /** CorrectAssessment */
-    CorrectAssessment: {
-      /** Client Request Id */
-      client_request_id: string
-      edits: components['schemas']['AssessmentEdits']
-      /**
-       * Expected Assessment Version Id
-       * Format: uuid
-       */
-      expected_assessment_version_id: string
-      /** Reason */
-      reason: string
     }
     /** CreateDeliverable */
     CreateDeliverable: {
@@ -1287,14 +1131,6 @@ export interface components {
         [key: string]: string
       }
     }
-    /** FactCorrections */
-    FactCorrections: {
-      buyer?: components['schemas']['TextFact'] | null
-      closing_at?: components['schemas']['TextFact'] | null
-      service_start_on?: components['schemas']['TextFact'] | null
-      term_months?: components['schemas']['IntegerFact'] | null
-      title?: components['schemas']['TextFact'] | null
-    }
     /** Finding */
     Finding: {
       /** Answer Ids */
@@ -1354,22 +1190,6 @@ export interface components {
       status: 'supported' | 'unconfirmed' | 'evidenced_failure'
       /** Tender Citations */
       tender_citations: components['schemas']['Support'][]
-    }
-    /** FindingCorrection */
-    FindingCorrection: {
-      /** Company Citations */
-      company_citations: components['schemas']['Citation'][]
-      /** Explanation */
-      explanation: string
-      /** Missing Information */
-      missing_information: string | null
-      /** Requirement Id */
-      requirement_id: string
-      /**
-       * Status
-       * @enum {string}
-       */
-      status: 'met' | 'unmet' | 'unconfirmed' | 'not_assessed'
     }
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -2063,15 +1883,6 @@ export interface components {
       /** Reasons */
       reasons: string[]
     }
-    /** ReconcileChange */
-    ReconcileChange: {
-      /** Citations */
-      citations: components['schemas']['Citation'][]
-      /** Previous Requirement Id */
-      previous_requirement_id: string
-      /** Replacement Requirement Ids */
-      replacement_requirement_ids: string[]
-    }
     /** Reconciliation */
     Reconciliation: {
       /** Fact Id */
@@ -2088,27 +1899,6 @@ export interface components {
       requirement_id?: string | null
       /** Resolved */
       resolved: boolean
-    }
-    /** RecordDecision */
-    RecordDecision: {
-      /**
-       * Assessment Version Id
-       * Format: uuid
-       */
-      assessment_version_id: string
-      /** Client Request Id */
-      client_request_id: string
-      /**
-       * Decision
-       * @enum {string}
-       */
-      decision: 'pursue' | 'hold' | 'decline'
-      /** Expected Input Revision */
-      expected_input_revision: number
-      /** Reason */
-      reason: string
-      /** Review Complete */
-      review_complete: boolean
     }
     /** RecordPreparationDecision */
     RecordPreparationDecision: {
@@ -3741,146 +3531,6 @@ export interface operations {
       }
     }
   }
-  request_analysis_api_v1_tenders__tender_id__analyses_post: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        tender_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RequestAnalysis']
-      }
-    }
-    responses: {
-      /** @description Successful Response */
-      202: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['JobView']
-        }
-      }
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  correct_assessment_api_v1_tenders__tender_id__assessment_patch: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        tender_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['CorrectAssessment']
-      }
-    }
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['AssessmentView']
-        }
-      }
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  assistant_message_api_v1_tenders__tender_id__assistant_messages_post: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        tender_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['AskAssessment']
-      }
-    }
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['AssistantView']
-        }
-      }
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  record_decision_api_v1_tenders__tender_id__decisions_post: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        tender_id: string
-      }
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['RecordDecision']
-      }
-    }
-    responses: {
-      /** @description Successful Response */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['DecisionView']
-        }
-      }
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
   upload_documents_api_v1_tenders__tender_id__documents_post: {
     parameters: {
       query?: never
@@ -4219,39 +3869,6 @@ export interface operations {
         }
         content: {
           'application/json': components['schemas']['PreparationFile']
-        }
-      }
-      /** @description Validation Error */
-      422: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': components['schemas']['HTTPValidationError']
-        }
-      }
-    }
-  }
-  qualification_brief_api_v1_tenders__tender_id__qualification_brief_get: {
-    parameters: {
-      query: {
-        assessment_version_id: string
-      }
-      header?: never
-      path: {
-        tender_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          'application/json': unknown
         }
       }
       /** @description Validation Error */

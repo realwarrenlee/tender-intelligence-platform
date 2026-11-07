@@ -58,7 +58,6 @@ def accept_deliverables(c, actors, **acceptance):
 
 def test_release_and_receipt_require_distinct_authority_and_keep_history(preparation, actors, monkeypatch):
     c = preparation
-    c.app.state.submission_enabled = True
     path = c.url.replace("/preparation", "/submission")
     initial = c.http.get(path)
     assert initial.status_code == 200, initial.text
@@ -111,7 +110,6 @@ def test_release_and_receipt_require_distinct_authority_and_keep_history(prepara
     assert c.http.get(path).status_code == 404
     assert c.http.get(package_path + "/receipt").status_code == 404
     c.current[0] = actors["viewer"]
-    c.app.state.submission_enabled = False
     db(c.http, c.app, "UPDATE m1_app.tenders SET input_revision=input_revision+1 WHERE id=$1 RETURNING id",
        UUID(c.tender["id"]))
     package = c.http.get(path).json()["packages"][0]
@@ -121,7 +119,6 @@ def test_release_and_receipt_require_distinct_authority_and_keep_history(prepara
 
 def test_replacing_an_accepted_file_invalidates_release(preparation, actors):
     c = preparation
-    c.app.state.submission_enabled = True
     path = c.url.replace("/preparation", "/submission")
     accept_deliverables(c, actors)
     view = c.http.get(path).json()
@@ -153,8 +150,6 @@ def test_replacing_an_accepted_file_invalidates_release(preparation, actors):
 def test_linked_submission_condition_requires_explicit_review(screening_case, actors, requirements_checked):
     c = screening_case
     make_ready(c)
-    c.app.state.preparation_enabled = True
-    c.app.state.submission_enabled = True
     c.url = f"/api/v1/tenders/{c.tender['id']}/preparation"
     path = c.url.replace("/preparation", "/submission")
     artifact = c.review["screening"]["artifact"]

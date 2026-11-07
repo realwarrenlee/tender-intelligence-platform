@@ -254,7 +254,7 @@ async def get_review_case(repository,actor,tender_id):
         return result
 
 
-async def list_inbox_actions(repository,actor,after=None,limit=50,preparation_enabled=False):
+async def list_inbox_actions(repository,actor,after=None,limit=50):
     from app.tenders.preparation import inbox_rows, current_approval, status, LABELS
 
     async with repository.pool.acquire() as c,c.transaction(isolation="repeatable_read"):
@@ -310,7 +310,7 @@ async def list_inbox_actions(repository,actor,after=None,limit=50,preparation_en
                     "screening_version_id": str(item["screening_version_id"]),
                     "question": verb + LABELS[item["kind"]].lower(),
                     "due_at": item["due_at"].isoformat(), "task_revision": item["revision"],
-                    "is_current": current, "can_act": current and authorised and preparation_enabled,
+                    "is_current": current, "can_act": current and authorised,
                 }))
         items.sort(key=lambda entry: entry[:2])
         return {"schema_version":"qualification.v1","items":[item[2] for item in items[:limit]],

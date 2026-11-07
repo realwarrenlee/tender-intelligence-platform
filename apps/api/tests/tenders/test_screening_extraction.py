@@ -118,7 +118,7 @@ def test_quoted_provider_result_publishes_to_existing_app_and_source_reader(retr
             async with case.app.state.pool.acquire() as conn:
                 current_job=await conn.fetchrow('SELECT * FROM m1_app.jobs WHERE id=$1',job['id'])
             return await ScreeningReasoner(case.app.state.pool,case.actor,current_job,{},'controlled',object()).interpret(ctx,hints)
-    case.http.portal.call(execute_screening_job,case.app.state.pool,case.app.state.storage,job['id'],Classifier(),Reasoner(),True)
+    case.http.portal.call(execute_screening_job,case.app.state.pool,case.app.state.storage,job['id'],Classifier(),Reasoner())
     review=case.http.get('/api/v1/review-cases/'+case.tender['id']).json()
     saved=review['screening']['artifact']
     assert saved['attention'] is None and saved['summary']['buyer']['value']=='Fictional Agency'

@@ -1,30 +1,12 @@
 'use client'
 /* eslint-disable @tanstack/query/exhaustive-deps -- API identity is stable for a session; session changes clear the shared query cache. */
 import { useEffect, useState } from 'react'
-import {
-  useQueries,
-  useQuery,
-  useQueryClient,
-  useInfiniteQuery,
-} from '@tanstack/react-query'
-import {
-  CheckCircle2,
-  ChevronDown,
-  ChevronRight,
-  Circle,
-  Inbox as InboxIcon,
-  XCircle,
-} from 'lucide-react'
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query'
+import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from '@/components/ui/resizable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   type ReviewCases,
@@ -32,383 +14,18 @@ import {
   singapore,
   type Actor,
   type Api,
-  type Inbox,
-  type Tender,
-  type History,
   type Member,
 } from './api'
-import { inboxUpdates, InboxPreview, type InboxUpdate } from './inbox-updates'
-import { OpportunityFeedbackInbox } from './opportunity-feedback'
+import {
+  OpportunityFeedbackDetail,
+  useOpportunityFeedback,
+} from './opportunity-feedback'
 import { OpportunitySuggestions } from './opportunity-suggestions'
 import { QueueLayout } from './queue-layout'
 import { ReviewDesk } from './review-desk'
-import { reviewGroup, type ReviewGroup } from './review-status'
 
-const groups: ReviewGroup[] = ['Open', 'Completed', 'Closed']
-const icons = { Open: Circle, Completed: CheckCircle2, Closed: XCircle }
 const queueRow =
   'block w-full border-b px-6 py-4 text-left text-sm hover:bg-accent/40 '
-
-function StatusGroup({
-  label,
-  count,
-  children,
-}: {
-  label: ReviewGroup
-  count: number
-  children: React.ReactNode
-}) {
-  const [expanded, setExpanded] = useState(label === 'Open')
-  return (
-    <div>
-      <button
-        type='button'
-        aria-label={label + ' reviews (' + count + ')'}
-        aria-expanded={expanded}
-        aria-controls={'review-group-' + label}
-        onClick={() => setExpanded(!expanded)}
-        className='flex h-8 w-full cursor-pointer items-center gap-1.5 border-b border-border/40 bg-accent/30 px-4 text-left text-sm font-medium select-none'
-      >
-        {label}
-        <ChevronDown
-          aria-hidden='true'
-          className={
-            'size-3 text-muted-foreground transition-transform ' +
-            (expanded ? '' : '-rotate-90')
-          }
-        />
-        <span className='ml-auto font-normal text-muted-foreground'>
-          {count}
-        </span>
-      </button>
-      <div id={'review-group-' + label} hidden={!expanded}>
-        {children}
-      </div>
-    </div>
-  )
-}
-
-function TenderQueue({
-  actor,
-  api,
-  mode,
-}: {
-  actor: Actor
-  api: Api
-  mode: 'inbox' | 'reviews'
-}) {
-  const mobile = useIsMobile()
-  const [selected, setSelected] = useState<string | null>(null)
-  const cache = useQueryClient()
-  const [filter, setFilter] = useState('')
-  const list = useQuery({
-    queryKey: ['tenders'],
-    queryFn: () => api.get<Inbox>('/tenders'),
-    refetchInterval: 15000,
-  })
-  // shortcut: Uses the API's latest 100 authorized tenders; add pagination when workspace volume warrants it.
-  const details = useQueries({
-    queries: (list.data?.items || []).map((tender) => ({
-      queryKey: ['tender', tender.id],
-      queryFn: () =>
-        api.get<Tender>('/tenders/' + encodeURIComponent(tender.id)),
-      refetchInterval: 15000,
-    })),
-  })
-  const tenders = details.flatMap((query) => (query.data ? [query.data] : []))
-  const histories = useQueries({
-    queries:
-      mode === 'inbox'
-        ? tenders
-            .filter(
-              (tender) =>
-                tender.assessment &&
-                (tender.owner_user_id === actor.user_id ||
-                  actor.roles.some(
-                    (role) => role === 'member' || role === 'admin'
-                  ))
-            )
-            .map((tender) => ({
-              queryKey: ['history', tender.id],
-              queryFn: () =>
-                api.get<History>(
-                  '/tenders/' + encodeURIComponent(tender.id) + '/history'
-                ),
-              refetchInterval: 15000,
-            }))
-        : [],
-  })
-  const members = useQuery({
-    queryKey: ['members'],
-    queryFn: () => api.get<{ items: Member[] }>('/members'),
-    enabled: mode === 'inbox',
-  })
-  const reviews = tenders
-    .filter((tender) => tender.assessment || tender.review_tasks.length)
-    .filter(
-      (tender) =>
-        tender.owner_user_id === actor.user_id ||
-        (actor.roles.some((role) => role === 'member' || role === 'admin') &&
-          !!tender.assessment) ||
-        tender.review_tasks.some(
-          (task) =>
-            task.assignee_id === actor.user_id ||
-            task.created_by === actor.user_id
-        )
-    )
-    .sort(
-      (a, b) => groups.indexOf(reviewGroup(a)) - groups.indexOf(reviewGroup(b))
-    )
-  const updates =
-    mode === 'inbox'
-      ? tenders
-          .flatMap((tender) =>
-            inboxUpdates(
-              tender,
-              actor,
-              histories
-                .flatMap((query) => (query.data ? [query.data] : []))
-                .find((history) =>
-                  history.assessments.some(
-                    (item) => item.id === tender.assessment?.id
-                  )
-                )
-            )
-          )
-          .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
-      : []
-  type QueueRow = {
-    id: string
-    tender: Tender
-    update?: InboxUpdate
-    label: string
-    description: string
-    created_at: string
-  }
-  const eligible: QueueRow[] =
-    mode === 'reviews'
-      ? reviews.map((tender) => ({
-          id: tender.id,
-          tender,
-          label: tender.title,
-          description: '',
-          created_at: tender.created_at,
-        }))
-      : updates.map((update) => ({
-          id: update.id,
-          tender: update.tender,
-          update,
-          label:
-            update.label +
-            ' · ' +
-            update.tender.title +
-            (update.task ? ' · ' + update.task.question : ''),
-          description:
-            update.task?.question ||
-            update.tender.assessment?.candidate.summary ||
-            '',
-          created_at: update.created_at,
-        }))
-  const rows = eligible.filter((row) =>
-    (
-      row.label +
-      ' ' +
-      row.description +
-      ' ' +
-      row.tender.review_tasks.map((task) => task.question).join(' ')
-    )
-      .toLowerCase()
-      .includes(filter.toLowerCase())
-  )
-  const active =
-    eligible.find((row) => row.id === selected) ||
-    (mobile ? undefined : rows[0])
-  const error =
-    list.error ||
-    details.find((query) => query.error)?.error ||
-    histories.find((query) => query.error)?.error ||
-    (mode === 'inbox' && members.error)
-  const loading =
-    list.isPending ||
-    details.some((query) => query.isPending) ||
-    histories.some((query) => query.isPending)
-  const refresh = () => {
-    void cache.invalidateQueries({
-      predicate: (query) => query.queryKey[0] !== 'source-file',
-    })
-  }
-  const title = mode === 'reviews' ? 'Reviews' : 'Inbox'
-  function row(item: QueueRow) {
-    const tender = item.tender
-    const group = mode === 'reviews' ? reviewGroup(tender) : 'Open'
-    const Icon = icons[group]
-    return (
-      <button
-        key={item.id}
-        type='button'
-        aria-label={item.label}
-        aria-pressed={active?.id === item.id}
-        onClick={() => setSelected(item.id)}
-        className={
-          'flex w-full items-center gap-2 border-b border-border/40 px-4 py-3 text-left text-sm transition-colors ' +
-          (active?.id === item.id ? 'bg-accent/60' : 'hover:bg-sidebar/50')
-        }
-      >
-        <Icon
-          aria-hidden='true'
-          className={
-            'size-4 shrink-0 ' +
-            (group === 'Completed'
-              ? 'text-indigo-400'
-              : 'text-muted-foreground')
-          }
-        />
-        <span className='min-w-0 flex-1'>
-          <span className='block truncate text-[15px] font-medium'>
-            {tender.title}
-          </span>
-          {item.update && (
-            <>
-              <span className='mt-1 block text-xs text-muted-foreground'>
-                {item.update.label}
-              </span>
-              <span className='mt-1 block truncate text-xs text-muted-foreground'>
-                {item.description}
-              </span>
-            </>
-          )}
-        </span>
-        <span className='shrink-0 text-xs text-muted-foreground'>
-          {new Intl.DateTimeFormat('en-SG', {
-            month: 'short',
-            day: 'numeric',
-            timeZone: 'Asia/Singapore',
-          }).format(new Date(item.created_at))}
-        </span>
-      </button>
-    )
-  }
-  const listPane = (
-    <section
-      aria-label={title + ' list'}
-      className='flex h-full min-w-0 flex-col bg-container'
-    >
-      <header className='flex h-12 shrink-0 items-center border-b px-4'>
-        <h1 className='text-xl font-medium'>{title}</h1>
-      </header>
-      <div className='shrink-0 border-b p-3'>
-        <Input
-          aria-label={
-            mode === 'reviews' ? 'Find review work' : 'Find an inbox action'
-          }
-          placeholder={
-            mode === 'reviews' ? 'Find a review…' : 'Find an action…'
-          }
-          value={filter}
-          onChange={(event) => setFilter(event.target.value)}
-          className='h-8 text-base'
-        />
-      </div>
-      {error && (
-        <p role='alert' className='p-4 text-base text-destructive'>
-          {error.message}
-        </p>
-      )}
-      {loading && (
-        <p role='status' className='p-4 text-base text-muted-foreground'>
-          Loading {mode === 'reviews' ? 'reviews' : 'actions'}…
-        </p>
-      )}
-      <div className='min-h-0 flex-1 overflow-y-auto'>
-        {mode === 'reviews'
-          ? groups.map((group) => {
-              const items = rows.filter(
-                (item) => reviewGroup(item.tender) === group
-              )
-              return (
-                <StatusGroup key={group} label={group} count={items.length}>
-                  {items.map(row)}
-                </StatusGroup>
-              )
-            })
-          : rows.map(row)}
-        {!loading && !error && !rows.length && (
-          <p className='p-6 text-base text-muted-foreground'>
-            {filter
-              ? 'No matching work.'
-              : mode === 'inbox'
-                ? 'No updates need attention.'
-                : 'No reviews for you.'}
-          </p>
-        )}
-      </div>
-      {(list.data?.items.length || 0) >= 100 && (
-        <p className='border-t px-4 py-2 text-xs text-muted-foreground'>
-          Showing the 100 most recent tenders.
-        </p>
-      )}
-    </section>
-  )
-  const content = active ? (
-    <section aria-label='Tender preview' className='h-full min-h-0 min-w-0'>
-      {active.update ? (
-        <InboxPreview
-          key={active.id}
-          update={active.update}
-          actor={actor}
-          api={api}
-          members={members.data?.items || []}
-          paused={!!error}
-          onChange={refresh}
-          onBack={mobile ? () => setSelected(null) : undefined}
-        />
-      ) : (
-        <ReviewDesk
-          key={active.id}
-          tenderId={active.tender.id}
-          actor={actor}
-          api={api}
-          embedded
-          onBack={mobile ? () => setSelected(null) : undefined}
-        />
-      )}
-    </section>
-  ) : (
-    <div className='flex h-full flex-col items-center justify-center gap-4 p-8 text-center text-muted-foreground'>
-      <InboxIcon aria-hidden='true' className='size-10 stroke-1' />
-      <p className='text-base'>
-        Select a {mode === 'reviews' ? 'tender review' : 'update'} to view its
-        content and take action.
-      </p>
-    </div>
-  )
-  return mobile ? (
-    <div className='h-full min-w-0'>{active ? content : listPane}</div>
-  ) : (
-    <ResizablePanelGroup direction='horizontal' className='h-full min-w-0'>
-      <ResizablePanel defaultSize={32} minSize={24} maxSize={45}>
-        {listPane}
-      </ResizablePanel>
-      <ResizableHandle withHandle />
-      <ResizablePanel minSize={45}>{content}</ResizablePanel>
-    </ResizablePanelGroup>
-  )
-}
-
-export function WorkspaceInbox({ actor, api }: { actor: Actor; api: Api }) {
-  return actor.qualification_workflow_enabled ? (
-    <QualificationInbox actor={actor} api={api} />
-  ) : (
-    <TenderQueue actor={actor} api={api} mode='inbox' />
-  )
-}
-export function ReviewWork({ actor, api }: { actor: Actor; api: Api }) {
-  return actor.qualification_workflow_enabled ? (
-    <Oversight actor={actor} api={api} />
-  ) : (
-    <TenderQueue actor={actor} api={api} mode='reviews' />
-  )
-}
 
 export function useReviewCases(api: Api, actor: Actor) {
   return useInfiniteQuery({
@@ -438,92 +55,141 @@ function HumanQueue({ actor, api }: { actor: Actor; api: Api }) {
     getNextPageParam: (page) => page.next_cursor || undefined,
     refetchInterval: 15000,
   })
-  const rows = query.data?.pages.flatMap((page) => page.items) || []
+  const feedbackQuery = useOpportunityFeedback({ actor, api })
+  const rows = [
+    ...(query.data?.pages.flatMap((page) => page.items) || []).map((item) => ({
+      kind: 'work' as const,
+      id: 'work:' + item.task_id,
+      deadline: Date.parse(item.due_at),
+      item,
+    })),
+    ...(feedbackQuery.data?.pages.flatMap((page) => page.items) || []).map(
+      (item) => ({
+        kind: 'feedback' as const,
+        id: 'feedback:' + item.id,
+        deadline:
+          !item.answer &&
+          item.recipient_id === actor.user_id &&
+          item.notice.closing_at
+            ? Date.parse(item.notice.closing_at)
+            : Infinity,
+        item,
+      })
+    ),
+  ].sort((a, b) => a.deadline - b.deadline)
   const active =
-    rows.find((item) => item.task_id === selected) ||
-    (mobile ? undefined : rows[0])
+    rows.find((row) => row.id === selected) || (mobile ? undefined : rows[0])
+  const onBack = mobile ? () => setSelected(null) : undefined
   const list = (
     <section aria-label='Human actions' className='h-full overflow-y-auto'>
-      {query.isPending && (
+      {(query.isPending || feedbackQuery.isPending) && (
         <p role='status' className='p-6'>
-          Loading assigned actions…
+          Loading Inbox…
         </p>
       )}
-      {query.error && (
-        <p role='alert' className='p-6'>
-          {query.error.message}{' '}
-          <Button variant='link' onClick={() => void query.refetch()}>
-            Retry
-          </Button>
-        </p>
+      {[
+        { label: 'Assigned work', request: query },
+        { label: 'Tender feedback', request: feedbackQuery },
+      ].map(
+        ({ label, request }) =>
+          request.error && (
+            <p key={label} role='alert' className='p-6'>
+              {label}: {request.error.message}{' '}
+              <Button variant='link' onClick={() => void request.refetch()}>
+                Retry
+              </Button>
+            </p>
+          )
       )}
-      {rows.map((item) => (
+      {rows.map((row) => (
         <button
-          key={item.task_id}
+          key={row.id}
           type='button'
-          aria-label={item.question}
-          aria-pressed={active?.task_id === item.task_id}
-          className={
-            queueRow + (active?.task_id === item.task_id ? 'bg-accent/60' : '')
-          }
-          onClick={() => setSelected(item.task_id)}
+          aria-label={row.item.question}
+          aria-pressed={active?.id === row.id}
+          className={queueRow + (active?.id === row.id ? 'bg-accent/60' : '')}
+          onClick={() => setSelected(row.id)}
         >
-          <span className='block font-medium'>{item.question}</span>
-          <span className='mt-2 block text-xs text-muted-foreground'>
-            {item.kind === 'preparation_approval'
-              ? 'Preparation decision'
-              : item.kind === 'preparation_review'
-                ? 'Working file review'
-                : item.kind === 'preparation_deliverable'
-                  ? 'Bid deliverable'
-                  : item.kind === 'preparation_reconfirm'
-                    ? 'Deliverable reconfirmation'
-                    : 'Input requested'}{' '}
-            · Due {singapore(item.due_at)}
-          </span>
-          {!item.is_current && (
-            <span className='mt-1 block text-xs text-amber-700 dark:text-amber-300'>
-              Sources changed · Review with bid owner
+          <span className='block font-medium'>{row.item.question}</span>
+          {row.kind === 'feedback' ? (
+            <span className='mt-2 block text-xs text-muted-foreground'>
+              {row.item.notice.title} ·{' '}
+              {row.item.answer
+                ? 'Replied'
+                : row.item.recipient_id === actor.user_id
+                  ? 'Reply requested'
+                  : 'Awaiting reply'}
             </span>
+          ) : (
+            <>
+              <span className='mt-2 block text-xs text-muted-foreground'>
+                {row.item.kind === 'preparation_approval'
+                  ? 'Preparation decision'
+                  : row.item.kind === 'preparation_review'
+                    ? 'Working file review'
+                    : row.item.kind === 'preparation_deliverable'
+                      ? 'Bid deliverable'
+                      : row.item.kind === 'preparation_reconfirm'
+                        ? 'Deliverable reconfirmation'
+                        : 'Input requested'}{' '}
+                · Due {singapore(row.item.due_at)}
+              </span>
+              {!row.item.is_current && (
+                <span className='mt-1 block text-xs text-amber-700 dark:text-amber-300'>
+                  Sources changed · Review with bid owner
+                </span>
+              )}
+            </>
           )}
         </button>
       ))}
-      {!query.isPending && !query.isError && !rows.length && (
+      {query.isSuccess && feedbackQuery.isSuccess && !rows.length && (
         <p className='p-6 text-muted-foreground'>No actions assigned to you.</p>
       )}
-      {query.hasNextPage && (
+      {(query.hasNextPage || feedbackQuery.hasNextPage) && (
         <Button
           variant='outline'
           className='m-4'
-          disabled={query.isFetchingNextPage}
-          onClick={() => void query.fetchNextPage()}
+          disabled={
+            query.isFetchingNextPage || feedbackQuery.isFetchingNextPage
+          }
+          onClick={() => {
+            if (query.hasNextPage) void query.fetchNextPage()
+            if (feedbackQuery.hasNextPage) void feedbackQuery.fetchNextPage()
+          }}
         >
-          Load more actions
+          Load more
         </Button>
       )}
     </section>
   )
-  const detail = active ? (
+  const detail = !active ? (
+    <p className='p-8 text-muted-foreground'>Select an item to open it.</p>
+  ) : active.kind === 'feedback' ? (
+    <OpportunityFeedbackDetail
+      key={active.id}
+      item={active.item}
+      actor={actor}
+      api={api}
+      onBack={onBack}
+    />
+  ) : (
     <ReviewDesk
-      key={active.task_id}
-      tenderId={active.tender_id}
+      key={active.id}
+      tenderId={active.item.tender_id}
       actor={actor}
       api={api}
       initialTab={
-        active.kind === 'preparation_review' ||
-        active.kind === 'preparation_deliverable' ||
-        active.kind === 'preparation_reconfirm'
+        active.item.kind === 'preparation_review' ||
+        active.item.kind === 'preparation_deliverable' ||
+        active.item.kind === 'preparation_reconfirm'
           ? 'Preparation'
           : 'Questions'
       }
-      focusTaskId={active.task_id}
+      focusTaskId={active.item.task_id}
       embedded
-      onBack={mobile ? () => setSelected(null) : undefined}
+      onBack={onBack}
     />
-  ) : (
-    <p className='p-8 text-muted-foreground'>
-      Select an assigned action to open its review.
-    </p>
   )
   return mobile ? (
     active ? (
@@ -561,7 +227,7 @@ function QueueTabsHeader({
   )
 }
 
-function QualificationInbox({ actor, api }: { actor: Actor; api: Api }) {
+export function WorkspaceInbox({ actor, api }: { actor: Actor; api: Api }) {
   const router = useRouter()
   const search = useSearchParams()
   const value = search.get('tab') === 'agent' ? 'agent' : 'human'
@@ -584,9 +250,7 @@ function QualificationInbox({ actor, api }: { actor: Actor; api: Api }) {
         tabs={{ human: 'Human', agent: 'Agent' }}
       />
       <TabsContent value='human' className='min-h-0'>
-        <OpportunityFeedbackInbox actor={actor} api={api}>
-          <HumanQueue actor={actor} api={api} />
-        </OpportunityFeedbackInbox>
+        <HumanQueue actor={actor} api={api} />
       </TabsContent>
       <TabsContent value='agent' className='min-h-0'>
         <OpportunitySuggestions actor={actor} api={api} />
@@ -597,7 +261,7 @@ function QualificationInbox({ actor, api }: { actor: Actor; api: Api }) {
 
 const oversightTabs = { overdue: 'Overdue', upcoming: 'Upcoming' }
 
-function Oversight({ actor, api }: { actor: Actor; api: Api }) {
+export function Oversight({ actor, api }: { actor: Actor; api: Api }) {
   const query = useQuery({
     queryKey: ['review-cases', actor.user_id, 'oversight'],
     queryFn: async ({ signal }) => {

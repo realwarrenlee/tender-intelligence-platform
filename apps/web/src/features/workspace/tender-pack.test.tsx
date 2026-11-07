@@ -35,7 +35,7 @@ it('accepts a 64-file mixed tender pack without omitting files', async () => {
   await userEvent.upload(screen.getByLabelText('Tender files'), files)
   await expect.element(screen.getByText('64 files ready')).toBeVisible()
   await userEvent.click(
-    screen.getByRole('button', { name: 'Analyse tender', exact: true })
+    screen.getByRole('button', { name: 'Save sources', exact: true })
   )
   await expect.poll(() => complete.mock.calls.length).toBe(1)
   const body = upload.mock.calls[0]?.[1] as FormData
@@ -61,7 +61,7 @@ it('rejects conflicting basenames before flattening a folder upload', async () =
     .toHaveTextContent('share the name')
   await expect
     .element(
-      screen.getByRole('button', { name: 'Analyse tender', exact: true })
+      screen.getByRole('button', { name: 'Save sources', exact: true })
     )
     .toBeDisabled()
 })

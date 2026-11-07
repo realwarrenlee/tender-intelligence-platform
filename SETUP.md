@@ -6,7 +6,7 @@ Use Node 24, pnpm 10.34.8, Python 3.12, `uv`, and a development Supabase project
 
 For a fresh checkout, copy [`.env.example`](.env.example) to `.env` at the repository root. Keep an existing configured file. Fill in the Supabase server and browser values and the PostgreSQL session-pooler URL. The API, worker and frontend share this file. Keep server secrets private.
 
-For optional GeBIZ discovery, enable Qualification and configure an enabled `NOTICE_SOURCE_JOBS` entry with an active intake owner for each workspace. The [environment template](.env.example) gives the fields and listing URL. The intake owner or a workspace admin can toggle scans in **Inbox → Agent**.
+For optional GeBIZ discovery, configure an enabled `NOTICE_SOURCE_JOBS` entry with an active intake owner for each workspace. The [environment template](.env.example) gives the fields and listing URL. The intake owner or a workspace admin can toggle scans in **Inbox → Agent**.
 
 ## Run locally
 
@@ -37,9 +37,9 @@ If `node_modules` is linked outside the project, use `npm run dev -- --webpack` 
 
 Open the [workspace](http://127.0.0.1:3000) and sign in. The [API docs](http://127.0.0.1:8765/docs) are on port 8765.
 
-## Controlled Preparation tracking
+## Preparation and Submission
 
-Use a disposable development database with all migrations applied through the API guide. Enable `QUALIFICATION_WORKFLOW_ENABLED=true` and `PREPARATION_TRACKING_ENABLED=true`, then open a tender with current preparation approval. To test Submission, also set `SUBMISSION_CONTROL_ENABLED=true` and accept both deliverables. Restart the API and worker after changing flags.
+Open **Preparation** on a tender with current preparation approval. To seal a package in **Submission**, first have the Technical response and Pricing workbook accepted. The bid owner then assigns a separate release approver.
 
 For proposal drafting, add a line in Company evidence in the form `Proposal reuse | Legal entity | Approved wording` and accept that version before screening. Set the same bidding entity and link requirements in the Technical response plan. The assigned owner can then generate a Word draft.
 

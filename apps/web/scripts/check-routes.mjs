@@ -4,7 +4,6 @@ const base = process.argv[2] || 'http://127.0.0.1:3000'
 for (const [path, destination] of [
   ['/', '/tenders'],
   ['/lndev-ui/inbox', '/inbox'],
-  ['/lndev-ui/reviews', '/reviews'],
   ['/lndev-ui/projects', '/tenders'],
   ['/lndev-ui/settings/profile', '/settings'],
   ['/settings/account', '/settings'],
@@ -21,7 +20,7 @@ for (const [path, destination] of [
 for (const path of [
   '/sign-in',
   '/inbox',
-  '/reviews',
+  '/oversight',
   '/members',
   '/tenders',
   '/tenders/route-smoke',
@@ -37,6 +36,9 @@ for (const path of [
 for (const path of [
   '/this-page-does-not-exist',
   '/review',
+  '/reviews',
+  '/lndev-ui/reviews',
+  '/lndev-ui/my-issues',
   '/lndev-ui/agent',
   '/lndev-ui/initiatives',
   '/lndev-ui/settings/notifications',

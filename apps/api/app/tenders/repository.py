@@ -216,57 +216,6 @@ class Repository:
                       "source_set_version_id":str(source_set_id)}
             return await self._finish(connection, actor, "register_sources", command, result)
 
-    async def request_analysis(self, actor, tender_id, command):
-        async with self.pool.acquire() as connection, connection.transaction():
-            await self._member(connection, actor, "member")
-            replay = await self._claim(connection,actor,'request_analysis:'+str(tender_id),command)
-            if replay is not None:
-                return replay
-            evidence_revision=await connection.fetchval('SELECT evidence_revision FROM m1_app.workspaces WHERE id=$1 FOR SHARE',actor.workspace_id)
-            tender = await self._tender(connection, actor, tender_id,lock=True)
-            assert_current_input(command.expected_input_revision,tender["input_revision"])
-            result=await self._enqueue_analysis(connection,actor,tender,evidence_revision)
-            return await self._finish(connection,actor,'request_analysis',command,result)
-
-    async def _enqueue_analysis(self,connection,actor,tender,evidence_revision):
-        from app.config import get_settings
-        bounded=await connection.fetchval("SELECT EXISTS(SELECT 1 FROM m1_app.jobs WHERE workspace_id=$1 AND tender_id=$2 AND job_kind='screening')",
-                                          actor.workspace_id,tender["id"])
-        if get_settings().qualification_workflow_enabled or bounded:
-            raise DomainError(409,"BOUNDED_WORKFLOW_REQUIRED","This case uses bounded screening; legacy analysis is not a fallback.")
-        from app.tenders.jobs import queue_queries,job_view
-        tender_id=tender['id']
-        sources = await connection.fetch('SELECT * FROM m1_app.document_versions WHERE workspace_id=$1 AND tender_id=$2 ORDER BY created_at,id',actor.workspace_id,tender_id)
-        if not sources:
-            raise DomainError(422,'NO_SOURCES','Upload tender sources before requesting analysis.')
-        source_set_id = await connection.fetchval("SELECT id FROM m1_app.artifact_versions WHERE workspace_id=$1 AND tender_id=$2 AND kind='source_set' ORDER BY created_at DESC,id DESC LIMIT 1",actor.workspace_id,tender_id)
-        manifest = {'source_set_version_id':str(source_set_id),'documents':[
-            {key:str(row[key]) if key in ('id','workspace_id','tender_id','amends_version_id') and row[key] is not None else row[key]
-             for key in ('id','workspace_id','tender_id','filename','sha256','storage_key','role','content_type','byte_size','page_count','amends_version_id')}
-            for row in sources]}
-        from app.tenders.assessments import current_company
-        company=await current_company(connection,actor.workspace_id)
-        manifest.update(evidence_revision=evidence_revision,company_evidence_version_ids=[],evidence_dates={},review_answers=[],as_of=utc_now().isoformat(),previous_assessment=None)
-        if company:
-            payload=json.loads(company['payload'])
-            manifest['documents'].append(payload['document'])
-            manifest['company_evidence_version_ids']=[str(company['id'])]
-            manifest['evidence_dates'][str(company['id'])]={k:payload[k] for k in ('effective_on','expires_on')}
-        if len(manifest['documents'])>MAX_FILES+1 or sum(d['byte_size'] for d in manifest['documents'])>MAX_PACK+20*1024*1024 or sum(d['page_count'] for d in manifest['documents'])>MAX_PAGES+200:
-            raise DomainError(422,'ANALYSIS_PACK_LIMIT','Tender and accepted company inputs exceed the analysis file/byte/page limits.')
-        answers=await connection.fetch("SELECT id,payload,created_by FROM m1_app.artifact_versions WHERE workspace_id=$1 AND tender_id=$2 AND kind='review_answer' ORDER BY created_at,id",actor.workspace_id,tender_id)
-        for answer in answers:
-            payload=json.loads(answer['payload'])
-            manifest['review_answers'].append({'id':str(answer['id']),'actor_id':str(answer['created_by']),'text':payload['text'],
-                **{key:payload[key] for key in ('response_kind','task_id','requirement_ids','assessment_version_id','basis','question','source_manifest') if key in payload}})
-        previous=await connection.fetchrow("SELECT id,payload FROM m1_app.artifact_versions WHERE workspace_id=$1 AND tender_id=$2 AND kind='assessment' ORDER BY input_revision DESC,created_at DESC,id DESC LIMIT 1",actor.workspace_id,tender_id)
-        if previous:
-            manifest['previous_assessment_version_id']=str(previous['id'])
-            manifest['previous_assessment']=json.loads(previous['payload'])
-        row = await connection.fetchrow("INSERT INTO m1_app.jobs(workspace_id,tender_id,input_revision,manifest,status,created_by) VALUES($1,$2,$3,$4::jsonb,'queued',$5) RETURNING *",actor.workspace_id,tender_id,tender['input_revision'],json.dumps(manifest),actor.user_id)
-        await queue_queries(connection).enqueue('m1_analysis',json.dumps({'job_id':str(row['id'])}).encode(),dedupe_key=str(row['id']))
-        return job_view(row)
-
     async def get_job(self,actor,job_id):
         from app.tenders.jobs import job_view,JOB_VIEW_COLUMNS
         async with self.pool.acquire() as connection,connection.transaction():
@@ -321,7 +270,3 @@ class Repository:
             if latest:
                 return {'schema_version':'m1.v1',**(usable or latest)}
             raise DomainError(409,'SOURCE_NOT_PARSED','The source text view is not available until parsing finishes.')
-
-    async def record_decision(self,actor,tender_id,command):
-        from app.tenders.decisions import record_decision
-        return await record_decision(self,actor,tender_id,command)

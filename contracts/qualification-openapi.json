@@ -4,16 +4,6 @@
       "ActorView": {
         "additionalProperties": false,
         "properties": {
-          "preparation_tracking_enabled": {
-            "default": false,
-            "title": "Preparation Tracking Enabled",
-            "type": "boolean"
-          },
-          "qualification_workflow_enabled": {
-            "default": false,
-            "title": "Qualification Workflow Enabled",
-            "type": "boolean"
-          },
           "roles": {
             "items": {
               "enum": [
@@ -31,17 +21,6 @@
             "const": "m1.v1",
             "title": "Schema Version",
             "type": "string"
-          },
-          "submission_control_enabled": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Submission Control Enabled"
           },
           "user_id": {
             "format": "uuid",
@@ -227,68 +206,6 @@
         "title": "AnswerReviewTask",
         "type": "object"
       },
-      "AskAssessment": {
-        "additionalProperties": false,
-        "properties": {
-          "assessment_version_id": {
-            "format": "uuid",
-            "title": "Assessment Version Id",
-            "type": "string"
-          },
-          "client_request_id": {
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Client Request Id",
-            "type": "string"
-          },
-          "text": {
-            "maxLength": 4000,
-            "minLength": 1,
-            "title": "Text",
-            "type": "string"
-          }
-        },
-        "required": [
-          "assessment_version_id",
-          "text",
-          "client_request_id"
-        ],
-        "title": "AskAssessment",
-        "type": "object"
-      },
-      "AssessmentEdits": {
-        "additionalProperties": false,
-        "properties": {
-          "key_facts": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/FactCorrections"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "reconciliations": {
-            "items": {
-              "$ref": "#/components/schemas/ReconcileChange"
-            },
-            "maxItems": 300,
-            "title": "Reconciliations",
-            "type": "array"
-          },
-          "requirements": {
-            "items": {
-              "$ref": "#/components/schemas/FindingCorrection"
-            },
-            "maxItems": 300,
-            "title": "Requirements",
-            "type": "array"
-          }
-        },
-        "title": "AssessmentEdits",
-        "type": "object"
-      },
       "AssessmentHistory": {
         "properties": {
           "created_at": {
@@ -423,67 +340,6 @@
           "human_reason"
         ],
         "title": "AssessmentView",
-        "type": "object"
-      },
-      "AssistantView": {
-        "properties": {
-          "answer": {
-            "title": "Answer",
-            "type": "string"
-          },
-          "assessment_version_id": {
-            "title": "Assessment Version Id",
-            "type": "string"
-          },
-          "citations": {
-            "items": {
-              "$ref": "#/components/schemas/Citation"
-            },
-            "title": "Citations",
-            "type": "array"
-          },
-          "is_current": {
-            "title": "Is Current",
-            "type": "boolean"
-          },
-          "out_of_scope": {
-            "title": "Out Of Scope",
-            "type": "boolean"
-          },
-          "review_request_drafts": {
-            "items": {
-              "$ref": "#/components/schemas/ReviewDraft"
-            },
-            "title": "Review Request Drafts",
-            "type": "array"
-          },
-          "run": {
-            "additionalProperties": true,
-            "title": "Run",
-            "type": "object"
-          },
-          "run_id": {
-            "title": "Run Id",
-            "type": "string"
-          },
-          "schema_version": {
-            "const": "m1.v1",
-            "title": "Schema Version",
-            "type": "string"
-          }
-        },
-        "required": [
-          "schema_version",
-          "answer",
-          "citations",
-          "review_request_drafts",
-          "out_of_scope",
-          "run",
-          "run_id",
-          "assessment_version_id",
-          "is_current"
-        ],
-        "title": "AssistantView",
         "type": "object"
       },
       "Blocker": {
@@ -708,39 +564,6 @@
           "current"
         ],
         "title": "CompanyView",
-        "type": "object"
-      },
-      "CorrectAssessment": {
-        "additionalProperties": false,
-        "properties": {
-          "client_request_id": {
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Client Request Id",
-            "type": "string"
-          },
-          "edits": {
-            "$ref": "#/components/schemas/AssessmentEdits"
-          },
-          "expected_assessment_version_id": {
-            "format": "uuid",
-            "title": "Expected Assessment Version Id",
-            "type": "string"
-          },
-          "reason": {
-            "maxLength": 2000,
-            "minLength": 1,
-            "title": "Reason",
-            "type": "string"
-          }
-        },
-        "required": [
-          "expected_assessment_version_id",
-          "client_request_id",
-          "reason",
-          "edits"
-        ],
-        "title": "CorrectAssessment",
         "type": "object"
       },
       "CreateDeliverable": {
@@ -1333,63 +1156,6 @@
         "title": "DraftProposal",
         "type": "object"
       },
-      "FactCorrections": {
-        "additionalProperties": false,
-        "properties": {
-          "buyer": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextFact"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "closing_at": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextFact"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "service_start_on": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextFact"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "term_months": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/IntegerFact"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "title": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextFact"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "title": "FactCorrections",
-        "type": "object"
-      },
       "Finding": {
         "additionalProperties": false,
         "properties": {
@@ -1551,60 +1317,6 @@
           "request_question"
         ],
         "title": "Finding",
-        "type": "object"
-      },
-      "FindingCorrection": {
-        "additionalProperties": false,
-        "properties": {
-          "company_citations": {
-            "items": {
-              "$ref": "#/components/schemas/Citation"
-            },
-            "maxItems": 12,
-            "title": "Company Citations",
-            "type": "array"
-          },
-          "explanation": {
-            "maxLength": 2000,
-            "minLength": 1,
-            "title": "Explanation",
-            "type": "string"
-          },
-          "missing_information": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Missing Information"
-          },
-          "requirement_id": {
-            "pattern": "^[0-9a-f]{64}$",
-            "title": "Requirement Id",
-            "type": "string"
-          },
-          "status": {
-            "enum": [
-              "met",
-              "unmet",
-              "unconfirmed",
-              "not_assessed"
-            ],
-            "title": "Status",
-            "type": "string"
-          }
-        },
-        "required": [
-          "requirement_id",
-          "status",
-          "company_citations",
-          "explanation",
-          "missing_information"
-        ],
-        "title": "FindingCorrection",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -3449,41 +3161,6 @@
         "title": "Recommendation",
         "type": "object"
       },
-      "ReconcileChange": {
-        "additionalProperties": false,
-        "properties": {
-          "citations": {
-            "items": {
-              "$ref": "#/components/schemas/Citation"
-            },
-            "maxItems": 12,
-            "minItems": 1,
-            "title": "Citations",
-            "type": "array"
-          },
-          "previous_requirement_id": {
-            "pattern": "^[0-9a-f]{64}$",
-            "title": "Previous Requirement Id",
-            "type": "string"
-          },
-          "replacement_requirement_ids": {
-            "items": {
-              "type": "string"
-            },
-            "maxItems": 20,
-            "minItems": 1,
-            "title": "Replacement Requirement Ids",
-            "type": "array"
-          }
-        },
-        "required": [
-          "previous_requirement_id",
-          "replacement_requirement_ids",
-          "citations"
-        ],
-        "title": "ReconcileChange",
-        "type": "object"
-      },
       "Reconciliation": {
         "properties": {
           "fact_id": {
@@ -3540,55 +3217,6 @@
           "resolved"
         ],
         "title": "Reconciliation",
-        "type": "object"
-      },
-      "RecordDecision": {
-        "additionalProperties": false,
-        "properties": {
-          "assessment_version_id": {
-            "format": "uuid",
-            "title": "Assessment Version Id",
-            "type": "string"
-          },
-          "client_request_id": {
-            "maxLength": 100,
-            "minLength": 1,
-            "title": "Client Request Id",
-            "type": "string"
-          },
-          "decision": {
-            "enum": [
-              "pursue",
-              "hold",
-              "decline"
-            ],
-            "title": "Decision",
-            "type": "string"
-          },
-          "expected_input_revision": {
-            "title": "Expected Input Revision",
-            "type": "integer"
-          },
-          "reason": {
-            "maxLength": 2000,
-            "minLength": 1,
-            "title": "Reason",
-            "type": "string"
-          },
-          "review_complete": {
-            "title": "Review Complete",
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "expected_input_revision",
-          "client_request_id",
-          "assessment_version_id",
-          "decision",
-          "reason",
-          "review_complete"
-        ],
-        "title": "RecordDecision",
         "type": "object"
       },
       "RecordPreparationDecision": {
@@ -6998,226 +6626,6 @@
         "summary": "Get Tender"
       }
     },
-    "/api/v1/tenders/{tender_id}/analyses": {
-      "post": {
-        "operationId": "request_analysis_api_v1_tenders__tender_id__analyses_post",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "tender_id",
-            "required": true,
-            "schema": {
-              "format": "uuid",
-              "title": "Tender Id",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RequestAnalysis"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobView"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "summary": "Request Analysis"
-      }
-    },
-    "/api/v1/tenders/{tender_id}/assessment": {
-      "patch": {
-        "operationId": "correct_assessment_api_v1_tenders__tender_id__assessment_patch",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "tender_id",
-            "required": true,
-            "schema": {
-              "format": "uuid",
-              "title": "Tender Id",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CorrectAssessment"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssessmentView"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "summary": "Correct Assessment"
-      }
-    },
-    "/api/v1/tenders/{tender_id}/assistant-messages": {
-      "post": {
-        "operationId": "assistant_message_api_v1_tenders__tender_id__assistant_messages_post",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "tender_id",
-            "required": true,
-            "schema": {
-              "format": "uuid",
-              "title": "Tender Id",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AskAssessment"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssistantView"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "summary": "Assistant Message"
-      }
-    },
-    "/api/v1/tenders/{tender_id}/decisions": {
-      "post": {
-        "operationId": "record_decision_api_v1_tenders__tender_id__decisions_post",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "tender_id",
-            "required": true,
-            "schema": {
-              "format": "uuid",
-              "title": "Tender Id",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RecordDecision"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DecisionView"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "summary": "Record Decision"
-      }
-    },
     "/api/v1/tenders/{tender_id}/documents": {
       "post": {
         "operationId": "upload_documents_api_v1_tenders__tender_id__documents_post",
@@ -7828,59 +7236,6 @@
           }
         ],
         "summary": "Draft Proposal"
-      }
-    },
-    "/api/v1/tenders/{tender_id}/qualification-brief": {
-      "get": {
-        "operationId": "qualification_brief_api_v1_tenders__tender_id__qualification_brief_get",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "tender_id",
-            "required": true,
-            "schema": {
-              "format": "uuid",
-              "title": "Tender Id",
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "assessment_version_id",
-            "required": true,
-            "schema": {
-              "format": "uuid",
-              "title": "Assessment Version Id",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "summary": "Qualification Brief"
       }
     },
     "/api/v1/tenders/{tender_id}/review-tasks": {

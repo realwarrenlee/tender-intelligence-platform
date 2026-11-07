@@ -38,8 +38,6 @@ const config: NextConfig = {
         ['/lndev-ui', '/tenders'],
         ['/lndev-ui/inbox', '/inbox'],
         ['/lndev-ui/projects', '/tenders'],
-        ['/lndev-ui/my-issues', '/reviews'],
-        ['/lndev-ui/reviews', '/reviews'],
         ['/lndev-ui/members', '/members'],
         ['/lndev-ui/settings', '/settings'],
         ['/lndev-ui/settings/preferences', '/settings'],

@@ -20,7 +20,6 @@ def preparation(screening_case, actors):
     assert result.status_code == 201, result.text
     case.current[0] = case.actor
     case.approval = result.json()["id"]
-    case.app.state.preparation_enabled = True
     case.url = f"/api/v1/tenders/{case.tender['id']}/preparation"
     return case
 
@@ -45,9 +44,6 @@ def test_deliverables_require_current_approval_and_named_members(preparation, ac
         assert c.http.post(c.url, json=body).status_code in (403, 404)
     assert c.http.get(c.url).status_code == 404
     c.current[0] = c.actor
-    c.app.state.preparation_enabled = False
-    assert c.http.post(c.url, json=body).status_code == 409
-    c.app.state.preparation_enabled = True
     response = c.http.post(c.url, json=body)
     assert response.status_code == 201, response.text
     assert c.http.post(c.url, json=body).json() == response.json()
@@ -116,7 +112,6 @@ def test_reviews_pin_working_versions_and_survive_amendment(preparation, actors)
     db(c.http, c.app, "UPDATE m1_app.tenders SET input_revision=input_revision+1 WHERE id=$1 RETURNING id", UUID(c.tender["id"]))
     c.current[0] = c.reviewer
     assert act("accept", 6, note="Stale approval").status_code == 409
-    c.app.state.preparation_enabled = False
     c.current[0] = actors["viewer"]
     item = c.http.get(c.url).json()["items"][0]
     assert item["status"] == "non_current" and not item["permitted_actions"]
@@ -129,7 +124,6 @@ def test_reviews_pin_working_versions_and_survive_amendment(preparation, actors)
     assert c.http.get("/api/v1/tenders/" + c.tender["id"]).status_code == 404
 
     # A new approval restores the bid owner's ability to reconfirm, not the old review's currency.
-    c.app.state.preparation_enabled = True
     c.current[0] = c.actor
     start = c.http.post("/api/v1/tenders/" + c.tender["id"] + "/screenings", json={
         "expected_input_revision": c.review["input_revision"] + 1, "client_request_id": str(uuid4())})

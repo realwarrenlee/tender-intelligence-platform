@@ -3,7 +3,7 @@ import '@/app/globals.css'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { render } from 'vitest-browser-react'
 import { userEvent, page } from 'vitest/browser'
-import { createApi, type Actor } from './api'
+import { createApi, type Actor, type OpportunityFeedback } from './api'
 import { ReviewDesk } from './review-desk'
 import {
   boundedTender,
@@ -15,7 +15,7 @@ import {
   scopedTask,
   opportunity,
 } from './test-fixtures/screening'
-import { ReviewWork, WorkspaceInbox } from './workspace-activity'
+import { Oversight, WorkspaceInbox } from './workspace-activity'
 
 const navigation = vi.hoisted(() => ({
   push: vi.fn(),
@@ -34,6 +34,7 @@ let cache: QueryClient
 let active: Actor
 let tender: ReturnType<typeof boundedTender>
 let review: ReturnType<typeof reviewCase>
+let feedback: OpportunityFeedback[]
 let commands: Array<{ path: string; body: Record<string, unknown> }>
 const api = createApi(async () => 'test')
 const overviewQuote =
@@ -57,6 +58,7 @@ beforeEach(() => {
   tender = boundedTender()
   review = reviewCase()
   commands = []
+  feedback = []
   navigation.mobile = false
   navigation.search = 'tab=human'
   cache = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -109,6 +111,8 @@ beforeEach(() => {
           tender.review_tasks.push(task)
           return Response.json(task)
         }
+        if (path.endsWith('/opportunity-feedback/feedback-1/answer'))
+          feedback[0] = { ...feedback[0], answer: String(body.answer) }
         if (path.endsWith('/answers')) {
           tender.input_revision = 3
           review.input_revision = 3
@@ -210,6 +214,8 @@ beforeEach(() => {
             : data
         )
       }
+      if (path.endsWith('/opportunity-feedback'))
+        return Response.json({ items: feedback, next_cursor: null })
       if (path.includes('/inbox-actions'))
         return Response.json({
           next_cursor: null,
@@ -279,7 +285,7 @@ async function mount(
         {view === 'inbox' ? (
           <WorkspaceInbox actor={actor} api={api} />
         ) : view === 'reviews' ? (
-          <ReviewWork actor={actor} api={api} />
+          <Oversight actor={actor} api={api} />
         ) : (
           <ReviewDesk
             tenderId='tender-1'
@@ -308,6 +314,11 @@ it('shows only the review in the embedded preview', async () => {
 })
 it('shows a cited qualification brief without automatically assigning questions or approving', async () => {
   const screen = await mount()
+  for (const name of ['Preparation', 'Submission']) {
+    await expect
+      .element(screen.getByRole('tab', { name, exact: true }))
+      .toBeVisible()
+  }
   await expect
     .element(
       screen.getByRole('heading', { name: 'Qualification brief', exact: true })
@@ -963,6 +974,60 @@ it('blocks stale and budget-exhausted evidence and shows incomplete sources', as
     .not.toBeInTheDocument()
 })
 
+it('opens assigned work and feedback from the same Human Inbox list', async () => {
+  tender.review_tasks = [scopedTask()]
+  feedback = [
+    {
+      id: 'feedback-1',
+      sender_id: owner.user_id,
+      recipient_id: reviewer.user_id,
+      question: 'Can we cover the weekend shifts?',
+      notice: opportunity().notice,
+      answer: null,
+      answered_at: null,
+      created_at: '2026-11-01T00:00:00Z',
+    },
+  ]
+  const screen = await mount(reviewer, 'inbox')
+  await expect
+    .element(
+      screen.getByRole('button', {
+        name: 'Confirm current FM registration.',
+      })
+    )
+    .toBeVisible()
+  await userEvent.click(
+    screen.getByRole('button', {
+      name: 'Can we cover the weekend shifts?',
+    })
+  )
+  await userEvent.fill(
+    screen.getByLabelText('Your reply'),
+    'Yes, with the on-call team.'
+  )
+  await userEvent.click(screen.getByRole('button', { name: 'Send reply' }))
+  await expect
+    .poll(() => commands)
+    .toContainEqual({
+      path: '/api/v1/opportunity-feedback/feedback-1/answer',
+      body: {
+        answer: 'Yes, with the on-call team.',
+        client_request_id: expect.any(String),
+      },
+    })
+  await expect
+    .element(screen.getByText('Reply: Yes, with the on-call team.'))
+    .toBeVisible()
+  await userEvent.click(
+    screen.getByRole('button', {
+      name: 'Confirm current FM registration.',
+    })
+  )
+  await expect
+    .element(screen.getByLabelText('Your answer', { exact: true }))
+    .toBeVisible()
+})
+
 it('opens only the selected Human action on a narrow screen and returns to its queue', async () => {
   await page.viewport(390, 844)
   navigation.mobile = true
@@ -1261,37 +1326,6 @@ it.each(['light', 'dark'] as const)(
     expect(commands).toHaveLength(0)
   }
 )
-
-it('retains readable bounded history during server rollback without offering active mutations', async () => {
-  const screen = await mount({
-    ...owner,
-    qualification_workflow_enabled: false,
-  })
-  await expect
-    .element(
-      screen.getByText(
-        'Screening is disabled. This saved brief is read-only.',
-        { exact: true }
-      )
-    )
-    .toBeVisible()
-  await expect
-    .element(
-      screen
-        .getByRole('button', { name: 'Assign request', exact: true })
-        .first()
-    )
-    .toBeDisabled()
-  await expect
-    .element(
-      screen.getByRole('button', {
-        name: 'Investigate current sources',
-        exact: true,
-      })
-    )
-    .toBeDisabled()
-  expect(commands).toHaveLength(0)
-})
 
 it('changes the delegated approver without rerunning screening and shows previous authority as non-current', async () => {
   review.screening!.artifact.findings[0].status = 'supported'

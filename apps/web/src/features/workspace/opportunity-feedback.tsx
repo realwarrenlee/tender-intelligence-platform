@@ -1,10 +1,11 @@
 /* eslint-disable @tanstack/query/exhaustive-deps -- Session changes clear the shared query cache. */
-import { type ReactNode, useState } from 'react'
+import { useState } from 'react'
 import {
   useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
+import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { ActionError, Field, selectStyle, useAction } from './actions'
@@ -170,14 +171,8 @@ function FeedbackReply({ item, api }: { item: OpportunityFeedback; api: Api }) {
   )
 }
 
-export function OpportunityFeedbackInbox({
-  actor,
-  api,
-  children,
-}: InboxProps & { children: ReactNode }) {
-  const [showFeedback, setShowFeedback] = useState(false)
-  const members = useMembers(api)
-  const query = useInfiniteQuery({
+export function useOpportunityFeedback({ actor, api }: InboxProps) {
+  return useInfiniteQuery({
     queryKey: [feedbackKey, actor.user_id],
     initialPageParam: null as string | null,
     queryFn: ({ pageParam }) =>
@@ -188,98 +183,47 @@ export function OpportunityFeedbackInbox({
     getNextPageParam: (page) => page.next_cursor || undefined,
     refetchInterval: 15000,
   })
-  const items = query.data?.pages.flatMap((page) => page.items) || []
-  const pending = items.some(
-    (item) => item.recipient_id === actor.user_id && !item.answer
-  )
+}
+
+export function OpportunityFeedbackDetail({
+  actor,
+  api,
+  item,
+  onBack,
+}: InboxProps & { item: OpportunityFeedback; onBack?: () => void }) {
+  const members = useMembers(api)
   const name = (id: string) =>
     members.data?.items.find((member) => member.user_id === id)?.display_name ||
     'Workspace member'
   return (
-    <div className='flex h-full min-h-0 flex-col'>
-      <div className='flex shrink-0 gap-2 border-b px-6 py-2'>
-        <Button
-          size='sm'
-          variant='ghost'
-          aria-pressed={!showFeedback}
-          onClick={() => setShowFeedback(false)}
-        >
-          Assigned work
+    <article className='h-full space-y-3 overflow-y-auto px-6 py-5 text-sm'>
+      {onBack && (
+        <Button variant='ghost' onClick={onBack}>
+          <ArrowLeft className='size-4' />
+          Back to list
         </Button>
-        <Button
-          size='sm'
-          variant='ghost'
-          aria-pressed={showFeedback}
-          onClick={() => setShowFeedback(true)}
-        >
-          Tender feedback{pending ? ' · Awaiting your reply' : ''}
-        </Button>
-      </div>
-      {!showFeedback ? (
-        <div className='min-h-0 flex-1'>{children}</div>
-      ) : (
-        <section
-          aria-label='Tender feedback'
-          className='min-h-0 flex-1 overflow-y-auto'
-        >
-          {query.isPending && (
-            <p role='status' className='p-6'>
-              Loading feedback…
-            </p>
-          )}
-          {query.isError && (
-            <p role='alert' className='p-6'>
-              {query.error.message}
-            </p>
-          )}
-          {query.isSuccess && !items.length && (
-            <p className='p-6 text-muted-foreground'>
-              No tender feedback requests.
-            </p>
-          )}
-          {items.map((item) => (
-            <article
-              key={item.id}
-              className='space-y-2 border-b px-6 py-5 text-sm'
-            >
-              <h2 className='font-semibold'>{item.notice.title}</h2>
-              <p className='text-muted-foreground'>
-                {item.notice.reference} · Closes{' '}
-                {singapore(item.notice.closing_at)}
-              </p>
-              <p>
-                {item.sender_id === actor.user_id
-                  ? 'To ' + name(item.recipient_id)
-                  : 'From ' + name(item.sender_id)}
-              </p>
-              <p className='whitespace-pre-wrap'>{item.question}</p>
-              <details>
-                <summary className='cursor-pointer'>Source notice</summary>
-                <p className='mt-2 whitespace-pre-wrap'>
-                  {item.notice.evidence_text}
-                </p>
-              </details>
-              {item.answer ? (
-                <p className='whitespace-pre-wrap'>Reply: {item.answer}</p>
-              ) : item.recipient_id === actor.user_id ? (
-                <FeedbackReply api={api} item={item} />
-              ) : (
-                <p className='text-muted-foreground'>Awaiting reply</p>
-              )}
-            </article>
-          ))}
-          {query.hasNextPage && (
-            <Button
-              className='m-4'
-              variant='outline'
-              disabled={query.isFetchingNextPage}
-              onClick={() => void query.fetchNextPage()}
-            >
-              Load more requests
-            </Button>
-          )}
-        </section>
       )}
-    </div>
+      <h2 className='text-lg font-semibold'>{item.notice.title}</h2>
+      <p className='text-muted-foreground'>
+        {item.notice.reference} · Closes {singapore(item.notice.closing_at)}
+      </p>
+      <p>
+        {item.sender_id === actor.user_id
+          ? 'To ' + name(item.recipient_id)
+          : 'From ' + name(item.sender_id)}
+      </p>
+      <p className='whitespace-pre-wrap'>{item.question}</p>
+      <details>
+        <summary className='cursor-pointer'>Source notice</summary>
+        <p className='mt-2 whitespace-pre-wrap'>{item.notice.evidence_text}</p>
+      </details>
+      {item.answer ? (
+        <p className='whitespace-pre-wrap'>Reply: {item.answer}</p>
+      ) : item.recipient_id === actor.user_id ? (
+        <FeedbackReply api={api} item={item} />
+      ) : (
+        <p className='text-muted-foreground'>Awaiting reply</p>
+      )}
+    </article>
   )
 }

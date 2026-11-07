@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 import pytest
 
 from test_documents import create, upload
-from test_jobs import enqueue, run_job
+from test_screening_workflow import screening_case as screening_case
 
 
 def deletion(revision=1, key=None):
@@ -53,61 +53,28 @@ def test_delete_rejects_foreign_workspace_and_stale_revision(client, actors):
     assert http.get(path).status_code == 200
 
 
-def test_delete_cancels_queued_analysis_and_hides_retained_source(client, monkeypatch):
-    http, _, app = client
-    tender = create(http)
-    uploaded = upload(http, tender).json()
-    job_id = enqueue(http, tender).json()["id"]
-    source_id = uploaded["document_version_ids"][0]
-    assert http.request("DELETE", f"/api/v1/tenders/{tender['id']}", json=deletion(2)).status_code == 200
+def test_delete_cancels_queued_screening_and_hides_retained_source(screening_case, monkeypatch):
+    from app.tenders import screening_workflow
+
+    case = screening_case
+    path = f"/api/v1/tenders/{case.tender['id']}"
+    detail = case.http.get(path).json()
+    revision = detail["input_revision"]
+    source_id = detail["documents"][0]["id"]
+    response = case.http.post(path + "/screenings", json=deletion(revision))
+    assert response.status_code == 202, response.text
+    job_id = response.json()["id"]
+    assert case.http.request("DELETE", path, json=deletion(revision)).status_code == 200
 
     async def unexpected_read(*args):
-        pytest.fail("A deleted tender must not start parsing.")
-    monkeypatch.setattr(app.state.storage, "get", unexpected_read)
-    run_job(http, app, job_id)
-    assert http.get(f"/api/v1/sources/{source_id}").status_code == 404
-    assert http.get(f"/api/v1/jobs/{job_id}").status_code == 404
+        pytest.fail("A deleted tender must not start screening.")
+    monkeypatch.setattr(screening_workflow, "_context", unexpected_read)
+    case.http.portal.call(case.run, case.app.state.pool, case.app.state.storage, UUID(job_id))
+    assert case.http.get(f"/api/v1/sources/{source_id}").status_code == 404
+    assert case.http.get(f"/api/v1/jobs/{job_id}").status_code == 404
 
     async def inspect():
-        async with app.state.pool.acquire() as c:
+        async with case.app.state.pool.acquire() as c:
             assert await c.fetchval("SELECT status FROM m1_app.jobs WHERE id=$1", UUID(job_id)) == "cancelled"
             assert await c.fetchval("SELECT count(*) FROM m1_app.document_versions WHERE id=$1", UUID(source_id)) == 1
-            assert await c.fetchval("SELECT count(*) FROM m1_app.artifact_versions WHERE tender_id=$1 AND kind='parsed_sources'", UUID(tender["id"])) == 0
-    http.portal.call(inspect)
-
-
-def test_delete_fences_an_analysis_already_running(client, monkeypatch):
-    import asyncio
-    from concurrent.futures import ThreadPoolExecutor
-    import threading
-    from app.tenders import jobs
-
-    http, _, app = client
-    tender = create(http)
-    assert upload(http, tender).status_code == 201
-    job_id = enqueue(http, tender).json()["id"]
-    entered, release = threading.Event(), threading.Event()
-
-    async def controlled(source, *args):
-        entered.set()
-        await asyncio.to_thread(release.wait, 20)
-        return {"document_version_id": source["id"], "source_role": "tender", "sha256": source["sha256"],
-                "status": "complete", "error_code": None, "locations": [{"page": 1, "status": "complete"}],
-                "anchors": [{"page": 1, "text": "Fictional parser result"}]}
-    monkeypatch.setattr(jobs, "parse_isolated", controlled)
-    with ThreadPoolExecutor(max_workers=1) as executor:
-        future = executor.submit(run_job, http, app, job_id)
-        try:
-            assert entered.wait(10)
-            assert http.request("DELETE", f"/api/v1/tenders/{tender['id']}", json=deletion(2)).status_code == 200
-        finally:
-            release.set()
-        future.result(timeout=20)
-
-    async def inspect():
-        async with app.state.pool.acquire() as c:
-            row = await c.fetchrow("SELECT status,output_version_id FROM m1_app.jobs WHERE id=$1", UUID(job_id))
-            assert row["status"] == "cancelled"
-            assert row["output_version_id"] is None
-            assert await c.fetchval("SELECT count(*) FROM m1_app.artifact_versions WHERE tender_id=$1 AND kind='parsed_sources'", UUID(tender["id"])) == 0
-    http.portal.call(inspect)
+    case.http.portal.call(inspect)

@@ -19,9 +19,11 @@ uv run --directory apps/api python -m app.tenders.storage
 
 These commands modify the configured database and Storage project. The migration command also installs/verifies the PgQueuer schema and records application migration hashes; do not apply the same migrations through another tool without reconciling migration history. The bucket command refuses an existing public bucket. Neither command runs automatically when the API starts.
 
+For an existing development database, rerun the migration command after pulling changes that add migrations. The runner applies pending migrations in order and verifies the hashes of migrations already applied.
+
 Use the [startup commands](../../SETUP.md#run-locally) to run the API and worker in separate terminals.
 
-The worker needs the same root environment and workflow flag as the API. Local endpoints include `/health`, `/docs` and authenticated `/api/v1/*`.
+The worker and API use the same root environment. Local endpoints include `/health`, `/docs` and authenticated `/api/v1/*`.
 
 A new development account can be provisioned explicitly:
 
@@ -33,9 +35,9 @@ This creates an Auth account and workspace records. It saves credentials in igno
 
 ## Workflow
 
-The default legacy workflow supports uploaded sources, cited assessments, company evidence, review tasks and attributed answers, a bounded assistant, human pursuit decisions and Markdown exports. History and existing assessments remain readable.
+New tenders use bounded screening with source coverage, cited findings, named human requests and version-bound preparation decisions.
 
-`QUALIFICATION_WORKFLOW_ENABLED` defaults to `false`. When enabled, new work uses bounded screening, with source coverage, cited findings, named human requests and version-bound preparation decisions. Opportunity suggestions are sourced from controlled imports or configured public notices; they are not proof that attachments were obtained. The API exposes bounded `/api/v1/review-cases` and `/api/v1/inbox-actions` reads. Screening cases and history remain readable after rollback, and cases already in screening cannot fall back to broad analysis.
+Opportunity suggestions come from controlled imports or configured public notices. Verify attachments through source coverage. The API exposes bounded `/api/v1/review-cases` and `/api/v1/inbox-actions` reads.
 
 Model calls require explicit model prices and applicable approved spending authority; enabling the workflow does not grant either. Preparation approval is a business decision and does not authorise provider spend. A source citation identifies its location; a person must still assess semantic support.
 

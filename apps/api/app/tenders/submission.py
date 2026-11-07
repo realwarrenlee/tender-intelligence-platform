@@ -116,10 +116,9 @@ def unresolved(finding, linked, conditions):
 
 
 class Submission:
-    def __init__(self, preparation: Preparation, enabled: bool):
+    def __init__(self, preparation: Preparation):
         self.prep = preparation
         self.repo = preparation.repo
-        self.enabled = enabled
 
     async def readiness(self, c, actor, tender_id, review, approval):
         accepted = {item["kind"]: item for item in await rows(c, actor.workspace_id, [tender_id])
@@ -180,7 +179,7 @@ class Submission:
             records = await self.packages(c, actor, tender_id)
             before_close = bool(review["closing_at"] and utc_now() < datetime.fromisoformat(review["closing_at"]))
             checks.append(ReleaseCheck(label="Tender closing time has not passed", passed=before_close))
-            writable = self.enabled and bool(set(roles) & {"member", "admin"})
+            writable = bool(set(roles) & {"member", "admin"})
             owner = actor.user_id == tender["owner_user_id"]
             packages = []
             for index, package in enumerate(records):
@@ -200,8 +199,6 @@ class Submission:
         operation = f"submission_{action}:{tender_id}:{package_id or ''}"
         async with self.repo.pool.acquire() as c, c.transaction():
             tender, _, review, approval = await self.prep.context(c, actor, tender_id, True, check_closing=False)
-            if not self.enabled:
-                raise DomainError(409, "SUBMISSION_DISABLED", "Submission control is read-only.")
             if action != "decision":
                 self.prep.require_actor(actor, tender["owner_user_id"])
             replay = await self.repo._claim(c, actor, operation, command)

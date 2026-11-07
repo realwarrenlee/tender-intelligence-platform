@@ -13,7 +13,6 @@ from test_retrieval import seed_parsed
 @pytest.fixture
 def retrieval_case(client, actors):
     http, _, app = client
-    app.state.qualification_enabled = True
     case = SimpleNamespace(http=http, app=app, actor=actors["owner"], tender=create(http))
     db(http, app, """INSERT INTO m1_app.workspace_spending_policies
         (workspace_id,daily_limit_usd,approved_by) VALUES($1,5,$2) RETURNING workspace_id""",

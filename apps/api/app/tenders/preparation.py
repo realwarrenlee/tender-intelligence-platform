@@ -199,17 +199,14 @@ async def inbox_rows(c, actor, cursor, limit):
 
 
 class Preparation:
-    def __init__(self, repository, storage, enabled):
+    def __init__(self, repository, storage):
         self.repo = repository
         self.storage = storage
-        self.enabled = enabled
 
     async def context(self, c, actor, tender_id, write=False, *, check_closing=True):
         from app.tenders.workspace_views import _review_rows, _review_view
 
         await self.repo._member(c, actor, "member" if write else None)
-        if write and not self.enabled:
-            raise DomainError(409, "PREPARATION_DISABLED", "Preparation tracking is read-only.")
         if write:
             # Match screening's workspace-before-tender lock order.
             await c.fetchval("SELECT id FROM m1_app.workspaces WHERE id=$1 FOR SHARE", actor.workspace_id)
@@ -261,7 +258,7 @@ class Preparation:
         async with self.repo.pool.acquire() as c, c.transaction(isolation="repeatable_read"):
             tender, roles, _, approval = await self.context(c, actor, tender_id)
             items = []
-            writable = self.enabled and bool(approval) and bool(set(roles) & {"member", "admin"})
+            writable = bool(approval) and bool(set(roles) & {"member", "admin"})
             conditions = {entry["finding_id"]: entry["condition"] for entry in approval["conditions"]} if approval else {}
             for item in await rows(c, actor.workspace_id, [tender_id]):
                 state = status(item, approval)

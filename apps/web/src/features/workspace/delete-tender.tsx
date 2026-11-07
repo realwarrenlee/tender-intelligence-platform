@@ -22,7 +22,7 @@ export function DeleteTender({
   return (
     <TaskDialog
       title='Delete tender?'
-      description='This removes the tender from Tenders, Inbox and Reviews and cancels pending analyses. Documents and history are retained for recovery.'
+      description='This removes the tender from Tenders, Inbox and Oversight and cancels pending screening. Documents and history are retained for recovery.'
       action={action}
       onClose={onClose}
       onReturnFocus={onReturnFocus}

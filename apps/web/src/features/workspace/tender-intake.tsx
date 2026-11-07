@@ -3,20 +3,16 @@ import { File as FileIcon, LoaderCircle, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ActionError, useAction } from './actions'
-import { type Api, type Tender, requestId } from './api'
+import { type Api, requestId } from './api'
 import { tenderFileError, tenderFileTypes } from './tender-files'
 
 export function TenderIntake({
   api,
-  tender,
   onComplete,
   onCancel,
   onChange,
-  saveOnly = false,
 }: {
   api: Api
-  saveOnly?: boolean
-  tender?: Tender
   onComplete: (id: string) => void
   onCancel: () => void
   onChange?: () => void
@@ -24,7 +20,6 @@ export function TenderIntake({
   const [files, setFiles] = useState<File[]>([])
   const [error, setError] = useState('')
   const [dragging, setDragging] = useState(false)
-  const [packSaved, setPackSaved] = useState(false)
   const [complete, setComplete] = useState(false)
   const input = useRef<HTMLInputElement>(null)
   const folderInput = useRef<HTMLInputElement>(null)
@@ -34,13 +29,12 @@ export function TenderIntake({
     uploaded: boolean
   } | null>(null)
   const action = useAction(onChange)
-  const disabled = action.busy || action.uncertain || packSaved
-  const documents = tender?.documents || []
+  const disabled = action.busy || action.uncertain || complete
 
   function add(incoming: File[]) {
     if (disabled || !incoming.length) return
     const next = [...files, ...incoming]
-    const message = tenderFileError(next, documents)
+    const message = tenderFileError(next, [])
     if (message) {
       setError(message)
       return
@@ -49,72 +43,45 @@ export function TenderIntake({
     setFiles(next)
   }
 
-  function analyse(event: React.SubmitEvent<HTMLFormElement>) {
+  function save(event: React.SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (complete || (!files.length && !documents.length)) return
+    if (complete || !files.length) return
     const createId = requestId()
     const uploadId = requestId()
-    const analysisId = requestId()
     let uploadBody: FormData | undefined
-    let analysisBody:
-      | { expected_input_revision: number; client_request_id: string }
-      | undefined
     action.run(async () => {
       if (!saved.current) {
-        saved.current = tender
-          ? {
-              id: tender.id,
-              input_revision: tender.input_revision,
-              uploaded: false,
+        saved.current = {
+          ...(await api.send<{ id: string; input_revision: number }>(
+            '/tenders',
+            {
+              title:
+                files[0].name.replace(/\.[^.]+$/, '').slice(0, 300) ||
+                'New tender',
+              source_label: 'manual_upload',
+              client_request_id: createId,
             }
-          : {
-              ...(await api.send<{ id: string; input_revision: number }>(
-                '/tenders',
-                {
-                  title:
-                    files[0].name.replace(/\.[^.]+$/, '').slice(0, 300) ||
-                    'New tender',
-                  source_label: 'manual_upload',
-                  client_request_id: createId,
-                }
-              )),
-              uploaded: false,
-            }
+          )),
+          uploaded: false,
+        }
       }
       const record = saved.current
-      if (files.length && !record.uploaded) {
+      if (!record.uploaded) {
         if (!uploadBody) {
           uploadBody = new FormData()
           files.forEach((file) => uploadBody!.append('files', file))
           uploadBody.append(
             'metadata',
             JSON.stringify({
-              expected_input_revision: Math.max(
-                record.input_revision,
-                tender?.input_revision || 0
-              ),
+              expected_input_revision: record.input_revision,
               client_request_id: uploadId,
               files: files.map(() => ({ role: 'tender' })),
             })
           )
         }
-        const result = await api.upload<{ input_revision: number }>(
-          '/tenders/' + record.id + '/documents',
-          uploadBody
-        )
-        record.input_revision = result.input_revision
+        await api.upload('/tenders/' + record.id + '/documents', uploadBody)
         record.uploaded = true
-        setPackSaved(true)
       }
-      analysisBody ||= {
-        expected_input_revision: Math.max(
-          record.input_revision,
-          tender?.input_revision || 0
-        ),
-        client_request_id: analysisId,
-      }
-      if (!saveOnly)
-        await api.send('/tenders/' + record.id + '/analyses', analysisBody)
       setComplete(true)
       onChange?.()
       onComplete(record.id)
@@ -122,7 +89,7 @@ export function TenderIntake({
   }
 
   return (
-    <form onSubmit={analyse} className='space-y-7'>
+    <form onSubmit={save} className='space-y-7'>
       <div
         className={
           'flex min-h-64 flex-col items-center justify-center gap-4 rounded-md border border-dashed px-6 py-10 transition-colors ' +
@@ -201,28 +168,15 @@ export function TenderIntake({
           {error}
         </p>
       )}
-      {!!(files.length + documents.length) && (
+      {!!files.length && (
         <section
           aria-label='Selected files'
           className='overflow-hidden border-y'
         >
           <h2 className='border-b py-3 text-base font-medium'>
-            {files.length + documents.length}{' '}
-            {files.length + documents.length === 1 ? 'file' : 'files'} ready
+            {files.length} {files.length === 1 ? 'file' : 'files'} ready
           </h2>
           <ul className='max-h-80 divide-y overflow-y-auto'>
-            {documents.map((file) => (
-              <li
-                key={file.id}
-                className='flex items-center gap-3 py-3 text-sm'
-              >
-                <FileIcon
-                  aria-hidden='true'
-                  className='size-5 shrink-0 text-muted-foreground'
-                />
-                <span className='min-w-0 break-words'>{file.filename}</span>
-              </li>
-            ))}
             {files.map((file, index) => (
               <li key={index} className='flex items-center gap-3 py-3 text-sm'>
                 <FileIcon
@@ -250,21 +204,9 @@ export function TenderIntake({
       )}
       <ActionError action={action} />
       <div className='flex gap-4'>
-        <Button
-          size='sm'
-          disabled={
-            complete ||
-            action.busy ||
-            action.uncertain ||
-            (!files.length && !documents.length)
-          }
-        >
+        <Button size='sm' disabled={disabled || !files.length}>
           {action.busy && <LoaderCircle className='size-4 animate-spin' />}
-          {action.busy
-            ? 'Saving sources…'
-            : saveOnly
-              ? 'Save sources'
-              : 'Analyse tender'}
+          {action.busy ? 'Saving sources…' : 'Save sources'}
         </Button>
         <Button
           type='button'

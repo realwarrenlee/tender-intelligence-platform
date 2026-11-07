@@ -11,6 +11,7 @@ __pycache__/
 node_modules/
 dist/
 .superpowers/
+.playwright-cli/
 supabase/.temp/
 
 # Raw model output and extracted runtime inputs stay local.
@@ -19,6 +20,8 @@ evals/archive/
 evals/fixtures/
 docs/superpowers/
 output/
+demo/
 
 # Local MVP account/password table.
-/MEMBERS.md
+MEMBERS.md
+PROPOSAL.md
